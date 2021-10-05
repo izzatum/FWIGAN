@@ -8,5 +8,7 @@ This repo contains a PyTorch implementation with [DeepWave](https://github.com/a
 I implemented the FWIGAN to invert the velocity model, source wavelet, and noise level in data based on the additive Gaussian noise. Kindly check the Jupyter Notebooks for further details.
 
 ![velocity](images/velocity.png)
+![inverted](images/inverted.png)
+![true](images/true.png)
 ![source](images/source.png)
 
