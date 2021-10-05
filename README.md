@@ -1,4 +1,4 @@
-# FWIGAN: Full-Waveform Inversion with Deep Adversarial Network
+# FWIGAN: Full-Waveform Inversion with Deep Adversarial Learning
 
 This repo contains a PyTorch implementation with [DeepWave](https://github.com/ar4/deepwave) for the FWIGAN based on the following papers:
 
