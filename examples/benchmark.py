@@ -208,6 +208,86 @@ def assert_steps(before, after, epochs, config):
     return dict(physical=actual[0], critic=actual[1])
 
 
+class CalibrationError(RuntimeError):
+    def __init__(self, message, diagnostics):
+        super().__init__(message)
+        self.diagnostics = diagnostics
+
+
+def calibrate_common(make, config, device, label, steps, max_warmup, sync, release):
+    """Find a shared state whose next epochs succeed in both implementations."""
+    expected = [config.batches, config.batches*config.critic_cycles]
+    names = ('physical', 'critic')
+
+    def scales(branch):
+        return [getattr(branch, name+'_scaler').get_scale() for name in names]
+
+    def epoch(branch):
+        before, scales_before = counters(branch), scales(branch)
+        branch.run(); sync()
+        actual = [a-b for a, b in zip(counters(branch), before)]
+        scales_after = scales(branch)
+        return dict(actual_updates=actual, skipped_updates=[e-a for e, a in zip(expected, actual)],
+                    scales_before=scales_before, scales_after=scales_after, scales=scales_after,
+                    stable=actual == expected and scales_before == scales_after)
+
+    needed = max(2, steps)
+    branch = make('original'); warmup = []; stable = 0
+    for _ in range(max_warmup):
+        result = epoch(branch)
+        warmup.append(result)
+        stable = stable+1 if result['stable'] else 0
+        if stable >= 2: break
+    if stable < 2:
+        raise CalibrationError(f'{label}: no two consecutive stable successful original warmup epochs '
+                               f'within {max_warmup} epochs; last={warmup[-1]}',
+                               dict(warmup_original=warmup, precheck_epochs=needed, precheck_attempts=[]))
+    common = snapshot(branch, device); branch = None; release()
+
+    attempts = []
+    for attempt_number in range(1, max_warmup+1):
+        candidate_scales = [common[name+'_scaler'].get('scale', 1.) for name in names]
+        branches = []; lowered = {}; passed = True
+        for kind in ('original', 'optimized'):
+            branch = make(kind, common)
+            epochs = []
+            for _ in range(needed):
+                result = epoch(branch); epochs.append(result)
+                if not result['stable']: break
+            final_scales = scales(branch)
+            branch_result = dict(kind=kind, scales_before=epochs[0]['scales_before'],
+                                 scales_after=final_scales,
+                                 successful_updates=[sum(e['actual_updates'][i] for e in epochs) for i in range(2)],
+                                 skipped_updates=[sum(e['skipped_updates'][i] for e in epochs) for i in range(2)],
+                                 stable_epochs=sum(e['stable'] for e in epochs), epochs=epochs)
+            branches.append(branch_result)
+            passed &= len(epochs) == needed and all(e['stable'] for e in epochs)
+            if any(after < before for after, before in zip(final_scales, candidate_scales)):
+                observed = snapshot(branch, device)
+                for index, name in enumerate(names):
+                    if final_scales[index] < candidate_scales[index]:
+                        previous = lowered.get(name)
+                        if previous is None or final_scales[index] < previous['scale']:
+                            lowered[name] = observed[name+'_scaler']
+            branch = None; release()
+        attempts.append(dict(number=attempt_number, common_scales=candidate_scales,
+                             branches=branches, passed=passed))
+        if passed:
+            return common, dict(warmup_original=warmup, precheck_epochs=needed,
+                                precheck_attempts=attempts)
+        if not lowered:
+            raise CalibrationError(f'{label}: joint calibration cannot advance after {attempt_number} attempts; '
+                                   f'no naturally lowered AMP scaler; last={branches}',
+                                   dict(warmup_original=warmup, precheck_epochs=needed,
+                                        precheck_attempts=attempts))
+        for name, state in lowered.items():
+            common[name+'_scaler'] = state
+    raise CalibrationError(f'{label}: joint calibration failed after {max_warmup} attempts; '
+                           f'last={attempts[-1]}',
+                           dict(warmup_original=warmup, precheck_epochs=needed,
+                                precheck_attempts=attempts))
+
+
 def errors(left, right):
     if torch.is_tensor(left):
         diff = (left-right).abs()
@@ -344,29 +424,17 @@ def main():
             branch = Original(data, config, observed, reference.FROZEN, helper, device) if kind == 'original' else Optimized(data, config, observed, device)
             if common is not None: branch.load(common); restore_rng(common['rng'])
             return branch
-        branch = make('original'); warmup = []; stable = 0
-        for _ in range(args.max_warmup):
-            before = counters(branch); scales = [getattr(branch, n+'_scaler').get_scale() for n in ('physical', 'critic')]
-            branch.run(); sync()
-            actual = [a-b for a, b in zip(counters(branch), before)]
-            after_scales = [getattr(branch, n+'_scaler').get_scale() for n in ('physical', 'critic')]
-            stable = stable+1 if actual == [config.batches, config.batches*config.critic_cycles] and scales == after_scales else 0
-            warmup.append(dict(actual_updates=actual, scales=after_scales))
-            if stable >= 2: break
-        if stable < 2: raise RuntimeError(f'{label}: no two consecutive stable successful original warmup epochs')
-        common = snapshot(branch, device); branch = None; release()
-        # Warm optimized kernels separately from the same calibrated state.
-        branch = make('optimized', common)
-        optimized_warmup = []
-        for _ in range(2):
-            before = counters(branch); scales = [getattr(branch, n+'_scaler').get_scale() for n in ('physical', 'critic')]
-            branch.run(); sync(); updates = assert_steps(before, counters(branch), 1, config)
-            after_scales = [getattr(branch, n+'_scaler').get_scale() for n in ('physical', 'critic')]
-            if scales != after_scales: raise RuntimeError(f'{label}: optimized calibration changes AMP scale')
-            optimized_warmup.append(dict(actual_updates=updates, scales=after_scales))
-        branch = None; release()
         windows = {k: [] for k in ('original', 'optimized')}; comparisons = []; count_reports = {}
         steps = args.representative_steps if representative else args.steps
+        try:
+            common, calibration = calibrate_common(make, config, device, label, steps,
+                                                   args.max_warmup, sync, release)
+        except CalibrationError as error:
+            report['workloads'][label] = dict(status='calibration_failed', calibration=error.diagnostics,
+                                              error=str(error))
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(json.dumps(report, indent=2, allow_nan=False)+'\n')
+            raise
         for repetition in range(args.repeats):
             finals = {}
             for kind in (('original', 'optimized') if repetition % 2 == 0 else ('optimized', 'original')):
@@ -422,8 +490,12 @@ def main():
             count_reports[kind] = counts; branch = None; release()
         medians = {kind: statistics.median(w['seconds_per_batch'] for w in samples) for kind, samples in windows.items()}
         report['workloads'][label] = dict(synthetic=True, geometry=dict(model=list(data.grid.shape), nt=data.sampling.nt, shots=data.traces.shape[0], receivers=data.traces.shape[1], spacing_m=data.grid.spacing, dt_s=data.sampling.dt),
-            config=config.to_dict(), steps_per_window=steps, repetitions=args.repeats, warmup_original=warmup,
-            warmup_optimized=optimized_warmup, windows=windows, median_seconds_per_batch=medians,
+            config=config.to_dict(), steps_per_window=steps, repetitions=args.repeats,
+            warmup_original=calibration['warmup_original'], calibration=calibration,
+            warmup_optimized=[epoch for attempt in calibration['precheck_attempts']
+                              for branch in attempt['branches'] if branch['kind'] == 'optimized'
+                              for epoch in branch['epochs']],
+            windows=windows, median_seconds_per_batch=medians,
             original_over_optimized_time_ratio=medians['original']/medians['optimized'], numerical_comparisons=comparisons, untimed_counts=count_reports,
             limitation='synthetic training-loop evidence; not convergence or full Marmousi performance')
         args.output.parent.mkdir(parents=True, exist_ok=True)
