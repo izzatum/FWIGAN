@@ -1,5 +1,6 @@
 """Pinned CUDA startup contracts checked without allocating a GPU."""
 import importlib.util
+import json
 from pathlib import Path
 import sys
 from types import SimpleNamespace
@@ -166,6 +167,116 @@ def test_joint_calibration_reports_bounded_failure_after_skips():
     assert failure.value.diagnostics['precheck_epochs'] == 2
     assert len(failure.value.diagnostics['precheck_attempts']) == 2
     assert failure.value.diagnostics['precheck_attempts'][-1]['branches'][1]['skipped_updates'] == [1, 6]
+
+
+def velocity_probe():
+    common = torch.tensor([2100.], dtype=torch.float32)
+    ulp = torch.nextafter(common, torch.full_like(common, float('inf'))) - common
+    midpoint = ulp * 464.5
+    perturb = torch.tensor([2.**-25], dtype=torch.float32)
+    finals = []
+    for gradient in (midpoint-perturb, midpoint+perturb):
+        parameter = torch.nn.Parameter(common.clone())
+        optimizer = torch.optim.SGD([parameter], lr=1.)
+        parameter.grad = gradient
+        optimizer.step()
+        finals.append(parameter.detach().clone())
+    return common, finals, ulp
+
+
+def compare_probe(benchmark, path, common, finals, device_type='cuda'):
+    diagnostics = []
+    benchmark.compare_value(path, finals[0]-common, finals[1]-common,
+                            2e-4 if device_type == 'cuda' else 0.,
+                            2e-5 if device_type == 'cuda' else 0.,
+                            diagnostics, device_type, velocity_state=(common, *finals))
+    json.dumps(diagnostics, allow_nan=False)
+    return diagnostics[0]
+
+
+def test_cuda_velocity_change_accepts_only_one_local_model_ulp():
+    benchmark = load_benchmark()
+    common, finals, ulp = velocity_probe()
+    assert float(ulp[0]) == 0.000244140625
+    accepted = compare_probe(benchmark, 'physical_changes.velocity', common, finals)
+    assert accepted['passed'] and accepted['old_failed'] == 1
+    assert accepted['rescued_by_ulp'] == 1 and accepted['still_failed'] == 0
+    assert accepted['floor_min'] == accepted['floor_max'] == float(ulp[0])
+    assert accepted['samples'][0]['common'] == 2100.
+    assert accepted['samples'][0]['final_original'] == float(finals[0][0])
+    assert accepted['samples'][0]['final_optimized'] == float(finals[1][0])
+
+    two_ulp_final = finals[0] - 2*ulp
+    rejected = compare_probe(benchmark, 'physical_changes.velocity', common,
+                             [finals[0], two_ulp_final])
+    assert not rejected['passed'] and rejected['still_failed'] == 1
+
+
+def test_velocity_floor_tracks_model_magnitude_and_exponent_boundary():
+    benchmark = load_benchmark()
+    common = torch.tensor([2100., 4096., 2048.], dtype=torch.float32)
+    upper = torch.nextafter(common, torch.full_like(common, float('inf')))
+    lower = torch.nextafter(common, torch.full_like(common, -float('inf')))
+    result = compare_probe(benchmark, 'physical_changes.velocity', common, [lower, upper])
+    assert result['floor_min'] == 2**-12
+    assert result['floor_max'] == 2**-11
+    assert result['still_failed'] >= 1  # The two stored finals span more than one local ULP.
+    boundary = compare_probe(benchmark, 'physical_changes.velocity', common[-1:],
+                             [lower[-1:], common[-1:]])
+    assert boundary['floor_min'] == 2**-12
+    assert boundary['rescued_by_ulp'] == 1
+
+
+@pytest.mark.parametrize('path,device_type', [
+    ('physical_changes.velocity', 'cpu'),
+    ('physical_changes.source', 'cuda'),
+    ('gradients.velocity', 'cuda'),
+    ('physical_optimizer.state.0.exp_avg', 'cuda'),
+    ('critic.layer', 'cuda'),
+])
+def test_velocity_floor_does_not_change_other_comparisons(path, device_type):
+    benchmark = load_benchmark()
+    common, finals, _ = velocity_probe()
+    result = compare_probe(benchmark, path, common, finals, device_type)
+    assert not result['passed'] and result['old_failed'] == 1
+    assert result.get('rescued_by_ulp', 0) == 0
+
+
+@pytest.mark.parametrize('problem', ['dtype', 'shape', 'nonfinite', 'floor_nonfinite'])
+def test_velocity_floor_rejects_malformed_or_nonfinite_tensors(problem):
+    benchmark = load_benchmark()
+    common, finals, _ = velocity_probe()
+    if problem == 'dtype': finals[1] = finals[1].double()
+    if problem == 'shape': finals[1] = finals[1].reshape(1, 1)
+    if problem == 'nonfinite': finals[1][0] = float('nan')
+    if problem == 'floor_nonfinite':
+        common = torch.tensor([torch.finfo(torch.float32).max])
+        finals = [common.clone(), common.clone()]
+    diagnostics = []
+    benchmark.compare_value('physical_changes.velocity', finals[0]-common, finals[1]-common,
+                            2e-4, 2e-5, diagnostics, 'cuda', velocity_state=(common, *finals))
+    assert not diagnostics[0]['passed']
+    json.dumps(diagnostics, allow_nan=False)
+
+
+def test_numerical_failure_json_retains_field_and_completed_work(tmp_path):
+    benchmark = load_benchmark()
+    common, finals, _ = velocity_probe()
+    diagnostics = [compare_probe(benchmark, path, common, finals)
+                   for path in ('physical_changes.source', 'critic.layer')]
+    output = tmp_path / 'partial.json'
+    report = {'workloads': {'tiny-clean': {'status': 'running',
+               'calibration': {'precheck_attempts': [1]},
+               'windows': {'original': [{'actual_updates': {'physical': 1, 'critic': 6}, 'seconds': .1}],
+                           'optimized': [{'actual_updates': {'physical': 1, 'critic': 6}, 'seconds': .09}]}}}}
+    with pytest.raises(AssertionError, match='physical_changes.source'):
+        benchmark.record_comparison(report, 'tiny-clean', 0, diagnostics, output)
+    saved = json.loads(output.read_text())['workloads']['tiny-clean']
+    assert saved['status'] == 'numerical_failed'
+    assert saved['calibration']['precheck_attempts'] == [1]
+    assert saved['windows']['original'][0]['actual_updates']['critic'] == 6
+    assert saved['comparison_diagnostics'][0]['fields'][0]['path'] == 'physical_changes.source'
+    assert 'critic.layer' in saved['error']
 
 
 def test_cuda_benchmark_memory_metadata_queries_current_device(tmp_path, monkeypatch):

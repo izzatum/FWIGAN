@@ -313,6 +313,113 @@ def require_close(left, right, rtol, atol):
     elif left != right: raise AssertionError((left, right))
 
 
+def json_safe(value):
+    if isinstance(value, float): return value if np.isfinite(value) else str(value)
+    if isinstance(value, dict): return {str(key): json_safe(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)): return [json_safe(item) for item in value]
+    return value
+
+
+def compare_value(path, left, right, rtol, atol, diagnostics, device_type, velocity_state=None):
+    """Collect field-labelled comparisons; only CUDA velocity changes use a ULP floor."""
+    if torch.is_tensor(left) or torch.is_tensor(right):
+        result = dict(path=path, kind='tensor', shape=list(left.shape) if torch.is_tensor(left) else None,
+                      other_shape=list(right.shape) if torch.is_tensor(right) else None,
+                      dtype=str(left.dtype) if torch.is_tensor(left) else None,
+                      other_dtype=str(right.dtype) if torch.is_tensor(right) else None,
+                      rtol=rtol, atol=atol)
+        diagnostics.append(result)
+        if not torch.is_tensor(left) or not torch.is_tensor(right) or left.shape != right.shape or left.dtype != right.dtype:
+            result.update(passed=False, reason='tensor type, shape or dtype mismatch')
+            return
+        special = path == 'physical_changes.velocity' and device_type == 'cuda'
+        if special:
+            if velocity_state is None or any(not torch.is_tensor(v) or v.dtype != torch.float32 or v.shape != left.shape
+                                             for v in velocity_state) or left.dtype != torch.float32:
+                result.update(passed=False, reason='velocity floor requires matching float32 common, finals and changes')
+                return
+            if not all(bool(torch.isfinite(v).all()) for v in (left, right, *velocity_state)):
+                result.update(passed=False, reason='nonfinite velocity state')
+                return
+        if left.dtype == torch.bool:
+            old_failed = left != right
+            diff = old_failed.to(torch.int64)
+            old_bound = None
+            result.update(elements=left.numel(), old_failed=int(old_failed.sum()),
+                          max_absolute=int(diff.max()) if diff.numel() else None, max_relative=None)
+        else:
+            diff = (left-right).abs()
+            old_bound = atol + rtol*right.abs()
+            old_failed = ~torch.isfinite(diff) | (diff > old_bound)
+            finite_diff = diff[torch.isfinite(diff)]
+            result.update(elements=left.numel(), old_failed=int(old_failed.sum()),
+                          max_absolute=float(finite_diff.max()) if finite_diff.numel() else None,
+                          max_relative=json_safe(float((diff/right.abs().clamp_min(1e-12)).max())) if diff.numel() else None)
+        if special:
+            common, final_original, final_optimized = velocity_state
+            magnitude = torch.maximum(common.abs(), torch.maximum(final_original.abs(), final_optimized.abs()))
+            next_value = torch.nextafter(magnitude, torch.full_like(magnitude, float('inf')))
+            floor = next_value-magnitude
+            if not bool(torch.isfinite(floor).all()) or not bool((floor > 0).all()):
+                result.update(passed=False, reason='nonfinite or zero float32 velocity ULP')
+                return
+            rescued = old_failed & (diff <= torch.maximum(old_bound, floor))
+            still_failed = old_failed & ~rescued
+            result.update(rule='max(atol + rtol * abs(optimized_change), one local float32 model ULP)',
+                          floor_min=float(floor.min()), floor_max=float(floor.max()),
+                          rescued_by_ulp=int(rescued.sum()), still_failed=int(still_failed.sum()),
+                          passed=not bool(still_failed.any()))
+            samples = []
+            for index in torch.nonzero(old_failed)[:8].tolist():
+                key = tuple(index)
+                samples.append(dict(index=index, common=float(common[key]),
+                                    final_original=float(final_original[key]), final_optimized=float(final_optimized[key]),
+                                    change_original=float(left[key]), change_optimized=float(right[key]),
+                                    absolute_error=float(diff[key]), old_bound=float(old_bound[key]), floor=float(floor[key]),
+                                    rescued=bool(rescued[key])))
+            result['samples'] = samples
+        else:
+            try: torch.testing.assert_close(left, right, rtol=rtol, atol=atol)
+            except AssertionError as error: result.update(passed=False, reason=str(error).splitlines()[0])
+            else: result['passed'] = True
+        return
+    if isinstance(left, dict) and isinstance(right, dict):
+        if left.keys() != right.keys():
+            diagnostics.append(dict(path=path, kind='mapping', passed=False,
+                                    reason='keys differ', original_keys=[str(k) for k in left],
+                                    optimized_keys=[str(k) for k in right]))
+        for key in left:
+            if key in right:
+                compare_value(f'{path}.{key}', left[key], right[key], rtol, atol, diagnostics,
+                              device_type, velocity_state)
+        return
+    if isinstance(left, (list, tuple)) and isinstance(right, (list, tuple)):
+        if len(left) != len(right):
+            diagnostics.append(dict(path=path, kind='sequence', passed=False,
+                                    reason=f'lengths differ: {len(left)} versus {len(right)}'))
+        for index, (l_item, r_item) in enumerate(zip(left, right)):
+            compare_value(f'{path}[{index}]', l_item, r_item, rtol, atol, diagnostics,
+                          device_type, velocity_state)
+        return
+    try: require_close(left, right, rtol, atol)
+    except (AssertionError, TypeError, ValueError): passed = False
+    else: passed = True
+    diagnostics.append(dict(path=path, kind='scalar', passed=passed,
+                            original=json_safe(left), optimized=json_safe(right)))
+
+
+def record_comparison(report, label, repetition, diagnostics, output):
+    work = report['workloads'][label]
+    work.setdefault('comparison_diagnostics', []).append(dict(repetition=repetition, fields=diagnostics))
+    failed = [item['path'] for item in diagnostics if not item['passed']]
+    if failed:
+        work['status'] = 'numerical_failed'
+        work['error'] = f'{label}: numerical comparison failed: {", ".join(failed)}'
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(json.dumps(report, indent=2, allow_nan=False)+'\n')
+        raise AssertionError(work['error'])
+
+
 @contextlib.contextmanager
 def instrument(branch):
     scalar = importlib.import_module('deepwave.scalar.scalar')
@@ -435,6 +542,19 @@ def main():
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(json.dumps(report, indent=2, allow_nan=False)+'\n')
             raise
+        work = dict(status='running', synthetic=True,
+                    geometry=dict(model=list(data.grid.shape), nt=data.sampling.nt,
+                                  shots=data.traces.shape[0], receivers=data.traces.shape[1],
+                                  spacing_m=data.grid.spacing, dt_s=data.sampling.dt),
+                    config=config.to_dict(), steps_per_window=steps, repetitions=args.repeats,
+                    warmup_original=calibration['warmup_original'], calibration=calibration,
+                    warmup_optimized=[epoch for attempt in calibration['precheck_attempts']
+                                      for branch in attempt['branches'] if branch['kind'] == 'optimized'
+                                      for epoch in branch['epochs']],
+                    windows=windows, numerical_comparisons=comparisons,
+                    comparison_diagnostics=[], untimed_counts=count_reports,
+                    limitation='synthetic training-loop evidence; not convergence or full Marmousi performance')
+        report['workloads'][label] = work
         for repetition in range(args.repeats):
             finals = {}
             for kind in (('original', 'optimized') if repetition % 2 == 0 else ('optimized', 'original')):
@@ -462,24 +582,46 @@ def main():
                 branch = None; release()
             left, right = finals['original'], finals['optimized']
             fields = ('physical', 'physical_changes', 'critic', 'physical_optimizer', 'critic_optimizer', 'gradients', 'physical_scheduler', 'critic_scheduler', 'physical_scaler', 'critic_scaler')
-            for field in fields: require_close(left[field], right[field], args.rtol if device.type == 'cuda' else 0., args.atol if device.type == 'cuda' else 0.)
-            for l_epoch, r_epoch in zip(left['losses'], right['losses']):
-                for l_metrics, r_metrics in zip(l_epoch, r_epoch):
-                    # Scalar Python averaging in the original and float32
-                    # on-device mean in production round the critic metric
-                    # differently. The CPU generator and all updates stay exact.
-                    require_close(l_metrics['generator_loss'], r_metrics['generator_loss'], args.rtol if device.type == 'cuda' else 0., args.atol if device.type == 'cuda' else 0.)
-                    require_close(l_metrics['critic_loss'], r_metrics['critic_loss'], args.rtol if device.type == 'cuda' else 2e-7, args.atol if device.type == 'cuda' else 2e-6)
+            diagnostics = []
+            tolerance = (args.rtol, args.atol) if device.type == 'cuda' else (0., 0.)
+            velocity_state = (common['physical']['velocity'], left['physical']['velocity'], right['physical']['velocity'])
+            for field in fields:
+                compare_value(field, left[field], right[field], *tolerance, diagnostics,
+                              device.type, velocity_state=velocity_state)
+            if len(left['losses']) != len(right['losses']):
+                diagnostics.append(dict(path='losses', kind='sequence', passed=False,
+                                        reason='epoch counts differ'))
+            for epoch_index, (l_epoch, r_epoch) in enumerate(zip(left['losses'], right['losses'])):
+                if len(l_epoch) != len(r_epoch):
+                    diagnostics.append(dict(path=f'losses[{epoch_index}]', kind='sequence', passed=False,
+                                            reason='group counts differ'))
+                for group_index, (l_metrics, r_metrics) in enumerate(zip(l_epoch, r_epoch)):
+                    for name in ('generator_loss', 'critic_loss'):
+                        path = f'losses[{epoch_index}][{group_index}].{name}'
+                        if name not in l_metrics or name not in r_metrics:
+                            diagnostics.append(dict(path=path, kind='mapping', passed=False,
+                                                    reason='metric missing'))
+                        else:
+                            metric_tolerance = ((2e-7, 2e-6) if device.type == 'cpu' and name == 'critic_loss'
+                                                else tolerance)
+                            compare_value(path, l_metrics[name], r_metrics[name], *metric_tolerance,
+                                          diagnostics, device.type)
             cpu_rng_equal = torch.equal(left['rng']['torch'], right['rng']['torch'])
             cuda_rng_equal = all(torch.equal(l, r) for l, r in zip(left['rng']['cuda'], right['rng']['cuda']))
             python_rng_equal = left['rng']['python'] == right['rng']['python']
             numpy_rng_equal = all(np.array_equal(l, r) for l, r in zip(left['rng']['numpy'], right['rng']['numpy']))
-            if not all((cpu_rng_equal, cuda_rng_equal, python_rng_equal, numpy_rng_equal)): raise AssertionError('branch RNG streams diverged')
-            comparison = {field: errors(left[field], right[field]) for field in fields}
-            comparison.update(losses=errors(left['losses'], right['losses']), torch_rng_equal=cpu_rng_equal, cuda_rng_equal=cuda_rng_equal,
+            for stream, equal in (('torch', cpu_rng_equal), ('cuda', cuda_rng_equal),
+                                  ('python', python_rng_equal), ('numpy', numpy_rng_equal)):
+                diagnostics.append(dict(path=f'rng.{stream}', kind='rng', passed=equal))
+            def raw_errors(l_value, r_value):
+                try: return json_safe(errors(l_value, r_value))
+                except (AssertionError, RuntimeError, ValueError) as error: return dict(unavailable=str(error))
+            comparison = {field: raw_errors(left[field], right[field]) for field in fields}
+            comparison.update(losses=raw_errors(left['losses'], right['losses']), torch_rng_equal=cpu_rng_equal, cuda_rng_equal=cuda_rng_equal,
                               python_rng_equal=python_rng_equal, numpy_rng_equal=numpy_rng_equal,
-                              physical_change_l2={kind: finals[kind]['physical_change_l2'] for kind in finals})
+                              physical_change_l2=json_safe({kind: finals[kind]['physical_change_l2'] for kind in finals}))
             comparisons.append(comparison)
+            record_comparison(report, label, repetition, diagnostics, args.output)
         # Real native forward/adjoint hooks are applied only in an untimed epoch.
         for kind in ('original', 'optimized'):
             branch = make(kind, common); before = counters(branch)
@@ -489,15 +631,8 @@ def main():
             if any(counts[k] != v for k, v in expected.items()): raise AssertionError((counts, expected))
             count_reports[kind] = counts; branch = None; release()
         medians = {kind: statistics.median(w['seconds_per_batch'] for w in samples) for kind, samples in windows.items()}
-        report['workloads'][label] = dict(synthetic=True, geometry=dict(model=list(data.grid.shape), nt=data.sampling.nt, shots=data.traces.shape[0], receivers=data.traces.shape[1], spacing_m=data.grid.spacing, dt_s=data.sampling.dt),
-            config=config.to_dict(), steps_per_window=steps, repetitions=args.repeats,
-            warmup_original=calibration['warmup_original'], calibration=calibration,
-            warmup_optimized=[epoch for attempt in calibration['precheck_attempts']
-                              for branch in attempt['branches'] if branch['kind'] == 'optimized'
-                              for epoch in branch['epochs']],
-            windows=windows, median_seconds_per_batch=medians,
-            original_over_optimized_time_ratio=medians['original']/medians['optimized'], numerical_comparisons=comparisons, untimed_counts=count_reports,
-            limitation='synthetic training-loop evidence; not convergence or full Marmousi performance')
+        work.update(status='passed', median_seconds_per_batch=medians,
+                    original_over_optimized_time_ratio=medians['original']/medians['optimized'])
         args.output.parent.mkdir(parents=True, exist_ok=True)
         args.output.write_text(json.dumps(report, indent=2, allow_nan=False)+'\n')
         print(json.dumps(dict(workload=label, median_seconds_per_batch=medians, numerical_comparison='passed', counts=count_reports)), flush=True)
