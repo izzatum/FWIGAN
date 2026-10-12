@@ -29,6 +29,129 @@ def _portable(value):
     return copy.deepcopy(value)
 
 
+def _number(value, name, minimum=0., strict=False, maximum=None):
+    if (isinstance(value, bool) or not isinstance(value, (int, float))
+            or not math.isfinite(value) or (value <= minimum if strict else value < minimum)
+            or (maximum is not None and value > maximum)):
+        raise ValueError(f'invalid restored {name}')
+
+
+def _integer(value, name, minimum=0):
+    if type(value) is not int or value < minimum:
+        raise ValueError(f'invalid restored {name}')
+
+
+def _validate_scaler(state):
+    if not isinstance(state, dict): raise ValueError('invalid restored scaler state')
+    if not state: return
+    keys = {'scale', 'growth_factor', 'backoff_factor', 'growth_interval', '_growth_tracker'}
+    if set(state) != keys: raise ValueError('invalid restored scaler fields')
+    _number(state['scale'], 'scaler scale', strict=True, maximum=torch.finfo(torch.float32).max)
+    if torch.tensor(state['scale'], dtype=torch.float32).item() == 0:
+        raise ValueError('restored scaler scale underflows float32')
+    _number(state['growth_factor'], 'scaler growth factor', minimum=1., strict=True)
+    _number(state['backoff_factor'], 'scaler backoff factor', strict=True)
+    if state['backoff_factor'] >= 1.: raise ValueError('invalid restored scaler backoff factor')
+    _integer(state['growth_interval'], 'scaler growth interval', minimum=1)
+    _integer(state['_growth_tracker'], 'scaler growth tracker')
+    if state['_growth_tracker'] >= state['growth_interval']:
+        raise ValueError('invalid restored scaler growth tracker')
+
+
+class _PortableGradScaler(torch.cuda.amp.GradScaler):
+    """Keep enabled scaler history while runtime AMP is disabled on CPU."""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._saved_history = {}
+        self._fresh_history = super().state_dict()
+
+    def state_dict(self):
+        if self.is_enabled(): return super().state_dict()
+        return copy.deepcopy(self._saved_history)
+
+    def load_state_dict(self, state):
+        _validate_scaler(state)
+        self._saved_history = copy.deepcopy(state)
+        if self.is_enabled():
+            # Empty CPU history begins fresh calibration on a CUDA runtime.
+            super().load_state_dict(state if state else self._fresh_history)
+
+
+def _validate_adam(state, optimizer):
+    if not isinstance(state, dict) or set(state) != {'state', 'param_groups'}:
+        raise ValueError('invalid restored Adam state')
+    groups, slots = state['param_groups'], state['state']
+    if not isinstance(groups, list) or not isinstance(slots, dict) or len(groups) != len(optimizer.param_groups):
+        raise ValueError('incompatible restored Adam groups')
+    parameters = {}
+    for saved, live in zip(groups, optimizer.param_groups):
+        if not isinstance(saved, dict) or set(saved) != set(live) or saved['name'] != live['name']:
+            raise ValueError('incompatible named optimizer groups')
+        ids = saved['params']
+        if not isinstance(ids, list) or len(ids) != len(live['params']):
+            raise ValueError('incompatible restored Adam parameters')
+        for key, parameter in zip(ids, live['params']):
+            _integer(key, 'Adam parameter identifier')
+            if key in parameters: raise ValueError('duplicate restored Adam parameter identifier')
+            parameters[key] = parameter
+        for name in ('lr', 'initial_lr'):
+            _number(saved[name], f'Adam {name}', strict=True)
+        _number(saved['eps'], 'Adam epsilon', strict=True)
+        _number(saved['weight_decay'], 'Adam weight decay')
+        betas = saved['betas']
+        if not isinstance(betas, (tuple, list)) or len(betas) != 2:
+            raise ValueError('invalid restored Adam betas')
+        for beta in betas:
+            _number(beta, 'Adam beta')
+            if beta >= 1.: raise ValueError('invalid restored Adam beta')
+        # These runtime options are not configurable by this toolkit.
+        for name in ('amsgrad', 'maximize', 'foreach', 'capturable', 'differentiable', 'fused'):
+            if type(saved[name]) is not type(live[name]) or saved[name] != live[name]:
+                raise ValueError(f'incompatible restored Adam option {name}')
+    if any(type(key) is not int or key not in parameters for key in slots):
+        raise ValueError('invalid restored Adam state identifier')
+    for key, slot in slots.items():
+        if not isinstance(slot, dict) or set(slot) != {'step', 'exp_avg', 'exp_avg_sq'}:
+            raise ValueError('invalid restored Adam tensor fields')
+        step = slot['step']
+        if (not torch.is_tensor(step) or step.shape != torch.Size([]) or step.dtype != torch.float32
+                or not torch.isfinite(step).item() or step.item() < 0 or step.item() != int(step.item())):
+            raise ValueError('invalid restored Adam step')
+        for name in ('exp_avg', 'exp_avg_sq'):
+            value, parameter = slot[name], parameters[key]
+            if (not torch.is_tensor(value) or value.shape != parameter.shape or value.dtype != parameter.dtype
+                    or not torch.isfinite(value).all().item()):
+                raise ValueError(f'invalid restored Adam {name}')
+            if name == 'exp_avg_sq' and (value < 0).any().item():
+                raise ValueError('negative restored Adam second moment')
+
+
+def _validate_scheduler(state, scheduler):
+    if not isinstance(state, dict) or set(state) != set(scheduler.state_dict()):
+        raise ValueError('invalid restored scheduler fields')
+    _integer(state['step_size'], 'scheduler period', minimum=1)
+    _number(state['gamma'], 'scheduler gamma', strict=True, maximum=1.)
+    _integer(state['last_epoch'], 'scheduler epoch')
+    _integer(state['_step_count'], 'scheduler step count', minimum=1)
+    for name in ('verbose', '_get_lr_called_within_step'):
+        if type(state[name]) is not bool: raise ValueError(f'invalid restored scheduler {name}')
+    for name in ('base_lrs', '_last_lr'):
+        values = state[name]
+        if not isinstance(values, list) or len(values) != len(scheduler.optimizer.param_groups):
+            raise ValueError('invalid restored scheduler learning rates')
+        for value in values: _number(value, 'scheduler learning rate', strict=True)
+
+
+def _validate_critic(state, critic):
+    expected = critic.state_dict()
+    if not isinstance(state, dict) or set(state) != set(expected):
+        raise ValueError('invalid restored critic fields')
+    for key, value in state.items():
+        if (not torch.is_tensor(value) or value.shape != expected[key].shape or value.dtype != expected[key].dtype
+                or not torch.isfinite(value).all().item()):
+            raise ValueError('invalid restored critic tensor')
+
+
 class _PhysicalStrategy:
     def __init__(self, parameters, forward, data, config):
         data.validate()
@@ -40,7 +163,7 @@ class _PhysicalStrategy:
         self.physical_optimizer = _CountedAdam(parameters.optimizer_groups(config))
         self.physical_scheduler = torch.optim.lr_scheduler.StepLR(self.physical_optimizer,
             config.physical_scheduler_step_size, gamma=config.scheduler_gamma)
-        self.physical_scaler = torch.cuda.amp.GradScaler(enabled=config.amp and self.device.type == 'cuda')
+        self.physical_scaler = _PortableGradScaler(enabled=config.amp and self.device.type == 'cuda')
         self.counters = dict(physical_updates=0, physical_skipped=0)
 
     def _predict(self, indices):
@@ -57,6 +180,21 @@ class _PhysicalStrategy:
         self.counters[f'{name}_updates'] += actual
         self.counters[f'{name}_skipped'] += 1 - actual
         return actual
+
+    def _check_objective(self, loss, optimizer):
+        if not torch.isfinite(loss.detach()).all().item():
+            optimizer.zero_grad(set_to_none=True)
+            raise ValueError('nonfinite adversarial objective')
+
+    def _check_unscaled_gradients(self, optimizer):
+        if self.amp_enabled:
+            # GradScaler already records overflow during unscale_ and handles skips.
+            return
+        finite = [torch.isfinite(p.grad).all() for group in optimizer.param_groups
+                  for p in group['params'] if p.grad is not None]
+        if finite and not torch.stack(finite).all().item():
+            optimizer.zero_grad(set_to_none=True)
+            raise ValueError('nonfinite adversarial unscaled gradients')
 
     def finish_epoch(self):
         if self.counters['physical_updates']: self.physical_scheduler.step()
@@ -75,15 +213,20 @@ class _PhysicalStrategy:
     def _validate_state(self, state):
         if not isinstance(state, dict) or state.get('schema') != 1 or state.get('signature') != self._signature():
             raise ValueError('incompatible strategy state schema or configuration')
-        for name in ('physical', 'critic'):
-            optimizer = getattr(self, f'{name}_optimizer', None)
-            if optimizer is None: continue
-            try:
-                groups = state[f'{name}_optimizer']['param_groups']
-                if [g['name'] for g in groups] != [g['name'] for g in optimizer.param_groups]:
-                    raise ValueError('incompatible named optimizer groups')
-            except (KeyError, TypeError) as error:
-                raise ValueError('invalid strategy optimizer state') from error
+        try:
+            for name in ('physical', 'critic'):
+                optimizer = getattr(self, f'{name}_optimizer', None)
+                if optimizer is None: continue
+                _validate_adam(state[f'{name}_optimizer'], optimizer)
+                _validate_scheduler(state[f'{name}_scheduler'], getattr(self, f'{name}_scheduler'))
+                _validate_scaler(state[f'{name}_scaler'])
+            if hasattr(self, 'critic'):
+                _validate_critic(state['critic'], self.critic)
+                finite_tensor(state['observed'], 'state observed', 3)
+                if state['observed'].shape != self.observed.shape:
+                    raise ValueError('incompatible observed state shape')
+        except (KeyError, TypeError, RuntimeError, IndexError) as error:
+            raise ValueError('invalid strategy numerical state') from error
         counters=state.get('counters', {})
         if set(counters) != set(self.counters) or any(type(v) is not int or v<0 for v in counters.values()):
             raise ValueError('invalid strategy update counters')
@@ -138,7 +281,7 @@ class FWIGANStrategy(_PhysicalStrategy):
                                              'lr':config.critic_lr, 'betas':config.adam_betas}])
         self.critic_scheduler = torch.optim.lr_scheduler.StepLR(self.critic_optimizer,
             config.critic_scheduler_step_size, gamma=config.scheduler_gamma)
-        self.critic_scaler = torch.cuda.amp.GradScaler(enabled=config.amp and self.device.type == 'cuda')
+        self.critic_scaler = _PortableGradScaler(enabled=config.amp and self.device.type == 'cuda')
         self.counters.update(critic_updates=0, critic_skipped=0)
         self.amp_enabled = config.amp and self.device.type == 'cuda'
 
@@ -174,16 +317,20 @@ class FWIGANStrategy(_PhysicalStrategy):
                 penalty = gradient_penalty(self.critic, observed, predicted)
                 loss = (fake.sum()-real.sum() + self.config.gradient_penalty_weight*penalty
                         + self.config.critic_drift*real.square().mean())
+            self._check_objective(loss, self.critic_optimizer)
             losses.append(loss.detach())
             self.critic_scaler.scale(loss).backward()
             self.critic_scaler.unscale_(self.critic_optimizer)
+            self._check_unscaled_gradients(self.critic_optimizer)
             nn.utils.clip_grad_value_(self.critic.parameters(), self.config.critic_clip)
             self._update(self.critic_optimizer, self.critic_scaler, 'critic')
         self.critic_optimizer.zero_grad(set_to_none=True)
         with _frozen(self.critic):
             with torch.cuda.amp.autocast(enabled=self.amp_enabled): generator_loss = -self.critic(predicted).sum()
+            self._check_objective(generator_loss, self.physical_optimizer)
             self.physical_scaler.scale(generator_loss).backward()
         self.physical_scaler.unscale_(self.physical_optimizer)
+        self._check_unscaled_gradients(self.physical_optimizer)
         nn.utils.clip_grad_value_([self.parameters.velocity], self.config.velocity_clip)
         self._update(self.physical_optimizer, self.physical_scaler, 'physical')
         values = torch.stack([generator_loss.detach(), torch.stack(losses).mean(), self.parameters.sigma.detach().reshape(())]).cpu().tolist()

@@ -1,7 +1,7 @@
 """Raw-amplitude FWI: one projected Adam update over the full shot dataset."""
 import math
 import torch
-from .adversarial import _PhysicalStrategy
+from .adversarial import _PhysicalStrategy, _PortableGradScaler
 
 
 class FWIStrategy(_PhysicalStrategy):
@@ -13,7 +13,7 @@ class FWIStrategy(_PhysicalStrategy):
         if not torch.equal(parameters.source, self.data.source):
             raise ValueError('fwi requires the fixed known observation source')
         # No autocast or scaling is needed for the float32 least-squares objective.
-        self.physical_scaler = torch.cuda.amp.GradScaler(enabled=False)
+        self.physical_scaler = _PortableGradScaler(enabled=False)
 
     def step_epoch(self):
         self.physical_optimizer.zero_grad(set_to_none=True)

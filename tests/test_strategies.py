@@ -382,3 +382,176 @@ def test_controlled_initial_velocity_prior_improves_datafit_and_model_error():
     for _ in range(6): strategy.step_epoch()
     assert data_loss(strategy.parameters.velocity).item()<initial_loss*.9
     assert model_error(strategy.parameters.velocity).item()<initial_error
+
+
+def assert_state_equal(actual, expected):
+    if torch.is_tensor(actual):
+        torch.testing.assert_close(actual,expected,rtol=0,atol=0)
+    elif isinstance(actual,dict):
+        assert actual.keys()==expected.keys()
+        for key in actual: assert_state_equal(actual[key],expected[key])
+    elif isinstance(actual,(list,tuple)):
+        assert len(actual)==len(expected)
+        for a,b in zip(actual,expected): assert_state_equal(a,b)
+    else: assert actual==expected
+
+
+def test_adversarial_finite_huge_target_rejection_does_not_mutate_optimizers():
+    f=inversion();data=make_tiny_data(nt=64);config=ExperimentConfig(batches=1,critic_cycles=1)
+    strategy=f.FWIGANStrategy(parameters(data,config),LegacyDeepwave(),data,config,
+                             observed=torch.full_like(data.traces,1e30))
+    before=copy.deepcopy(strategy.state_dict());physical=copy.deepcopy(strategy.parameters.state_dict())
+    with pytest.raises(ValueError,match='nonfinite'): strategy.step([0,1])
+    assert_state_equal(strategy.parameters.state_dict(),physical)
+    assert_state_equal(strategy.state_dict(),before)
+
+
+@pytest.mark.parametrize('optimizer', ['critic','physical'])
+def test_adversarial_rejects_unscaled_nonfinite_gradient_before_clipping(optimizer):
+    f=inversion();data=make_tiny_data(nt=64);config=ExperimentConfig(batches=1,critic_cycles=1)
+    strategy=f.FWIGANStrategy(parameters(data,config),LegacyDeepwave(),data,config)
+    opt=getattr(strategy,f'{optimizer}_optimizer')
+    before=copy.deepcopy(opt.state_dict())
+    tensors=[p for g in opt.param_groups for p in g['params']]
+    values=[p.detach().clone() for p in tensors]
+    hook=tensors[0].register_hook(lambda gradient:torch.full_like(gradient,float('inf')))
+    try:
+        with pytest.raises(ValueError,match='nonfinite'): strategy.step([0,1])
+    finally: hook.remove()
+    assert_state_equal(opt.state_dict(),before)
+    for p,v in zip(tensors,values): torch.testing.assert_close(p,v,rtol=0,atol=0)
+    assert strategy.counters[f'{optimizer}_updates']==0
+    assert all(p.grad is None for p in tensors)
+
+
+def test_portable_scalers_initialize_cpu_empty_history_and_preserve_cuda_history(monkeypatch):
+    # GradScaler initialization/state APIs allocate no CUDA tensors until scale().
+    monkeypatch.setattr(torch.cuda.amp.grad_scaler,'amp_definitely_not_available',lambda:False)
+    f=inversion();data=make_tiny_data(nt=64);config=ExperimentConfig(batches=1,critic_cycles=1,amp=True)
+    cpu=f.FWIGANStrategy(parameters(data,config),LegacyDeepwave(),data,config)
+    state=cpu.state_dict()
+    assert state['physical_scaler']==state['critic_scaler']=={}
+    cuda_runtime=f.FWIGANStrategy(parameters(data,config),LegacyDeepwave(),data,config)
+    for name in ('physical_scaler','critic_scaler'):
+        setattr(cuda_runtime,name,type(getattr(cuda_runtime,name))(enabled=True))
+        assert isinstance(getattr(cuda_runtime,name),torch.cuda.amp.GradScaler)
+    cuda_runtime.load_state_dict(state)
+    history=dict(scale=512.,growth_factor=2.,backoff_factor=.5,growth_interval=100,_growth_tracker=7)
+    for name in ('physical_scaler','critic_scaler'):
+        assert getattr(cuda_runtime,name).state_dict()['scale']==2.**16
+        getattr(cuda_runtime,name).load_state_dict(history)
+    cpu.load_state_dict(cuda_runtime.state_dict())
+    for name in ('physical_scaler','critic_scaler'):
+        assert not getattr(cpu,name).is_enabled()
+        assert cpu.state_dict()[name]==history
+    fresh_cuda=f.FWIGANStrategy(parameters(data,config),LegacyDeepwave(),data,config)
+    for name in ('physical_scaler','critic_scaler'):
+        setattr(fresh_cuda,name,type(getattr(fresh_cuda,name))(enabled=True))
+    fresh_cuda.load_state_dict(cpu.state_dict())
+    for name in ('physical_scaler','critic_scaler'): assert getattr(fresh_cuda,name).state_dict()==history
+
+
+@pytest.mark.parametrize('owner,field,value', [
+    ('physical_optimizer','lr',float('nan')),('critic_optimizer','lr',float('inf')),
+    ('physical_optimizer','lr',-1.),('physical_optimizer','betas',(1.,.9)),
+    ('physical_optimizer','eps',float('nan')),('physical_optimizer','weight_decay',-1.),
+    ('physical_optimizer','initial_lr',float('inf')),
+    ('physical_optimizer','exp_avg','nonfinite'),('critic_optimizer','exp_avg','nonfinite'),
+    ('physical_optimizer','exp_avg','shape'),('physical_optimizer','exp_avg','dtype'),
+    ('physical_optimizer','exp_avg_sq','negative'),('physical_optimizer','step','negative'),
+    ('physical_optimizer','step','nonfinite'),('physical_optimizer','step','shape'),
+    ('physical_scheduler','gamma',float('nan')),('critic_scheduler','step_size',0),
+    ('physical_scheduler','base_lrs',[float('nan'),.001]),
+    ('critic_scheduler','_last_lr',[-1.]),('physical_scheduler','last_epoch',float('nan')),
+    ('critic','parameter','nonfinite'),('critic','parameter','shape'),('critic','parameter','dtype'),
+    ('physical_scaler','scale',float('nan')),('critic_scaler','scale',-1.),
+    ('physical_scaler','growth_factor',1.),('critic_scaler','backoff_factor',1.),
+    ('physical_scaler','growth_interval',0),('critic_scaler','_growth_tracker',-1),
+])
+def test_corrupt_owned_state_rejects_before_any_live_mutation(owner,field,value):
+    f=inversion();data=make_tiny_data(nt=64);config=ExperimentConfig(batches=1,critic_cycles=1)
+    source=f.FWIGANStrategy(parameters(data,config),LegacyDeepwave(),data,config);source.step([0,1])
+    target=f.FWIGANStrategy(parameters(data,config),LegacyDeepwave(),data,config)
+    before=target.state_dict();bad=source.state_dict()
+    if owner.endswith('optimizer'):
+        if field in ('exp_avg','exp_avg_sq','step'):
+            slot=next(iter(bad[owner]['state'].values()))
+            if value=='nonfinite': slot[field].fill_(float('nan'))
+            elif value=='negative': slot[field].fill_(-1.)
+            elif value=='shape': slot[field]=torch.ones(2)
+            elif value=='dtype': slot[field]=slot[field].double()
+        else: bad[owner]['param_groups'][0][field]=value
+    elif owner=='critic':
+        key=next(iter(bad[owner]))
+        if value=='nonfinite':bad[owner][key].fill_(float('nan'))
+        elif value=='shape':bad[owner][key]=torch.ones(2)
+        elif value=='dtype':bad[owner][key]=bad[owner][key].double()
+    elif owner.endswith('scaler'):
+        bad[owner]=dict(scale=512.,growth_factor=2.,backoff_factor=.5,growth_interval=100,_growth_tracker=7)
+        bad[owner][field]=value
+    else:bad[owner][field]=value
+    with pytest.raises(ValueError):target.load_state_dict(bad)
+    assert_state_equal(target.state_dict(),before)
+
+
+def test_nonfinite_generator_objective_keeps_prior_valid_critic_update():
+    f=inversion();data=make_tiny_data(nt=64);config=ExperimentConfig(batches=1,critic_cycles=1)
+    strategy=f.FWIGANStrategy(parameters(data,config),LegacyDeepwave(),data,config)
+    physical=copy.deepcopy(strategy.parameters.state_dict());calls=[];critic_after_cycle=[]
+    def generator_overflow(module,args,output):
+        calls.append(1)
+        if len(calls)==4:
+            critic_after_cycle.append(copy.deepcopy(module.state_dict()))
+            return output*float('nan')
+    hook=strategy.critic.register_forward_hook(generator_overflow)
+    try:
+        with pytest.raises(ValueError,match='nonfinite'):strategy.step([0,1])
+    finally:hook.remove()
+    assert_state_equal(strategy.parameters.state_dict(),physical)
+    assert not strategy.physical_optimizer.state
+    assert_state_equal(strategy.critic.state_dict(),critic_after_cycle[0])
+    assert strategy.counters['critic_updates']==1 and strategy.counters['physical_updates']==0
+    assert all(p.requires_grad for p in strategy.critic.parameters())
+
+
+def test_finite_objective_amp_overflow_still_skips_and_backs_off():
+    # Control-flow surrogate only: actual CUDA overflow is a later GPU check.
+    f=inversion();data=make_tiny_data(nt=64);config=ExperimentConfig(batches=1,critic_cycles=1)
+    strategy=f.FWIGANStrategy(parameters(data,config),LegacyDeepwave(),data,config)
+    strategy.amp_enabled=True
+    class OverflowScaler:
+        def __init__(self):self.scale_value=2.;self.overflow=False
+        def scale(self,loss):return loss
+        def unscale_(self,opt):
+            self.overflow=any(not torch.isfinite(p.grad).all() for g in opt.param_groups for p in g['params'] if p.grad is not None)
+        def step(self,opt):
+            if not self.overflow:opt.step()
+        def update(self):
+            if self.overflow:self.scale_value*=.5
+    strategy.physical_scaler=OverflowScaler();strategy.critic_scaler=OverflowScaler()
+    before=copy.deepcopy(strategy.parameters.state_dict());critic=copy.deepcopy(strategy.critic.state_dict())
+    hooks=[]
+    for opt in (strategy.physical_optimizer,strategy.critic_optimizer):
+        hooks.append(opt.param_groups[0]['params'][0].register_hook(lambda g:torch.full_like(g,float('inf'))))
+    try:
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore',message='User provided device_type.*CUDA is not available.*')
+            metrics=strategy.step([0,1])
+    finally:
+        for h in hooks:h.remove()
+    assert metrics['physical_updates']==metrics['critic_updates']==0
+    assert metrics['physical_skipped']==metrics['critic_skipped']==1
+    assert strategy.physical_scaler.scale_value==strategy.critic_scaler.scale_value==1.
+    assert_state_equal(strategy.parameters.state_dict(),before)
+    assert_state_equal(strategy.critic.state_dict(),critic)
+
+
+def test_fwi_corrupt_restored_lr_is_rejected_before_own_state_changes():
+    f=inversion();data=make_tiny_data(nt=64,receivers=8);config=ExperimentConfig(method='fwi')
+    source=f.FWIStrategy(parameters(data,config),LegacyDeepwave(),data,config);source.step_epoch()
+    target=f.FWIStrategy(parameters(data,config),LegacyDeepwave(),data,config)
+    before=target.state_dict();physical=copy.deepcopy(target.parameters.state_dict())
+    bad=source.state_dict();bad['physical_optimizer']['param_groups'][0]['lr']=float('nan')
+    with pytest.raises(ValueError):target.load_state_dict(bad)
+    assert_state_equal(target.state_dict(),before)
+    assert_state_equal(target.parameters.state_dict(),physical)
