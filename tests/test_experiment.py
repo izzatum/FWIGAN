@@ -306,7 +306,9 @@ def test_fwi_epoch_failure_does_not_save_partial_accumulation(tmp_path):
     assert restored.position.epoch==1 and restored.position.batch==0
 
 
-def test_cpu_resave_preserves_portable_cuda_rng_history(tmp_path):
+def test_cpu_resave_preserves_absent_cuda_rng_history(tmp_path,monkeypatch):
+    # Opaque CUDA history is retained for devices absent from this runtime.
+    monkeypatch.setattr(torch.cuda,'is_available',lambda:False)
     E=experiment();run=E.create(config(),make_tiny_data(nt=32,shots=4),tmp_path)
     payload=torch.load(run.save_checkpoint(),map_location='cpu')
     history=torch.zeros(816,dtype=torch.uint8);history[800]=27;history[808]=4
