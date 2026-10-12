@@ -21,6 +21,14 @@ python -m pytest -q tests/test_cuda.py
 python examples/benchmark.py --device cuda --suite all --output runs/benchmark-cuda.json
 ```
 
+After the all-suite benchmark successfully writes real CUDA results, render its measured timings, adjoints and absolute/incremental allocated/reserved peaks:
+
+```bash
+python examples/plot_gpu_benchmark.py --input runs/benchmark-cuda.json --output-dir docs/assets
+```
+
+This renderer requires real GPU identity, all three workloads, repeated timing windows and non-null memory measurements. It rejects CPU, tiny-only and incomplete JSON; no GPU figure has been generated here.
+
 The all suite adds a representative **synthetic constant-model** workload on a 100×310 inversion grid, nt2000, five shots, 60 receivers and six critic cycles. It is not a Marmousi convergence run. This workload is GPU-only; it is intentionally excluded from routine CPU training.
 
 For a separately prepared CUDA environment, install the CUDA Torch build before compiling the legacy extension. A CUDA 11.7 toolchain and Torch `1.13.1+cu117` match the legacy stack. On Ada hardware, the legacy build can target Ampere PTX with `TORCH_CUDA_ARCH_LIST="8.6+PTX"`; run the CUDA integration suite afterward to establish package compatibility on the actual device.
