@@ -1,0 +1,23 @@
+{
+  "budget": "10",
+  "prior": "0.53723588335249",
+  "contingency": "0.50",
+  "cleanup_seconds": 600,
+  "entries": {
+    "757d6eff93b5": {
+      "rate_cap": "1.94",
+      "guard_rate": "2.1440",
+      "work_seconds": 14400,
+      "cleanup_seconds": 600,
+      "total_seconds": 15000,
+      "reserved_cost": "8.933333333333333333333333333",
+      "phase": "complete",
+      "cleanup_verified": true,
+      "reserved_at": 1791817876.7544556,
+      "actual_rate": "0.59",
+      "lifetime_seconds": "880.1671464443207",
+      "actual_guarded_cost": "0.1611194859741131503611111111",
+      "finished_at": 1791818756.9224243
+    }
+  }
+}

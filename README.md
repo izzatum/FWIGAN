@@ -226,25 +226,41 @@ CPU timing applies only to this tiny workload. CUDA must be measured separately;
 
 *Actual clean/noisy nt128, two-shot, six-cycle CPU samples: original medians 0.3793/0.3573 seconds per group, package 0.1715/0.1735. Physical/Adam/gradient updates and RNG agree exactly; native adjoints decrease seven to one. This shared-host tiny result does not establish GPU or full Marmousi performance. [Raw JSON and measurement details](docs/performance.md#recorded-tiny-cpu-result).*
 
+### Full Marmousi notebook comparison: 20 epochs
+
+The original and package clean/noisy notebooks each completed **20 epochs on an A40**, using the full Marmousi acquisition and identical seed-42 starting data, physical parameters, critic and RNG states. Both package notebooks resumed after epoch 2 and continued to epoch 20. A conventional FWI companion also completed 20 epochs. [Report, executed notebooks and raw metrics](docs/validation/marmousi-20epoch.md).
+
+| Recorded training time | Original | Package |
+| --- | ---: | ---: |
+| Clean | 91.49 s | 49.12 s |
+| Noisy | 83.31 s | 49.08 s |
+
+These are single paired training observations, excluding evaluation and checkpoints. Total package notebook execution took longer because the comparison exercised resume and saved a checkpoint after every epoch. This run does not pass the separate equivalent-work numerical benchmark. Final old/new velocity differences were **75.54 m/s RMS clean and 24.48 m/s RMS noisy**; their cause remains unproven despite matched starting states. All four GAN runs improved normalized data fit but slightly worsened velocity RMSE over this short horizon. Conventional FWI reduced raw-data MSE by **12.6%**. The 401-epoch study remains unrun.
+
+![Actual full-grid Marmousi initial, reference and recovered velocity maps after 20 epochs](docs/assets/marmousi-20epoch-velocity-models.png)
+
+*Common velocity scale, actual 30 m inversion cells. [Difference maps, independent metric histories, source/noise and resource figures](docs/validation/marmousi-20epoch.md) show the limitations as well as the results. The owned Pod was deleted and absence verified; estimated compute cost was $0.14, within the requested $10 cap.*
+
 ## Verify and extend
 
 Run `python -m pytest -q` for contracts, strategy behavior, gradient checks, and lifecycle tests. The bounded DeepWave FWI example above is an additional numerical smoke check.
 
 | Recorded check | Result |
 | --- | --- |
-| Hosted CPU suite at `3b0b5d2` | Push and PR checks each passed 215 tests; four optional CUDA tests skipped on CPU. The later test-only `81010f6` passed 20 focused CPU benchmark tests; the added seed regression was outside the recorded GPU run. |
+| Hosted CPU suite at `2b179f9` | Push and PR checks each passed 216 tests, including the seed regression; four optional CUDA tests skipped on CPU |
 | CLI and notebooks | Simulation, both methods, interruption/resume and evaluation exercised; both notebooks executed |
 | RTX 4090 GPU suite at `3b0b5d2` | 219 passed, zero failed or skipped, including all four CUDA-specific checks |
 | Untimed GPU repeatability diagnostic | Across default and cuDNN-TF32-off profiles, all 12 paired original/package epoch comparisons passed tolerance; all 16 same-implementation replay comparisons failed stricter bit-exact checks |
 | Equivalent-work GPU benchmark | Tiny-clean failed numerical parity after two epochs across physical, critic, optimizer and gradient state; no CUDA timing or memory result is accepted |
+| Full-grid Marmousi workflow at `2b179f9` | Four A40 CUDA checks passed; old/new clean/noisy GAN and package FWI each completed 20 epochs, with package checkpoint/resume exercised |
 
-Exact commits, tolerances, replay findings, failed benchmark paths, and verified deletion of the test Pods are in [the validation record](docs/validation/validation.md). The diagnostic is instrumented and untimed; its passing paired comparisons do not overturn the earlier material benchmark failure. Fixed seed and restored RNG do not ensure bit-exact native GPU training. No accepted CUDA speedup, full Marmousi recovery, or superiority of the adversarial objective is established. No GPU benchmark figure is included until a complete numerically accepted all-workload run exists.
+Exact commits, tolerances, replay findings, failed benchmark paths, and verified deletion of the test Pods are in [the validation record](docs/validation/validation.md). The diagnostic is instrumented and untimed; its passing paired comparisons do not overturn the earlier material benchmark failure. Fixed seed and restored RNG do not ensure bit-exact native GPU training. The bounded Marmousi figures and training times above are workflow observations; they establish neither an accepted equivalent-work CUDA speedup nor full Marmousi recovery or superiority of the adversarial objective.
 
 The next scientific steps are low-to-high frequency continuation, constrained source/noise studies, a separately validated per-shot critic, and a separately calibrated modern DeepWave backend. Keep method, data, acquisition, and independent evaluation fixed when comparing new methods.
 
 ## Attribution and license
 
-This repository originated as Muhammad Izzatullah's FWIGAN PyTorch/DeepWave implementation, motivated by [*Revisit Geophysical Imaging in A New View of Physics-informed Generative Adversarial Learning*](https://arxiv.org/abs/2109.11452) and [*CryoGAN: A New Reconstruction Paradigm for Single-Particle Cryo-EM Via Deep Adversarial Learning*](https://ieeexplore.ieee.org/document/9483649). The original notebooks and illustrations are preserved in the repository. See [LICENSE](LICENSE) for the 2021 Muhammad Izzatullah MIT license. The new documentation figures are generated from a real, bounded DeepWave example by `examples/illustrate.py` and carry the same project license.
+This repository originated as Muhammad Izzatullah's FWIGAN PyTorch/DeepWave implementation, motivated by [*Revisit Geophysical Imaging in A New View of Physics-informed Generative Adversarial Learning*](https://arxiv.org/abs/2109.11452) and [*CryoGAN: A New Reconstruction Paradigm for Single-Particle Cryo-EM Via Deep Adversarial Learning*](https://ieeexplore.ieee.org/document/9483649). The original notebooks and illustrations are preserved in the repository. See [LICENSE](LICENSE) for the 2021 Muhammad Izzatullah MIT license. The new documentation figures are generated from real, bounded DeepWave runs and carry the same project license. Tiny figures use `examples/illustrate.py`; the Marmousi report includes its saved renderer and input hashes.
 
 ### Original project illustrations
 

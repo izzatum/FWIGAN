@@ -1,0 +1,76 @@
+{
+  "schema": 1,
+  "scope": "Full-grid 20-epoch Marmousi GPU",
+  "full_marmousi_comparison": true,
+  "input_bundle": "/workspace/fwigan-validation/whole-workflow-gpu-20261012T1513.artifacts",
+  "result_sha256": "650dafe4277b30b8eceafe2816d1a8b45b59d3c200933f87887a88e2ca29c51e",
+  "artifact_manifest_sha256": "ee748b75c4ef0bb5a445d5a82d7cff71ef3364aa51bef723f4954afe1d90f7eb",
+  "manifest_verified_inputs": [
+    "shared_observations.pt",
+    "result.json",
+    "FWIGAN-old-metrics.json",
+    "FWIGAN-new-metrics.json",
+    "FWIGAN_Noisy-old-metrics.json",
+    "FWIGAN_Noisy-new-metrics.json",
+    "FWIGAN-old-final.pt",
+    "FWIGAN-new-runs/fwigan-f359457b854e48d68fa9493bf83e046c/final.pt",
+    "FWIGAN_Noisy-old-final.pt",
+    "FWIGAN_Noisy-new-runs/fwigan-7f61edb297ee469dba9a3e975eb0a0ae/final.pt",
+    "FWI-new-metrics.json",
+    "FWI-new-runs/fwi-7c39b7de451140958b9a4ae941c5c188/final.pt"
+  ],
+  "shared_observations_sha256": "20b9d72e97b0ab2e08b02d10534f6665aa9b407bdb011039e9d9c0715ba65db1",
+  "case_metrics_sha256": {
+    "FWIGAN-old": "0cee304a16686648f96c11a9cb33c32a7b3464e7b4b1b56b59bfe91c3a5d6c4e",
+    "FWIGAN-new": "980ad6ee18ce400d17398839c2d867e8a14a03635abe191f5454f493073076aa",
+    "FWIGAN_Noisy-old": "94a14a1c2d006e069548cb964ba633d92c6918f62a5755ee5646c9a1e4b75f1f",
+    "FWIGAN_Noisy-new": "198417d1d48e7627541f55dcbef3ded2fde9e8b819e7112cb00e229b158be6b3"
+  },
+  "final_tensors_sha256": {
+    "FWIGAN-old": "a898fb1ae9e04e5a1cb1ec113cdf9c9c630424f12202ba6595d6a8ce261c9508",
+    "FWIGAN-new": "9f172b23243bdd563e76b01c4c3a6f2de25df21d2372fed6a687ac40295113ee",
+    "FWIGAN_Noisy-old": "fbd9db52b9aa010b58f8afa321a27ad9f7d61cab93d9e1cb67c94964a404081a",
+    "FWIGAN_Noisy-new": "fdcc3dfbd59627fe17fc046dc86e3d469a9213b7cf186a2ed15b21c52a2c32df"
+  },
+  "figures": [
+    "velocity-models",
+    "velocity-differences",
+    "metric-histories",
+    "source-and-sigma",
+    "work-and-resources"
+  ],
+  "fwi_companion_metrics_sha256": "add1a332f6d572bd57f7e7c46e908bf7207d9fe16f9cc9d68342d9ee19243bfb",
+  "limitations": [
+    "No full 401-epoch convergence or method-superiority claim"
+  ],
+  "publication_svg_formatting": {
+    "operation": "Strip trailing line whitespace; XML element tags, attributes normalized for whitespace, and text checked unchanged. PNG files are exact renderer output.",
+    "files": [
+      {
+        "file": "marmousi-20epoch-source-and-sigma.svg",
+        "renderer_output_sha256": "ddceb91d212dc6c09e829732519039407065349f0f5e8625351954c8a7d18eb3",
+        "published_sha256": "5d31cb52cc9e53f48e35955b1bf018a7dc11d53d634cc6240053b7aece4d82e9"
+      },
+      {
+        "file": "marmousi-20epoch-work-and-resources.svg",
+        "renderer_output_sha256": "5ea619082a648ba739b025a9523f80ef7446c7746955031bb90d08452cc924e2",
+        "published_sha256": "a5c65f79014cfce3125aebc973136b3f02e90cb9ba38126cb775f01ade06c227"
+      },
+      {
+        "file": "marmousi-20epoch-metric-histories.svg",
+        "renderer_output_sha256": "e2aaf388be73222c7a833cda9fc35723809b6e3856fa30b82a718fbb080fef88",
+        "published_sha256": "7f14d9c31f79b66a27385de4f26edc7aac624a8ed1bcac7054ce32ba8c416510"
+      },
+      {
+        "file": "marmousi-20epoch-velocity-models.svg",
+        "renderer_output_sha256": "c1091a8ed7620c833e49f25b22cf424011a51e1e2e7c0085e029a48c66a709f0",
+        "published_sha256": "8292e292b56911df3faaca8e56e431c4243417ee2911441c8f42fe7aab8b9b88"
+      },
+      {
+        "file": "marmousi-20epoch-velocity-differences.svg",
+        "renderer_output_sha256": "31e7ac08240d8a9b22cb7ad9f763eb8ff813249e55aafaaadb4ac0e37c4748fa",
+        "published_sha256": "986c9efc648359459b476c2a0a5a4d8910b3d9f1b2e3e7192bba78372edb91e8"
+      }
+    ]
+  }
+}
