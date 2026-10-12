@@ -1,0 +1,120 @@
+{
+  "schema": 1,
+  "description": "Interior homogeneous off-source raw grid calibration; not full Marmousi equivalence",
+  "python_version": "3.10.22",
+  "script_sha256": "d680d78a9a651c2512595c09f5f264763df4c7112fe78c6d08ef0986556817cb",
+  "deepwave_python_sha256": "010540eff4587df6baba30ff39ffe99ef22a650533d9d3df2a89fc35162feb02",
+  "deepwave_version": "0.0.9",
+  "torch_version": "1.13.1+cpu",
+  "device": "cpu",
+  "threads": 2,
+  "nt": 256,
+  "dt_s": 0.003,
+  "frequency_hz": 7.0,
+  "peak_time_s": 0.14285714285714285,
+  "velocity_m_per_s": 2100.0,
+  "source_m": [
+    [
+      [
+        300.0,
+        900.0
+      ]
+    ]
+  ],
+  "receivers_m": [
+    [
+      [
+        300.0,
+        1200.0
+      ],
+      [
+        300.0,
+        1350.0
+      ],
+      [
+        300.0,
+        1500.0
+      ]
+    ]
+  ],
+  "physical_domain_sample_extents_m": [
+    1170.0,
+    2070.0
+  ],
+  "expected_cell_area_gain": 0.010000000000000002,
+  "runs": {
+    "coarse": {
+      "shape": [
+        40,
+        70
+      ],
+      "dx_m": 30.0,
+      "pml_cells_per_side": 10,
+      "pml_width_m": 300.0,
+      "inner_dt_s": 0.003,
+      "step_ratio": 1,
+      "elapsed_s": 0.03375298400169413,
+      "peak_amplitude": 70.4340591430664,
+      "finite": true,
+      "requires_grad": false
+    },
+    "fine": {
+      "shape": [
+        391,
+        691
+      ],
+      "dx_m": 3.0,
+      "pml_cells_per_side": 100,
+      "pml_width_m": 300.0,
+      "inner_dt_s": 0.0006000000000000001,
+      "step_ratio": 5,
+      "elapsed_s": 13.297954148998542,
+      "peak_amplitude": 0.6960023641586304,
+      "finite": true,
+      "requires_grad": false
+    }
+  },
+  "all_samples": {
+    "best_coarse_to_fine_gain": 0.009965813877698737,
+    "raw_relative_l2": 99.30945322745023,
+    "best_gain_relative_l2": 0.02600018461963108,
+    "cell_area_gain_relative_l2": 0.02622534790479678,
+    "coarse_to_fine_norm_ratio": 100.30911176195599,
+    "correlation_cosine": 0.999661938056933
+  },
+  "direct_arrival_window": {
+    "best_coarse_to_fine_gain": 0.00996430710986255,
+    "raw_relative_l2": 99.3248800170379,
+    "best_gain_relative_l2": 0.025899991033569797,
+    "cell_area_gain_relative_l2": 0.026146360850753784,
+    "coarse_to_fine_norm_ratio": 100.32454117915756,
+    "correlation_cosine": 0.999664538965178
+  },
+  "per_receiver": [
+    {
+      "best_coarse_to_fine_gain": 0.009968588037950097,
+      "raw_relative_l2": 99.2979204652999,
+      "best_gain_relative_l2": 0.018605252099768873,
+      "cell_area_gain_relative_l2": 0.018870118297657876,
+      "coarse_to_fine_norm_ratio": 100.29774562960209,
+      "correlation_cosine": 0.9998269073166136
+    },
+    {
+      "best_coarse_to_fine_gain": 0.009964772380139385,
+      "raw_relative_l2": 99.31723688888336,
+      "best_gain_relative_l2": 0.027025103762064222,
+      "cell_area_gain_relative_l2": 0.027255180345282452,
+      "coarse_to_fine_norm_ratio": 100.31686796717909,
+      "correlation_cosine": 0.9996347551814362
+    },
+    {
+      "best_coarse_to_fine_gain": 0.009961676745229358,
+      "raw_relative_l2": 99.32205943165594,
+      "best_gain_relative_l2": 0.035502620470313453,
+      "cell_area_gain_relative_l2": 0.035710185429920105,
+      "coarse_to_fine_norm_ratio": 100.32142266971606,
+      "correlation_cosine": 0.9993695832572357
+    }
+  ],
+  "elapsed_s": 13.335501599000054
+}

@@ -124,11 +124,17 @@ def prepare_data(workflow, forward=None):
     device = workflow.experiment.device
     if device == 'auto': device = 'cuda' if torch.cuda.is_available() else 'cpu'
     solver = LegacyDeepwave() if forward is None else forward
+    fine_grid = GridSpec(tuple(truth.shape),3.)
+    inversion_grid = GridSpec(tuple(coarse.shape),30.)
     with torch.no_grad():
         traces = solver.predict(truth.to(device),source.to(device),acquisition.to(device),
-                                GridSpec(tuple(truth.shape),3.),sampling).detach().cpu()
-    return ObservationData(traces,acquisition,GridSpec(tuple(coarse.shape),30.),sampling,
-                           source,initial,truth[::10,::10].clone(),guess)
+                                fine_grid,sampling).detach().cpu()
+    # DeepWave 0.0.9 injects a coefficient into one cell without area division.
+    # Preserve fine observations, but express their known forcing on the inverse
+    # grid. This exact geometric factor is not an empirical trace-amplitude fit.
+    known_source = source * (fine_grid.spacing / inversion_grid.spacing)**2
+    return ObservationData(traces,acquisition,inversion_grid,sampling,
+                           known_source,initial,truth[::10,::10].clone(),guess)
 
 
 def _parser():
