@@ -322,3 +322,15 @@ def test_fwi_fixed_sigma_checkpoint_uses_float32_initializer_value(tmp_path):
     run=E.create(config(method='fwi',sigma_init=.08),data,tmp_path)
     restored=E.resume(run.save_checkpoint())
     same(restored.parameters.sigma,torch.tensor(.08,dtype=torch.float32))
+
+
+def test_warm_start_validates_cuda_snapshot_on_cpu_without_old_runtime(tmp_path):
+    from fwigan.checkpoints import fingerprint_config
+    E=experiment();data=make_tiny_data(nt=32,shots=4)
+    old=E.create(config(noise=True),data,tmp_path);old.run(max_batches=1)
+    payload=torch.load(old.save_checkpoint(),map_location='cpu')
+    payload['config']['device']='cuda';payload['config_fingerprint']=fingerprint_config(payload['config'])
+    snapshot=tmp_path/'cuda-origin.pt';torch.save(payload,snapshot)
+    new=E.warm_start(snapshot,config(noise=True),data,tmp_path)
+    same(new.parameters.state_dict(),old.parameters.state_dict())
+    assert new.parameters.velocity.device.type=='cpu' and new.metrics==[]

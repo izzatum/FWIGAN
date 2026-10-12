@@ -343,6 +343,7 @@ class Experiment:
             raise ValueError('warm start requires matching grid and sampling geometry')
         initial=copy.deepcopy(data.to('cpu'));physical=payload['physical']
         # Validate against the old run before extracting any quantities.
+        old_config.device='cpu'  # Validation needs no original CUDA runtime.
         old=cls._construct(old_config,old_data,forward,physical=physical,observed=payload['strategy'].get('observed'))
         old.strategy._validate_state(payload['strategy'])
         initial.initial_velocity=physical['velocity'].clone()
