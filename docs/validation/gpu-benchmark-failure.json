@@ -1,0 +1,3859 @@
+{
+  "schema": 1,
+  "device": "cuda",
+  "suite": "all",
+  "seed": 42,
+  "threads": 2,
+  "torch": "1.13.1+cu117",
+  "deepwave": "0.0.9",
+  "python": "3.10.12",
+  "cuda_build": "11.7",
+  "timing_scope": "synchronized wall time of complete train epochs; excludes construction, warmup, checkpoint transfer and instrumentation",
+  "cpu_contention": "uncertain/shared host; indicative CPU timing only",
+  "provenance": {
+    "tests/reference/notebook_cells.json": "420d9bd1da6cb4501c21cf15e4ccd1aeb983488b85d2b6e9a0cf846f2fb31a3b",
+    "tests/reference/strategy.py": "dd5801865c786121e7f2fa3f101877b9d5b3e3bf61e090dca9713cc6b89e0820",
+    "src/fwigan/inversion/adversarial.py": "a55971e3b06ee6593b8e0a81b537efbcc42a4c7bcfbd3cc12aa5396a2d588caa",
+    "src/fwigan/physics/deepwave.py": "0e7e24c65094336d277ef42958371e71efd3dba9b53c16f81778662ccbf9f4b3"
+  },
+  "frozen_revision": "c7ec47ed89ba1380ad7a02bbc4526b93675e76f3",
+  "numerical_tolerance": {
+    "rtol": 0.0002,
+    "atol": 2e-05,
+    "cpu_critic_loss_atol": 2e-06,
+    "cpu_critic_loss_rtol": 2e-07
+  },
+  "workloads": {
+    "tiny-clean": {
+      "status": "numerical_failed",
+      "synthetic": true,
+      "geometry": {
+        "model": [
+          40,
+          70
+        ],
+        "nt": 128,
+        "shots": 2,
+        "receivers": 60,
+        "spacing_m": 30.0,
+        "dt_s": 0.003
+      },
+      "config": {
+        "method": "fwigan",
+        "seed": 42,
+        "device": "cuda",
+        "epochs": 401,
+        "batches": 1,
+        "batch_size": 2,
+        "critic_cycles": 6,
+        "amp": true,
+        "noise": false,
+        "observation_noise_level": 0.05,
+        "checkpoint_interval": 50,
+        "evaluation_interval": 10,
+        "sigma_init": 0.08,
+        "velocity_lr": 5.0,
+        "source_lr": 0.001,
+        "sigma_lr": 0.01,
+        "critic_lr": 0.001,
+        "velocity_min": 1000.0,
+        "velocity_max": 6000.0,
+        "regularization": 0.0,
+        "physical_scheduler_step_size": 150,
+        "critic_scheduler_step_size": 100,
+        "scheduler_gamma": 0.5,
+        "adam_betas": [
+          0.5,
+          0.9
+        ],
+        "gradient_penalty_weight": 10.0,
+        "critic_drift": 0.001,
+        "velocity_clip": 1000.0,
+        "critic_clip": 1000000.0,
+        "train_source": true,
+        "train_sigma": false,
+        "observation_mode": "raw"
+      },
+      "steps_per_window": 2,
+      "repetitions": 3,
+      "warmup_original": [
+        {
+          "actual_updates": [
+            0,
+            5
+          ],
+          "skipped_updates": [
+            1,
+            1
+          ],
+          "scales_before": [
+            65536.0,
+            65536.0
+          ],
+          "scales_after": [
+            32768.0,
+            32768.0
+          ],
+          "scales": [
+            32768.0,
+            32768.0
+          ],
+          "stable": false
+        },
+        {
+          "actual_updates": [
+            1,
+            4
+          ],
+          "skipped_updates": [
+            0,
+            2
+          ],
+          "scales_before": [
+            32768.0,
+            32768.0
+          ],
+          "scales_after": [
+            32768.0,
+            8192.0
+          ],
+          "scales": [
+            32768.0,
+            8192.0
+          ],
+          "stable": false
+        },
+        {
+          "actual_updates": [
+            1,
+            4
+          ],
+          "skipped_updates": [
+            0,
+            2
+          ],
+          "scales_before": [
+            32768.0,
+            8192.0
+          ],
+          "scales_after": [
+            32768.0,
+            2048.0
+          ],
+          "scales": [
+            32768.0,
+            2048.0
+          ],
+          "stable": false
+        },
+        {
+          "actual_updates": [
+            1,
+            3
+          ],
+          "skipped_updates": [
+            0,
+            3
+          ],
+          "scales_before": [
+            32768.0,
+            2048.0
+          ],
+          "scales_after": [
+            32768.0,
+            256.0
+          ],
+          "scales": [
+            32768.0,
+            256.0
+          ],
+          "stable": false
+        },
+        {
+          "actual_updates": [
+            0,
+            5
+          ],
+          "skipped_updates": [
+            1,
+            1
+          ],
+          "scales_before": [
+            32768.0,
+            256.0
+          ],
+          "scales_after": [
+            16384.0,
+            128.0
+          ],
+          "scales": [
+            16384.0,
+            128.0
+          ],
+          "stable": false
+        },
+        {
+          "actual_updates": [
+            0,
+            6
+          ],
+          "skipped_updates": [
+            1,
+            0
+          ],
+          "scales_before": [
+            16384.0,
+            128.0
+          ],
+          "scales_after": [
+            8192.0,
+            128.0
+          ],
+          "scales": [
+            8192.0,
+            128.0
+          ],
+          "stable": false
+        },
+        {
+          "actual_updates": [
+            1,
+            5
+          ],
+          "skipped_updates": [
+            0,
+            1
+          ],
+          "scales_before": [
+            8192.0,
+            128.0
+          ],
+          "scales_after": [
+            8192.0,
+            64.0
+          ],
+          "scales": [
+            8192.0,
+            64.0
+          ],
+          "stable": false
+        },
+        {
+          "actual_updates": [
+            0,
+            6
+          ],
+          "skipped_updates": [
+            1,
+            0
+          ],
+          "scales_before": [
+            8192.0,
+            64.0
+          ],
+          "scales_after": [
+            4096.0,
+            64.0
+          ],
+          "scales": [
+            4096.0,
+            64.0
+          ],
+          "stable": false
+        },
+        {
+          "actual_updates": [
+            1,
+            6
+          ],
+          "skipped_updates": [
+            0,
+            0
+          ],
+          "scales_before": [
+            4096.0,
+            64.0
+          ],
+          "scales_after": [
+            4096.0,
+            64.0
+          ],
+          "scales": [
+            4096.0,
+            64.0
+          ],
+          "stable": true
+        },
+        {
+          "actual_updates": [
+            1,
+            6
+          ],
+          "skipped_updates": [
+            0,
+            0
+          ],
+          "scales_before": [
+            4096.0,
+            64.0
+          ],
+          "scales_after": [
+            4096.0,
+            64.0
+          ],
+          "scales": [
+            4096.0,
+            64.0
+          ],
+          "stable": true
+        }
+      ],
+      "calibration": {
+        "warmup_original": [
+          {
+            "actual_updates": [
+              0,
+              5
+            ],
+            "skipped_updates": [
+              1,
+              1
+            ],
+            "scales_before": [
+              65536.0,
+              65536.0
+            ],
+            "scales_after": [
+              32768.0,
+              32768.0
+            ],
+            "scales": [
+              32768.0,
+              32768.0
+            ],
+            "stable": false
+          },
+          {
+            "actual_updates": [
+              1,
+              4
+            ],
+            "skipped_updates": [
+              0,
+              2
+            ],
+            "scales_before": [
+              32768.0,
+              32768.0
+            ],
+            "scales_after": [
+              32768.0,
+              8192.0
+            ],
+            "scales": [
+              32768.0,
+              8192.0
+            ],
+            "stable": false
+          },
+          {
+            "actual_updates": [
+              1,
+              4
+            ],
+            "skipped_updates": [
+              0,
+              2
+            ],
+            "scales_before": [
+              32768.0,
+              8192.0
+            ],
+            "scales_after": [
+              32768.0,
+              2048.0
+            ],
+            "scales": [
+              32768.0,
+              2048.0
+            ],
+            "stable": false
+          },
+          {
+            "actual_updates": [
+              1,
+              3
+            ],
+            "skipped_updates": [
+              0,
+              3
+            ],
+            "scales_before": [
+              32768.0,
+              2048.0
+            ],
+            "scales_after": [
+              32768.0,
+              256.0
+            ],
+            "scales": [
+              32768.0,
+              256.0
+            ],
+            "stable": false
+          },
+          {
+            "actual_updates": [
+              0,
+              5
+            ],
+            "skipped_updates": [
+              1,
+              1
+            ],
+            "scales_before": [
+              32768.0,
+              256.0
+            ],
+            "scales_after": [
+              16384.0,
+              128.0
+            ],
+            "scales": [
+              16384.0,
+              128.0
+            ],
+            "stable": false
+          },
+          {
+            "actual_updates": [
+              0,
+              6
+            ],
+            "skipped_updates": [
+              1,
+              0
+            ],
+            "scales_before": [
+              16384.0,
+              128.0
+            ],
+            "scales_after": [
+              8192.0,
+              128.0
+            ],
+            "scales": [
+              8192.0,
+              128.0
+            ],
+            "stable": false
+          },
+          {
+            "actual_updates": [
+              1,
+              5
+            ],
+            "skipped_updates": [
+              0,
+              1
+            ],
+            "scales_before": [
+              8192.0,
+              128.0
+            ],
+            "scales_after": [
+              8192.0,
+              64.0
+            ],
+            "scales": [
+              8192.0,
+              64.0
+            ],
+            "stable": false
+          },
+          {
+            "actual_updates": [
+              0,
+              6
+            ],
+            "skipped_updates": [
+              1,
+              0
+            ],
+            "scales_before": [
+              8192.0,
+              64.0
+            ],
+            "scales_after": [
+              4096.0,
+              64.0
+            ],
+            "scales": [
+              4096.0,
+              64.0
+            ],
+            "stable": false
+          },
+          {
+            "actual_updates": [
+              1,
+              6
+            ],
+            "skipped_updates": [
+              0,
+              0
+            ],
+            "scales_before": [
+              4096.0,
+              64.0
+            ],
+            "scales_after": [
+              4096.0,
+              64.0
+            ],
+            "scales": [
+              4096.0,
+              64.0
+            ],
+            "stable": true
+          },
+          {
+            "actual_updates": [
+              1,
+              6
+            ],
+            "skipped_updates": [
+              0,
+              0
+            ],
+            "scales_before": [
+              4096.0,
+              64.0
+            ],
+            "scales_after": [
+              4096.0,
+              64.0
+            ],
+            "scales": [
+              4096.0,
+              64.0
+            ],
+            "stable": true
+          }
+        ],
+        "precheck_epochs": 2,
+        "precheck_attempts": [
+          {
+            "number": 1,
+            "common_scales": [
+              4096.0,
+              64.0
+            ],
+            "branches": [
+              {
+                "kind": "original",
+                "scales_before": [
+                  4096.0,
+                  64.0
+                ],
+                "scales_after": [
+                  4096.0,
+                  64.0
+                ],
+                "successful_updates": [
+                  2,
+                  12
+                ],
+                "skipped_updates": [
+                  0,
+                  0
+                ],
+                "stable_epochs": 2,
+                "epochs": [
+                  {
+                    "actual_updates": [
+                      1,
+                      6
+                    ],
+                    "skipped_updates": [
+                      0,
+                      0
+                    ],
+                    "scales_before": [
+                      4096.0,
+                      64.0
+                    ],
+                    "scales_after": [
+                      4096.0,
+                      64.0
+                    ],
+                    "scales": [
+                      4096.0,
+                      64.0
+                    ],
+                    "stable": true
+                  },
+                  {
+                    "actual_updates": [
+                      1,
+                      6
+                    ],
+                    "skipped_updates": [
+                      0,
+                      0
+                    ],
+                    "scales_before": [
+                      4096.0,
+                      64.0
+                    ],
+                    "scales_after": [
+                      4096.0,
+                      64.0
+                    ],
+                    "scales": [
+                      4096.0,
+                      64.0
+                    ],
+                    "stable": true
+                  }
+                ]
+              },
+              {
+                "kind": "optimized",
+                "scales_before": [
+                  4096.0,
+                  64.0
+                ],
+                "scales_after": [
+                  4096.0,
+                  64.0
+                ],
+                "successful_updates": [
+                  2,
+                  12
+                ],
+                "skipped_updates": [
+                  0,
+                  0
+                ],
+                "stable_epochs": 2,
+                "epochs": [
+                  {
+                    "actual_updates": [
+                      1,
+                      6
+                    ],
+                    "skipped_updates": [
+                      0,
+                      0
+                    ],
+                    "scales_before": [
+                      4096.0,
+                      64.0
+                    ],
+                    "scales_after": [
+                      4096.0,
+                      64.0
+                    ],
+                    "scales": [
+                      4096.0,
+                      64.0
+                    ],
+                    "stable": true
+                  },
+                  {
+                    "actual_updates": [
+                      1,
+                      6
+                    ],
+                    "skipped_updates": [
+                      0,
+                      0
+                    ],
+                    "scales_before": [
+                      4096.0,
+                      64.0
+                    ],
+                    "scales_after": [
+                      4096.0,
+                      64.0
+                    ],
+                    "scales": [
+                      4096.0,
+                      64.0
+                    ],
+                    "stable": true
+                  }
+                ]
+              }
+            ],
+            "passed": true
+          }
+        ]
+      },
+      "warmup_optimized": [
+        {
+          "actual_updates": [
+            1,
+            6
+          ],
+          "skipped_updates": [
+            0,
+            0
+          ],
+          "scales_before": [
+            4096.0,
+            64.0
+          ],
+          "scales_after": [
+            4096.0,
+            64.0
+          ],
+          "scales": [
+            4096.0,
+            64.0
+          ],
+          "stable": true
+        },
+        {
+          "actual_updates": [
+            1,
+            6
+          ],
+          "skipped_updates": [
+            0,
+            0
+          ],
+          "scales_before": [
+            4096.0,
+            64.0
+          ],
+          "scales_after": [
+            4096.0,
+            64.0
+          ],
+          "scales": [
+            4096.0,
+            64.0
+          ],
+          "stable": true
+        }
+      ],
+      "windows": {
+        "original": [
+          {
+            "seconds": 0.36890140548348427,
+            "seconds_per_batch": 0.18445070274174213,
+            "actual_updates": {
+              "physical": 2,
+              "critic": 12
+            },
+            "memory": {
+              "baseline_allocated_bytes": 4004864,
+              "baseline_reserved_bytes": 4194304,
+              "peak_allocated_bytes": 29285888,
+              "peak_reserved_bytes": 31457280,
+              "peak_allocated_increment_bytes": 25281024,
+              "peak_reserved_increment_bytes": 27262976
+            }
+          }
+        ],
+        "optimized": [
+          {
+            "seconds": 0.3101023659110069,
+            "seconds_per_batch": 0.15505118295550346,
+            "actual_updates": {
+              "physical": 2,
+              "critic": 12
+            },
+            "memory": {
+              "baseline_allocated_bytes": 4004864,
+              "baseline_reserved_bytes": 4194304,
+              "peak_allocated_bytes": 26788352,
+              "peak_reserved_bytes": 29360128,
+              "peak_allocated_increment_bytes": 22783488,
+              "peak_reserved_increment_bytes": 25165824
+            }
+          }
+        ]
+      },
+      "numerical_comparisons": [
+        {
+          "physical": {
+            "velocity": {
+              "max_absolute": 0.687744140625,
+              "max_relative": 0.00034246512223035097
+            },
+            "source": {
+              "max_absolute": 1.7993617802858353e-05,
+              "max_relative": 0.023681899532675743
+            },
+            "sigma": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_changes": {
+            "velocity": {
+              "max_absolute": 0.687744140625,
+              "max_relative": 1.75
+            },
+            "source": {
+              "max_absolute": 1.7993617802858353e-05,
+              "max_relative": 0.24105830490589142
+            },
+            "sigma": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "critic": {
+            "conv_block.0.weight": {
+              "max_absolute": 1.55717134475708e-05,
+              "max_relative": 0.0013398086884990335
+            },
+            "conv_block.0.bias": {
+              "max_absolute": 1.2159347534179688e-05,
+              "max_relative": 5.3013427532278e-05
+            },
+            "conv_block.3.weight": {
+              "max_absolute": 8.165091276168823e-05,
+              "max_relative": 0.01973479986190796
+            },
+            "conv_block.3.bias": {
+              "max_absolute": 2.2456049919128418e-05,
+              "max_relative": 0.00018755847122520208
+            },
+            "conv_block.6.weight": {
+              "max_absolute": 0.00011557340621948242,
+              "max_relative": 0.13669148087501526
+            },
+            "conv_block.6.bias": {
+              "max_absolute": 2.7418136596679688e-05,
+              "max_relative": 0.004315988160669804
+            },
+            "conv_block.9.weight": {
+              "max_absolute": 0.0006537660956382751,
+              "max_relative": 0.7171261310577393
+            },
+            "conv_block.9.bias": {
+              "max_absolute": 2.2016465663909912e-05,
+              "max_relative": 0.0004047944094054401
+            },
+            "conv_block.12.weight": {
+              "max_absolute": 0.0009579663164913654,
+              "max_relative": 341.1876220703125
+            },
+            "conv_block.12.bias": {
+              "max_absolute": 5.9973448514938354e-05,
+              "max_relative": 0.0028606392443180084
+            },
+            "dense_block.0.weight": {
+              "max_absolute": 0.00022199377417564392,
+              "max_relative": 33.08283615112305
+            },
+            "dense_block.0.bias": {
+              "max_absolute": 3.1013041734695435e-06,
+              "max_relative": 0.002186211058869958
+            },
+            "dense_block.2.weight": {
+              "max_absolute": 1.4523044228553772e-05,
+              "max_relative": 4.790340900421143
+            },
+            "dense_block.2.bias": {
+              "max_absolute": 1.952052116394043e-06,
+              "max_relative": 0.0043682982213795185
+            },
+            "dense_block.4.weight": {
+              "max_absolute": 9.47713851928711e-06,
+              "max_relative": 0.0009864226449280977
+            },
+            "dense_block.4.bias": {
+              "max_absolute": 4.917383193969727e-07,
+              "max_relative": 6.421840680559399e-06
+            }
+          },
+          "physical_optimizer": {
+            "state": {
+              "0": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 2.6520341634750366e-05,
+                  "max_relative": 1.0838332176208496
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 9.015202522277832e-07,
+                  "max_relative": 0.07643597573041916
+                }
+              },
+              "1": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.471923828125,
+                  "max_relative": 2.314070224761963
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 465.75,
+                  "max_relative": 0.011277111247181892
+                }
+              }
+            },
+            "param_groups": [
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              },
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "critic_optimizer": {
+            "state": {
+              "0": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.5234375,
+                  "max_relative": 0.15263397991657257
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 143.90234375,
+                  "max_relative": 0.013432134874165058
+                }
+              },
+              "1": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.034912109375,
+                  "max_relative": 0.010155622847378254
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.16831207275390625,
+                  "max_relative": 0.002575820777565241
+                }
+              },
+              "2": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.68359375,
+                  "max_relative": 0.7267155647277832
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 96.513671875,
+                  "max_relative": 0.05731126293540001
+                }
+              },
+              "3": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.07275390625,
+                  "max_relative": 0.26875436305999756
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.17676353454589844,
+                  "max_relative": 0.006410327274352312
+                }
+              },
+              "4": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.63671875,
+                  "max_relative": 9.756595611572266
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 43.502685546875,
+                  "max_relative": 0.11953004449605942
+                }
+              },
+              "5": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.03466796875,
+                  "max_relative": 0.20200665295124054
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.13775634765625,
+                  "max_relative": 0.007347047328948975
+                }
+              },
+              "6": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 1.982421875,
+                  "max_relative": 32.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 43.5440673828125,
+                  "max_relative": 0.2950168550014496
+                }
+              },
+              "7": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0166015625,
+                  "max_relative": 0.024375978857278824
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.033832550048828125,
+                  "max_relative": 0.006885008420795202
+                }
+              },
+              "8": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.05712890625,
+                  "max_relative": 117.88935089111328
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.625,
+                  "max_relative": 0.3103991448879242
+                }
+              },
+              "9": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.01318359375,
+                  "max_relative": 0.4125332236289978
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.019556045532226562,
+                  "max_relative": 0.0076202587224543095
+                }
+              },
+              "10": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.035888671875,
+                  "max_relative": 43.19974136352539
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.09934234619140625,
+                  "max_relative": 0.12677624821662903
+                }
+              },
+              "11": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0013427734375,
+                  "max_relative": 0.003061153693124652
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.00023117661476135254,
+                  "max_relative": 0.0009683425887487829
+                }
+              },
+              "12": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.000762939453125,
+                  "max_relative": 28.833354949951172
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 7.941946387290955e-05,
+                  "max_relative": 0.004248531069606543
+                }
+              },
+              "13": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 3.0517578125e-05,
+                  "max_relative": 0.0023783445358276367
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 2.1568848751485348e-07,
+                  "max_relative": 0.0008785648969933391
+                }
+              },
+              "14": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.01953125,
+                  "max_relative": 0.04809052124619484
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.10750579833984375,
+                  "max_relative": 0.0022460983600467443
+                }
+              },
+              "15": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.00042724609375,
+                  "max_relative": 0.0013449526159092784
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 2.8192996978759766e-05,
+                  "max_relative": 0.00030956213595345616
+                }
+              }
+            },
+            "param_groups": [
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "gradients": {
+            "velocity": {
+              "max_absolute": 5.30388206243515e-05,
+              "max_relative": 5.100991249084473
+            },
+            "source": {
+              "max_absolute": 0.94384765625,
+              "max_relative": 0.4031798243522644
+            }
+          },
+          "physical_scheduler": {
+            "step_size": {
+              "max_absolute": 0
+            },
+            "gamma": {
+              "max_absolute": 0.0
+            },
+            "base_lrs": [
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              }
+            ],
+            "last_epoch": {
+              "max_absolute": 0
+            },
+            "verbose": {
+              "max_absolute": 0
+            },
+            "_step_count": {
+              "max_absolute": 0
+            },
+            "_get_lr_called_within_step": {
+              "max_absolute": 0
+            },
+            "_last_lr": [
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              }
+            ]
+          },
+          "critic_scheduler": {
+            "step_size": {
+              "max_absolute": 0
+            },
+            "gamma": {
+              "max_absolute": 0.0
+            },
+            "base_lrs": [
+              {
+                "max_absolute": 0.0
+              }
+            ],
+            "last_epoch": {
+              "max_absolute": 0
+            },
+            "verbose": {
+              "max_absolute": 0
+            },
+            "_step_count": {
+              "max_absolute": 0
+            },
+            "_get_lr_called_within_step": {
+              "max_absolute": 0
+            },
+            "_last_lr": [
+              {
+                "max_absolute": 0.0
+              }
+            ]
+          },
+          "physical_scaler": {
+            "scale": {
+              "max_absolute": 0.0
+            },
+            "growth_factor": {
+              "max_absolute": 0.0
+            },
+            "backoff_factor": {
+              "max_absolute": 0.0
+            },
+            "growth_interval": {
+              "max_absolute": 0
+            },
+            "_growth_tracker": {
+              "max_absolute": 0
+            }
+          },
+          "critic_scaler": {
+            "scale": {
+              "max_absolute": 0.0
+            },
+            "growth_factor": {
+              "max_absolute": 0.0
+            },
+            "backoff_factor": {
+              "max_absolute": 0.0
+            },
+            "growth_interval": {
+              "max_absolute": 0
+            },
+            "_growth_tracker": {
+              "max_absolute": 0
+            }
+          },
+          "losses": [
+            [
+              {
+                "generator_loss": {
+                  "max_absolute": 0.0
+                },
+                "critic_loss": {
+                  "max_absolute": 5.086263058728946e-06
+                }
+              }
+            ],
+            [
+              {
+                "generator_loss": {
+                  "max_absolute": 0.0
+                },
+                "critic_loss": {
+                  "max_absolute": 0.021030426025390625
+                }
+              }
+            ]
+          ],
+          "torch_rng_equal": true,
+          "cuda_rng_equal": true,
+          "python_rng_equal": true,
+          "numpy_rng_equal": true,
+          "physical_change_l2": {
+            "original": {
+              "velocity": 294.5841979980469,
+              "source": 0.01935401000082493,
+              "sigma": 0.0
+            },
+            "optimized": {
+              "velocity": 294.5841064453125,
+              "source": 0.019360745325684547,
+              "sigma": 0.0
+            }
+          }
+        }
+      ],
+      "comparison_diagnostics": [
+        {
+          "repetition": 0,
+          "fields": [
+            {
+              "path": "physical.velocity",
+              "kind": "tensor",
+              "shape": [
+                40,
+                70
+              ],
+              "other_shape": [
+                40,
+                70
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 2800,
+              "old_failed": 3,
+              "max_absolute": 0.687744140625,
+              "max_relative": 0.00034246512223035097,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "physical.source",
+              "kind": "tensor",
+              "shape": [
+                1,
+                1,
+                128
+              ],
+              "other_shape": [
+                1,
+                1,
+                128
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 128,
+              "old_failed": 0,
+              "max_absolute": 1.7993617802858353e-05,
+              "max_relative": 0.023681899532675743,
+              "passed": true
+            },
+            {
+              "path": "physical.sigma",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "physical_changes.velocity",
+              "kind": "tensor",
+              "shape": [
+                40,
+                70
+              ],
+              "other_shape": [
+                40,
+                70
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 2800,
+              "old_failed": 539,
+              "max_absolute": 0.687744140625,
+              "max_relative": 1.75,
+              "rule": "max(atol + rtol * abs(optimized_change), one local float32 model ULP)",
+              "floor_min": 0.0001220703125,
+              "floor_max": 0.0001220703125,
+              "rescued_by_ulp": 17,
+              "still_failed": 522,
+              "passed": false,
+              "samples": [
+                {
+                  "index": [
+                    0,
+                    0
+                  ],
+                  "common": 2000.12451171875,
+                  "final_original": 2008.904296875,
+                  "final_optimized": 2008.216552734375,
+                  "change_original": 8.77978515625,
+                  "change_optimized": 8.092041015625,
+                  "absolute_error": 0.687744140625,
+                  "old_bound": 0.00163840816821903,
+                  "floor": 0.0001220703125,
+                  "rescued": false
+                },
+                {
+                  "index": [
+                    0,
+                    1
+                  ],
+                  "common": 2000.471435546875,
+                  "final_original": 1987.8763427734375,
+                  "final_optimized": 1987.9034423828125,
+                  "change_original": -12.5950927734375,
+                  "change_optimized": -12.5679931640625,
+                  "absolute_error": 0.027099609375,
+                  "old_bound": 0.002533598570153117,
+                  "floor": 0.0001220703125,
+                  "rescued": false
+                },
+                {
+                  "index": [
+                    0,
+                    2
+                  ],
+                  "common": 1997.0980224609375,
+                  "final_original": 2006.060302734375,
+                  "final_optimized": 2005.8057861328125,
+                  "change_original": 8.9622802734375,
+                  "change_optimized": 8.707763671875,
+                  "absolute_error": 0.2545166015625,
+                  "old_bound": 0.0017615527613088489,
+                  "floor": 0.0001220703125,
+                  "rescued": false
+                },
+                {
+                  "index": [
+                    0,
+                    3
+                  ],
+                  "common": 1973.8123779296875,
+                  "final_original": 1964.361328125,
+                  "final_optimized": 1964.3048095703125,
+                  "change_original": -9.4510498046875,
+                  "change_optimized": -9.507568359375,
+                  "absolute_error": 0.0565185546875,
+                  "old_bound": 0.001921513699926436,
+                  "floor": 0.0001220703125,
+                  "rescued": false
+                },
+                {
+                  "index": [
+                    0,
+                    4
+                  ],
+                  "common": 2004.012451171875,
+                  "final_original": 2015.2021484375,
+                  "final_optimized": 2015.16455078125,
+                  "change_original": 11.189697265625,
+                  "change_optimized": 11.152099609375,
+                  "absolute_error": 0.03759765625,
+                  "old_bound": 0.00225041969679296,
+                  "floor": 0.0001220703125,
+                  "rescued": false
+                },
+                {
+                  "index": [
+                    0,
+                    5
+                  ],
+                  "common": 1988.026123046875,
+                  "final_original": 1976.2506103515625,
+                  "final_optimized": 1976.197021484375,
+                  "change_original": -11.7755126953125,
+                  "change_optimized": -11.8291015625,
+                  "absolute_error": 0.0535888671875,
+                  "old_bound": 0.002385820262134075,
+                  "floor": 0.0001220703125,
+                  "rescued": false
+                },
+                {
+                  "index": [
+                    0,
+                    6
+                  ],
+                  "common": 2032.0423583984375,
+                  "final_original": 2043.6588134765625,
+                  "final_optimized": 2043.6204833984375,
+                  "change_original": 11.616455078125,
+                  "change_optimized": 11.578125,
+                  "absolute_error": 0.038330078125,
+                  "old_bound": 0.0023356247693300247,
+                  "floor": 0.0001220703125,
+                  "rescued": false
+                },
+                {
+                  "index": [
+                    0,
+                    7
+                  ],
+                  "common": 1967.638427734375,
+                  "final_original": 1955.90380859375,
+                  "final_optimized": 1955.8599853515625,
+                  "change_original": -11.734619140625,
+                  "change_optimized": -11.7784423828125,
+                  "absolute_error": 0.0438232421875,
+                  "old_bound": 0.0023756884038448334,
+                  "floor": 0.0001220703125,
+                  "rescued": false
+                }
+              ]
+            },
+            {
+              "path": "physical_changes.source",
+              "kind": "tensor",
+              "shape": [
+                1,
+                1,
+                128
+              ],
+              "other_shape": [
+                1,
+                1,
+                128
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 128,
+              "old_failed": 0,
+              "max_absolute": 1.7993617802858353e-05,
+              "max_relative": 0.24105830490589142,
+              "passed": true
+            },
+            {
+              "path": "physical_changes.sigma",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "critic.conv_block.0.weight",
+              "kind": "tensor",
+              "shape": [
+                4,
+                2,
+                3,
+                3
+              ],
+              "other_shape": [
+                4,
+                2,
+                3,
+                3
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 72,
+              "old_failed": 0,
+              "max_absolute": 1.55717134475708e-05,
+              "max_relative": 0.0013398086884990335,
+              "passed": true
+            },
+            {
+              "path": "critic.conv_block.0.bias",
+              "kind": "tensor",
+              "shape": [
+                4
+              ],
+              "other_shape": [
+                4
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 4,
+              "old_failed": 0,
+              "max_absolute": 1.2159347534179688e-05,
+              "max_relative": 5.3013427532278e-05,
+              "passed": true
+            },
+            {
+              "path": "critic.conv_block.3.weight",
+              "kind": "tensor",
+              "shape": [
+                8,
+                4,
+                3,
+                3
+              ],
+              "other_shape": [
+                8,
+                4,
+                3,
+                3
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 288,
+              "old_failed": 4,
+              "max_absolute": 8.165091276168823e-05,
+              "max_relative": 0.01973479986190796,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic.conv_block.3.bias",
+              "kind": "tensor",
+              "shape": [
+                8
+              ],
+              "other_shape": [
+                8
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 8,
+              "old_failed": 0,
+              "max_absolute": 2.2456049919128418e-05,
+              "max_relative": 0.00018755847122520208,
+              "passed": true
+            },
+            {
+              "path": "critic.conv_block.6.weight",
+              "kind": "tensor",
+              "shape": [
+                16,
+                8,
+                3,
+                3
+              ],
+              "other_shape": [
+                16,
+                8,
+                3,
+                3
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1152,
+              "old_failed": 31,
+              "max_absolute": 0.00011557340621948242,
+              "max_relative": 0.13669148087501526,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic.conv_block.6.bias",
+              "kind": "tensor",
+              "shape": [
+                16
+              ],
+              "other_shape": [
+                16
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 16,
+              "old_failed": 1,
+              "max_absolute": 2.7418136596679688e-05,
+              "max_relative": 0.004315988160669804,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic.conv_block.9.weight",
+              "kind": "tensor",
+              "shape": [
+                32,
+                16,
+                3,
+                3
+              ],
+              "other_shape": [
+                32,
+                16,
+                3,
+                3
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 4608,
+              "old_failed": 395,
+              "max_absolute": 0.0006537660956382751,
+              "max_relative": 0.7171261310577393,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic.conv_block.9.bias",
+              "kind": "tensor",
+              "shape": [
+                32
+              ],
+              "other_shape": [
+                32
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 32,
+              "old_failed": 0,
+              "max_absolute": 2.2016465663909912e-05,
+              "max_relative": 0.0004047944094054401,
+              "passed": true
+            },
+            {
+              "path": "critic.conv_block.12.weight",
+              "kind": "tensor",
+              "shape": [
+                64,
+                32,
+                3,
+                3
+              ],
+              "other_shape": [
+                64,
+                32,
+                3,
+                3
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 18432,
+              "old_failed": 5160,
+              "max_absolute": 0.0009579663164913654,
+              "max_relative": 341.1876220703125,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic.conv_block.12.bias",
+              "kind": "tensor",
+              "shape": [
+                64
+              ],
+              "other_shape": [
+                64
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 64,
+              "old_failed": 2,
+              "max_absolute": 5.9973448514938354e-05,
+              "max_relative": 0.0028606392443180084,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic.dense_block.0.weight",
+              "kind": "tensor",
+              "shape": [
+                128,
+                256
+              ],
+              "other_shape": [
+                128,
+                256
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 32768,
+              "old_failed": 9139,
+              "max_absolute": 0.00022199377417564392,
+              "max_relative": 33.08283615112305,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic.dense_block.0.bias",
+              "kind": "tensor",
+              "shape": [
+                128
+              ],
+              "other_shape": [
+                128
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 128,
+              "old_failed": 0,
+              "max_absolute": 3.1013041734695435e-06,
+              "max_relative": 0.002186211058869958,
+              "passed": true
+            },
+            {
+              "path": "critic.dense_block.2.weight",
+              "kind": "tensor",
+              "shape": [
+                2000,
+                128
+              ],
+              "other_shape": [
+                2000,
+                128
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 256000,
+              "old_failed": 0,
+              "max_absolute": 1.4523044228553772e-05,
+              "max_relative": 4.790340900421143,
+              "passed": true
+            },
+            {
+              "path": "critic.dense_block.2.bias",
+              "kind": "tensor",
+              "shape": [
+                2000
+              ],
+              "other_shape": [
+                2000
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 2000,
+              "old_failed": 0,
+              "max_absolute": 1.952052116394043e-06,
+              "max_relative": 0.0043682982213795185,
+              "passed": true
+            },
+            {
+              "path": "critic.dense_block.4.weight",
+              "kind": "tensor",
+              "shape": [
+                1,
+                2000
+              ],
+              "other_shape": [
+                1,
+                2000
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 2000,
+              "old_failed": 0,
+              "max_absolute": 9.47713851928711e-06,
+              "max_relative": 0.0009864226449280977,
+              "passed": true
+            },
+            {
+              "path": "critic.dense_block.4.bias",
+              "kind": "tensor",
+              "shape": [
+                1
+              ],
+              "other_shape": [
+                1
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 4.917383193969727e-07,
+              "max_relative": 6.421840680559399e-06,
+              "passed": true
+            },
+            {
+              "path": "physical_optimizer.state.0.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "physical_optimizer.state.0.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                40,
+                70
+              ],
+              "other_shape": [
+                40,
+                70
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 2800,
+              "old_failed": 1,
+              "max_absolute": 2.6520341634750366e-05,
+              "max_relative": 1.0838332176208496,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "physical_optimizer.state.0.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                40,
+                70
+              ],
+              "other_shape": [
+                40,
+                70
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 2800,
+              "old_failed": 0,
+              "max_absolute": 9.015202522277832e-07,
+              "max_relative": 0.07643597573041916,
+              "passed": true
+            },
+            {
+              "path": "physical_optimizer.state.1.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "physical_optimizer.state.1.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                1,
+                1,
+                128
+              ],
+              "other_shape": [
+                1,
+                1,
+                128
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 128,
+              "old_failed": 104,
+              "max_absolute": 0.471923828125,
+              "max_relative": 2.314070224761963,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "physical_optimizer.state.1.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                1,
+                1,
+                128
+              ],
+              "other_shape": [
+                1,
+                1,
+                128
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 128,
+              "old_failed": 73,
+              "max_absolute": 465.75,
+              "max_relative": 0.011277111247181892,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "physical_optimizer.param_groups[0].name",
+              "kind": "scalar",
+              "passed": true,
+              "original": "velocity",
+              "optimized": "velocity"
+            },
+            {
+              "path": "physical_optimizer.param_groups[0].lr",
+              "kind": "scalar",
+              "passed": true,
+              "original": 5.0,
+              "optimized": 5.0
+            },
+            {
+              "path": "physical_optimizer.param_groups[0].betas[0]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.5,
+              "optimized": 0.5
+            },
+            {
+              "path": "physical_optimizer.param_groups[0].betas[1]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.9,
+              "optimized": 0.9
+            },
+            {
+              "path": "physical_optimizer.param_groups[0].eps",
+              "kind": "scalar",
+              "passed": true,
+              "original": 1e-08,
+              "optimized": 1e-08
+            },
+            {
+              "path": "physical_optimizer.param_groups[0].weight_decay",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0,
+              "optimized": 0
+            },
+            {
+              "path": "physical_optimizer.param_groups[0].amsgrad",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "physical_optimizer.param_groups[0].maximize",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "physical_optimizer.param_groups[0].foreach",
+              "kind": "scalar",
+              "passed": true,
+              "original": null,
+              "optimized": null
+            },
+            {
+              "path": "physical_optimizer.param_groups[0].capturable",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "physical_optimizer.param_groups[0].differentiable",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "physical_optimizer.param_groups[0].fused",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "physical_optimizer.param_groups[0].initial_lr",
+              "kind": "scalar",
+              "passed": true,
+              "original": 5.0,
+              "optimized": 5.0
+            },
+            {
+              "path": "physical_optimizer.param_groups[0].params[0]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0,
+              "optimized": 0
+            },
+            {
+              "path": "physical_optimizer.param_groups[1].name",
+              "kind": "scalar",
+              "passed": true,
+              "original": "source",
+              "optimized": "source"
+            },
+            {
+              "path": "physical_optimizer.param_groups[1].lr",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.001,
+              "optimized": 0.001
+            },
+            {
+              "path": "physical_optimizer.param_groups[1].betas[0]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.5,
+              "optimized": 0.5
+            },
+            {
+              "path": "physical_optimizer.param_groups[1].betas[1]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.9,
+              "optimized": 0.9
+            },
+            {
+              "path": "physical_optimizer.param_groups[1].eps",
+              "kind": "scalar",
+              "passed": true,
+              "original": 1e-08,
+              "optimized": 1e-08
+            },
+            {
+              "path": "physical_optimizer.param_groups[1].weight_decay",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0,
+              "optimized": 0
+            },
+            {
+              "path": "physical_optimizer.param_groups[1].amsgrad",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "physical_optimizer.param_groups[1].maximize",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "physical_optimizer.param_groups[1].foreach",
+              "kind": "scalar",
+              "passed": true,
+              "original": null,
+              "optimized": null
+            },
+            {
+              "path": "physical_optimizer.param_groups[1].capturable",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "physical_optimizer.param_groups[1].differentiable",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "physical_optimizer.param_groups[1].fused",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "physical_optimizer.param_groups[1].initial_lr",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.001,
+              "optimized": 0.001
+            },
+            {
+              "path": "physical_optimizer.param_groups[1].params[0]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 1,
+              "optimized": 1
+            },
+            {
+              "path": "critic_optimizer.state.0.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.state.0.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                4,
+                2,
+                3,
+                3
+              ],
+              "other_shape": [
+                4,
+                2,
+                3,
+                3
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 72,
+              "old_failed": 70,
+              "max_absolute": 0.5234375,
+              "max_relative": 0.15263397991657257,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.0.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                4,
+                2,
+                3,
+                3
+              ],
+              "other_shape": [
+                4,
+                2,
+                3,
+                3
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 72,
+              "old_failed": 61,
+              "max_absolute": 143.90234375,
+              "max_relative": 0.013432134874165058,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.1.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.state.1.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                4
+              ],
+              "other_shape": [
+                4
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 4,
+              "old_failed": 4,
+              "max_absolute": 0.034912109375,
+              "max_relative": 0.010155622847378254,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.1.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                4
+              ],
+              "other_shape": [
+                4
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 4,
+              "old_failed": 4,
+              "max_absolute": 0.16831207275390625,
+              "max_relative": 0.002575820777565241,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.2.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.state.2.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                8,
+                4,
+                3,
+                3
+              ],
+              "other_shape": [
+                8,
+                4,
+                3,
+                3
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 288,
+              "old_failed": 267,
+              "max_absolute": 0.68359375,
+              "max_relative": 0.7267155647277832,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.2.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                8,
+                4,
+                3,
+                3
+              ],
+              "other_shape": [
+                8,
+                4,
+                3,
+                3
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 288,
+              "old_failed": 236,
+              "max_absolute": 96.513671875,
+              "max_relative": 0.05731126293540001,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.3.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.state.3.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                8
+              ],
+              "other_shape": [
+                8
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 8,
+              "old_failed": 8,
+              "max_absolute": 0.07275390625,
+              "max_relative": 0.26875436305999756,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.3.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                8
+              ],
+              "other_shape": [
+                8
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 8,
+              "old_failed": 8,
+              "max_absolute": 0.17676353454589844,
+              "max_relative": 0.006410327274352312,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.4.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.state.4.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                16,
+                8,
+                3,
+                3
+              ],
+              "other_shape": [
+                16,
+                8,
+                3,
+                3
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1152,
+              "old_failed": 1118,
+              "max_absolute": 0.63671875,
+              "max_relative": 9.756595611572266,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.4.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                16,
+                8,
+                3,
+                3
+              ],
+              "other_shape": [
+                16,
+                8,
+                3,
+                3
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1152,
+              "old_failed": 995,
+              "max_absolute": 43.502685546875,
+              "max_relative": 0.11953004449605942,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.5.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.state.5.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                16
+              ],
+              "other_shape": [
+                16
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 16,
+              "old_failed": 15,
+              "max_absolute": 0.03466796875,
+              "max_relative": 0.20200665295124054,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.5.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                16
+              ],
+              "other_shape": [
+                16
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 16,
+              "old_failed": 15,
+              "max_absolute": 0.13775634765625,
+              "max_relative": 0.007347047328948975,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.6.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.state.6.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                32,
+                16,
+                3,
+                3
+              ],
+              "other_shape": [
+                32,
+                16,
+                3,
+                3
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 4608,
+              "old_failed": 4473,
+              "max_absolute": 1.982421875,
+              "max_relative": 32.0,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.6.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                32,
+                16,
+                3,
+                3
+              ],
+              "other_shape": [
+                32,
+                16,
+                3,
+                3
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 4608,
+              "old_failed": 3672,
+              "max_absolute": 43.5440673828125,
+              "max_relative": 0.2950168550014496,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.7.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.state.7.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                32
+              ],
+              "other_shape": [
+                32
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 32,
+              "old_failed": 30,
+              "max_absolute": 0.0166015625,
+              "max_relative": 0.024375978857278824,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.7.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                32
+              ],
+              "other_shape": [
+                32
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 32,
+              "old_failed": 29,
+              "max_absolute": 0.033832550048828125,
+              "max_relative": 0.006885008420795202,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.8.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.state.8.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                64,
+                32,
+                3,
+                3
+              ],
+              "other_shape": [
+                64,
+                32,
+                3,
+                3
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 18432,
+              "old_failed": 16634,
+              "max_absolute": 0.05712890625,
+              "max_relative": 117.88935089111328,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.8.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                64,
+                32,
+                3,
+                3
+              ],
+              "other_shape": [
+                64,
+                32,
+                3,
+                3
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 18432,
+              "old_failed": 13302,
+              "max_absolute": 0.625,
+              "max_relative": 0.3103991448879242,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.9.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.state.9.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                64
+              ],
+              "other_shape": [
+                64
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 64,
+              "old_failed": 63,
+              "max_absolute": 0.01318359375,
+              "max_relative": 0.4125332236289978,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.9.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                64
+              ],
+              "other_shape": [
+                64
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 64,
+              "old_failed": 49,
+              "max_absolute": 0.019556045532226562,
+              "max_relative": 0.0076202587224543095,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.10.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.state.10.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                128,
+                256
+              ],
+              "other_shape": [
+                128,
+                256
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 32768,
+              "old_failed": 30105,
+              "max_absolute": 0.035888671875,
+              "max_relative": 43.19974136352539,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.10.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                128,
+                256
+              ],
+              "other_shape": [
+                128,
+                256
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 32768,
+              "old_failed": 19601,
+              "max_absolute": 0.09934234619140625,
+              "max_relative": 0.12677624821662903,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.11.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.state.11.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                128
+              ],
+              "other_shape": [
+                128
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 128,
+              "old_failed": 111,
+              "max_absolute": 0.0013427734375,
+              "max_relative": 0.003061153693124652,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.11.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                128
+              ],
+              "other_shape": [
+                128
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 128,
+              "old_failed": 57,
+              "max_absolute": 0.00023117661476135254,
+              "max_relative": 0.0009683425887487829,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.12.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.state.12.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                2000,
+                128
+              ],
+              "other_shape": [
+                2000,
+                128
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 256000,
+              "old_failed": 207678,
+              "max_absolute": 0.000762939453125,
+              "max_relative": 28.833354949951172,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.12.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                2000,
+                128
+              ],
+              "other_shape": [
+                2000,
+                128
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 256000,
+              "old_failed": 8716,
+              "max_absolute": 7.941946387290955e-05,
+              "max_relative": 0.004248531069606543,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.13.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.state.13.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                2000
+              ],
+              "other_shape": [
+                2000
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 2000,
+              "old_failed": 251,
+              "max_absolute": 3.0517578125e-05,
+              "max_relative": 0.0023783445358276367,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.13.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                2000
+              ],
+              "other_shape": [
+                2000
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 2000,
+              "old_failed": 0,
+              "max_absolute": 2.1568848751485348e-07,
+              "max_relative": 0.0008785648969933391,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.state.14.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.state.14.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                1,
+                2000
+              ],
+              "other_shape": [
+                1,
+                2000
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 2000,
+              "old_failed": 1925,
+              "max_absolute": 0.01953125,
+              "max_relative": 0.04809052124619484,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.14.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                1,
+                2000
+              ],
+              "other_shape": [
+                1,
+                2000
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 2000,
+              "old_failed": 1604,
+              "max_absolute": 0.10750579833984375,
+              "max_relative": 0.0022460983600467443,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.15.step",
+              "kind": "tensor",
+              "shape": [],
+              "other_shape": [],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 0.0,
+              "max_relative": 0.0,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.state.15.exp_avg",
+              "kind": "tensor",
+              "shape": [
+                1
+              ],
+              "other_shape": [
+                1
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 1,
+              "max_absolute": 0.00042724609375,
+              "max_relative": 0.0013449526159092784,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "critic_optimizer.state.15.exp_avg_sq",
+              "kind": "tensor",
+              "shape": [
+                1
+              ],
+              "other_shape": [
+                1
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 1,
+              "old_failed": 0,
+              "max_absolute": 2.8192996978759766e-05,
+              "max_relative": 0.00030956213595345616,
+              "passed": true
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].name",
+              "kind": "scalar",
+              "passed": true,
+              "original": "critic",
+              "optimized": "critic"
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].lr",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.001,
+              "optimized": 0.001
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].betas[0]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.5,
+              "optimized": 0.5
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].betas[1]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.9,
+              "optimized": 0.9
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].eps",
+              "kind": "scalar",
+              "passed": true,
+              "original": 1e-08,
+              "optimized": 1e-08
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].weight_decay",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0,
+              "optimized": 0
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].amsgrad",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].maximize",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].foreach",
+              "kind": "scalar",
+              "passed": true,
+              "original": null,
+              "optimized": null
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].capturable",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].differentiable",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].fused",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].initial_lr",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.001,
+              "optimized": 0.001
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].params[0]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0,
+              "optimized": 0
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].params[1]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 1,
+              "optimized": 1
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].params[2]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 2,
+              "optimized": 2
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].params[3]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 3,
+              "optimized": 3
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].params[4]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 4,
+              "optimized": 4
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].params[5]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 5,
+              "optimized": 5
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].params[6]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 6,
+              "optimized": 6
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].params[7]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 7,
+              "optimized": 7
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].params[8]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 8,
+              "optimized": 8
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].params[9]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 9,
+              "optimized": 9
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].params[10]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 10,
+              "optimized": 10
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].params[11]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 11,
+              "optimized": 11
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].params[12]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 12,
+              "optimized": 12
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].params[13]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 13,
+              "optimized": 13
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].params[14]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 14,
+              "optimized": 14
+            },
+            {
+              "path": "critic_optimizer.param_groups[0].params[15]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 15,
+              "optimized": 15
+            },
+            {
+              "path": "gradients.velocity",
+              "kind": "tensor",
+              "shape": [
+                40,
+                70
+              ],
+              "other_shape": [
+                40,
+                70
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 2800,
+              "old_failed": 19,
+              "max_absolute": 5.30388206243515e-05,
+              "max_relative": 5.100991249084473,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "gradients.source",
+              "kind": "tensor",
+              "shape": [
+                1,
+                1,
+                128
+              ],
+              "other_shape": [
+                1,
+                1,
+                128
+              ],
+              "dtype": "torch.float32",
+              "other_dtype": "torch.float32",
+              "rtol": 0.0002,
+              "atol": 2e-05,
+              "elements": 128,
+              "old_failed": 115,
+              "max_absolute": 0.94384765625,
+              "max_relative": 0.4031798243522644,
+              "passed": false,
+              "reason": "Tensor-likes are not close!"
+            },
+            {
+              "path": "physical_scheduler.step_size",
+              "kind": "scalar",
+              "passed": true,
+              "original": 150,
+              "optimized": 150
+            },
+            {
+              "path": "physical_scheduler.gamma",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.5,
+              "optimized": 0.5
+            },
+            {
+              "path": "physical_scheduler.base_lrs[0]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 5.0,
+              "optimized": 5.0
+            },
+            {
+              "path": "physical_scheduler.base_lrs[1]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.001,
+              "optimized": 0.001
+            },
+            {
+              "path": "physical_scheduler.last_epoch",
+              "kind": "scalar",
+              "passed": true,
+              "original": 12,
+              "optimized": 12
+            },
+            {
+              "path": "physical_scheduler.verbose",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "physical_scheduler._step_count",
+              "kind": "scalar",
+              "passed": true,
+              "original": 13,
+              "optimized": 13
+            },
+            {
+              "path": "physical_scheduler._get_lr_called_within_step",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "physical_scheduler._last_lr[0]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 5.0,
+              "optimized": 5.0
+            },
+            {
+              "path": "physical_scheduler._last_lr[1]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.001,
+              "optimized": 0.001
+            },
+            {
+              "path": "critic_scheduler.step_size",
+              "kind": "scalar",
+              "passed": true,
+              "original": 100,
+              "optimized": 100
+            },
+            {
+              "path": "critic_scheduler.gamma",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.5,
+              "optimized": 0.5
+            },
+            {
+              "path": "critic_scheduler.base_lrs[0]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.001,
+              "optimized": 0.001
+            },
+            {
+              "path": "critic_scheduler.last_epoch",
+              "kind": "scalar",
+              "passed": true,
+              "original": 12,
+              "optimized": 12
+            },
+            {
+              "path": "critic_scheduler.verbose",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "critic_scheduler._step_count",
+              "kind": "scalar",
+              "passed": true,
+              "original": 13,
+              "optimized": 13
+            },
+            {
+              "path": "critic_scheduler._get_lr_called_within_step",
+              "kind": "scalar",
+              "passed": true,
+              "original": false,
+              "optimized": false
+            },
+            {
+              "path": "critic_scheduler._last_lr[0]",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.001,
+              "optimized": 0.001
+            },
+            {
+              "path": "physical_scaler.scale",
+              "kind": "scalar",
+              "passed": true,
+              "original": 4096.0,
+              "optimized": 4096.0
+            },
+            {
+              "path": "physical_scaler.growth_factor",
+              "kind": "scalar",
+              "passed": true,
+              "original": 2.0,
+              "optimized": 2.0
+            },
+            {
+              "path": "physical_scaler.backoff_factor",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.5,
+              "optimized": 0.5
+            },
+            {
+              "path": "physical_scaler.growth_interval",
+              "kind": "scalar",
+              "passed": true,
+              "original": 2000,
+              "optimized": 2000
+            },
+            {
+              "path": "physical_scaler._growth_tracker",
+              "kind": "scalar",
+              "passed": true,
+              "original": 4,
+              "optimized": 4
+            },
+            {
+              "path": "critic_scaler.scale",
+              "kind": "scalar",
+              "passed": true,
+              "original": 64.0,
+              "optimized": 64.0
+            },
+            {
+              "path": "critic_scaler.growth_factor",
+              "kind": "scalar",
+              "passed": true,
+              "original": 2.0,
+              "optimized": 2.0
+            },
+            {
+              "path": "critic_scaler.backoff_factor",
+              "kind": "scalar",
+              "passed": true,
+              "original": 0.5,
+              "optimized": 0.5
+            },
+            {
+              "path": "critic_scaler.growth_interval",
+              "kind": "scalar",
+              "passed": true,
+              "original": 2000,
+              "optimized": 2000
+            },
+            {
+              "path": "critic_scaler._growth_tracker",
+              "kind": "scalar",
+              "passed": true,
+              "original": 33,
+              "optimized": 33
+            },
+            {
+              "path": "losses[0][0].generator_loss",
+              "kind": "scalar",
+              "passed": true,
+              "original": 772.5,
+              "optimized": 772.5
+            },
+            {
+              "path": "losses[0][0].critic_loss",
+              "kind": "scalar",
+              "passed": true,
+              "original": -440.3973032633463,
+              "optimized": -440.3973083496094
+            },
+            {
+              "path": "losses[1][0].generator_loss",
+              "kind": "scalar",
+              "passed": true,
+              "original": 513.0,
+              "optimized": 513.0
+            },
+            {
+              "path": "losses[1][0].critic_loss",
+              "kind": "scalar",
+              "passed": true,
+              "original": -321.98806381225586,
+              "optimized": -322.00909423828125
+            },
+            {
+              "path": "rng.torch",
+              "kind": "rng",
+              "passed": true
+            },
+            {
+              "path": "rng.cuda",
+              "kind": "rng",
+              "passed": true
+            },
+            {
+              "path": "rng.python",
+              "kind": "rng",
+              "passed": true
+            },
+            {
+              "path": "rng.numpy",
+              "kind": "rng",
+              "passed": true
+            }
+          ]
+        }
+      ],
+      "untimed_counts": {},
+      "limitation": "synthetic training-loop evidence; not convergence or full Marmousi performance",
+      "error": "tiny-clean: numerical comparison failed: physical.velocity, physical_changes.velocity, critic.conv_block.3.weight, critic.conv_block.6.weight, critic.conv_block.6.bias, critic.conv_block.9.weight, critic.conv_block.12.weight, critic.conv_block.12.bias, critic.dense_block.0.weight, physical_optimizer.state.0.exp_avg, physical_optimizer.state.1.exp_avg, physical_optimizer.state.1.exp_avg_sq, critic_optimizer.state.0.exp_avg, critic_optimizer.state.0.exp_avg_sq, critic_optimizer.state.1.exp_avg, critic_optimizer.state.1.exp_avg_sq, critic_optimizer.state.2.exp_avg, critic_optimizer.state.2.exp_avg_sq, critic_optimizer.state.3.exp_avg, critic_optimizer.state.3.exp_avg_sq, critic_optimizer.state.4.exp_avg, critic_optimizer.state.4.exp_avg_sq, critic_optimizer.state.5.exp_avg, critic_optimizer.state.5.exp_avg_sq, critic_optimizer.state.6.exp_avg, critic_optimizer.state.6.exp_avg_sq, critic_optimizer.state.7.exp_avg, critic_optimizer.state.7.exp_avg_sq, critic_optimizer.state.8.exp_avg, critic_optimizer.state.8.exp_avg_sq, critic_optimizer.state.9.exp_avg, critic_optimizer.state.9.exp_avg_sq, critic_optimizer.state.10.exp_avg, critic_optimizer.state.10.exp_avg_sq, critic_optimizer.state.11.exp_avg, critic_optimizer.state.11.exp_avg_sq, critic_optimizer.state.12.exp_avg, critic_optimizer.state.12.exp_avg_sq, critic_optimizer.state.13.exp_avg, critic_optimizer.state.14.exp_avg, critic_optimizer.state.14.exp_avg_sq, critic_optimizer.state.15.exp_avg, gradients.velocity, gradients.source"
+    }
+  },
+  "benchmark_sha256": "3e090f2cc6aeb77c22114f6103542b04ff3167b90a6b4f4f0f65909fd2c148f0",
+  "cuda_numerics": {
+    "cudnn_deterministic": true,
+    "cudnn_benchmark": false,
+    "cudnn_allow_tf32": true,
+    "matmul_allow_tf32": false
+  },
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 4090",
+    "cudnn": 8500,
+    "free_total_bytes": [
+      24848826368,
+      25261047808
+    ]
+  }
+}

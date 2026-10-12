@@ -1,0 +1,40 @@
+============================= test session starts ==============================
+platform linux -- Python 3.10.12, pytest-8.4.2, pluggy-1.6.0
+rootdir: /tmp/fwigan-package-test/repo
+configfile: pyproject.toml
+collected 215 items
+
+tests/test_benchmark.py ...............                                  [  6%]
+tests/test_cli.py ..............                                         [ 13%]
+tests/test_contracts.py ................................................ [ 35%]
+..........                                                               [ 40%]
+tests/test_cuda.py ....                                                  [ 42%]
+tests/test_experiment.py ............................................... [ 64%]
+..............                                                           [ 70%]
+tests/test_strategies.py ............................................... [ 92%]
+................                                                         [100%]
+
+=============================== warnings summary ===============================
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+  /tmp/fwigan-package-test/venv/lib/python3.10/site-packages/matplotlib/_fontconfig_pattern.py:88: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    parse = parser.parseString(pattern)
+
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+  /tmp/fwigan-package-test/venv/lib/python3.10/site-packages/matplotlib/_fontconfig_pattern.py:92: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    parser.resetCache()
+
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+  /tmp/fwigan-package-test/venv/lib/python3.10/site-packages/matplotlib/_mathtext.py:30: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+    ParserElement.enablePackrat()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+----------- generated xml file: /tmp/fwigan-package-test/pytest.xml ------------
+====================== 215 passed, 11 warnings in 21.87s =======================

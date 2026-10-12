@@ -27,7 +27,7 @@ After the all-suite benchmark successfully writes real CUDA results, render its 
 python examples/plot_gpu_benchmark.py --input runs/benchmark-cuda.json --output-dir docs/assets
 ```
 
-This renderer requires real GPU identity, all three workloads, repeated timing windows and non-null memory measurements. It rejects CPU, tiny-only and incomplete JSON. No GPU benchmark figure is included: the post-fix full-suite/benchmark run is blocked by RunPod provisioning failures, as detailed in [the validation record](validation/validation.md).
+This renderer requires real GPU identity, all three workloads, repeated timing windows and non-null memory measurements. It rejects CPU, tiny-only and incomplete JSON. No GPU benchmark figure is included: the latest RTX 4090 all-suite attempt failed the tiny-clean numerical comparison, so its diagnostic timing and memory windows are **not accepted performance results**. See [the validation record](validation/validation.md) and [raw failure JSON](validation/gpu-benchmark-failure.json).
 
 The all suite adds a representative **synthetic constant-model** workload on a 100×310 inversion grid, nt2000, five shots, 60 receivers and six critic cycles. It is not a Marmousi convergence run. This workload is GPU-only; it is intentionally excluded from routine CPU training.
 
@@ -43,6 +43,16 @@ python -m pip install -e '.[test,plot,notebook]'
 
 Each timing window uses CUDA synchronization at its boundaries, so includes host and solver transfers. Absolute and incremental peak allocated/reserved memory are recorded with each branch's live initial allocation; the other branch's model and optimizers are released and common snapshots remain on CPU. Capacity claims require real device peaks, not estimates.
 
+The benchmark gates measured comparisons on successful optimizer updates, matching RNG and field-specific numerical parity. On the latest RTX 4090 run, the full 215-test suite passed, but tiny-clean diverged after two epochs in 44 physical, critic, optimizer and gradient paths; the maximum full-velocity difference was 0.687744 m/s. The 2,800-cell recovered velocity-change comparison had 539 failures under the original tolerance. Its narrow one-local-float32-model-ULP floor rescued 17 cells; 522 still failed. No noisy or representative result from that attempt is accepted. Earlier partial CUDA windows cannot establish an all-workload speedup or capacity result.
+
+For investigation only, the opt-in two-epoch diagnostic replays three original/optimized pairs from one calibrated state, first with default precision and then with cuDNN TF32 disabled as a labelled ablation:
+
+```bash
+python examples/benchmark.py --device cuda --suite tiny --variant clean --diagnostic-replays 3 --diagnostic-tf32-ablation --output runs/cuda-repeatability.json
+```
+
+This mode is untimed and produces no performance samples. Its focused tests and real CPU smoke check passed; the planned CUDA run failed at provider Pod creation and has no GPU result. An exit-zero diagnostic would mean collection completed, not that comparisons passed; inspect the recorded failure counts and paths.
+
 The retained float32 wavefield estimate is `2000 × 3 × 5 × 124 × 334 × 4 = 4,969,920,000 bytes` (4.63 GiB). Both branches retain this store because they reuse the same gradient-enabled solve. Detachment removes unnecessary adjoints, not the dominant wavefield. Critic activations, cuDNN workspaces, optimizer memory and allocator reservation add overhead.
 
 ## Work reduction and remaining backend costs
@@ -51,13 +61,15 @@ At six critic cycles the original loop makes one forward and seven adjoints per 
 
 DeepWave 0.0.9 still performs dynamic velocity checks, geometry reductions, CPU NumPy/SciPy resampling of source amplitudes and receiver gradients, and transfers back to CUDA. AMP does not halve the float32 solver wavefields. Update counters track actual optimizer calls without replacing skipped AMP attempts with successful work.
 
+The pinned DeepWave 0.0.9 CUDA source accumulates multi-shot model gradients into shared cells with `atomicAdd`, whose floating-point reduction order can vary outside cuDNN's deterministic-algorithm setting. Saved RNG and deterministic cuDNN settings therefore do not promise bit-exact GPU training trajectories. Subsequent critic AMP and max-pool operations may amplify small differences, but the cause of this benchmark's material divergence is **unproven**. The [validation record](validation/validation.md#gpu-numerical-limits) states the comparison rule and unresolved evidence.
+
 Useful knobs are bounded epoch/group budgets, FWI batch size, the existing equal FWIGAN shot groups, reporting/evaluation cadence, CPU thread limits and explicit CUDA AMP. Changing shot grouping changes critic channels and the preserved objective. New solvers, normalization, critics, mixed-precision physics, PML or compiler transformations need independent scientific validation.
 
 ## Reproducible figures
 
 `python examples/illustrate.py` repeats the real 24 epoch bounded CPU FWI case and regenerates `docs/assets/tiny-*.png/.svg`, numerical arrays and metadata with config, fingerprint, units, library versions and solver counts. `--reuse-cache` redraws existing arrays explicitly. The shared 2000 m/s lower bound equals the initializer and is a material prior. Truth and inversion use the same grid; these plots establish a small executable path and data-fit improvement.
 
-CPU benchmark JSON and plots come from real successful measurement. All four CUDA-specific integration checks passed on an RTX 4090 with Torch 1.13.1+cu117 and DeepWave 0.0.9. They cover traces and physical gradients, clean/noisy AMP with actual updates and restart, and fixed-source FWI improvement. The first full GPU suite had 199 passes and one test-fixture failure, subsequently corrected without changing production code or tolerances. A post-fix full GPU suite and CUDA benchmark timing/memory remain unmeasured because new RunPod creation requests failed. The [validation record](validation/validation.md) separates these outcomes; skipped CPU CUDA tests are not GPU evidence.
+CPU benchmark JSON and plots come from real successful measurement. All four CUDA-specific integration checks passed in the full 215/215 RTX 4090 suite at `7339f63` with Torch 1.13.1+cu117 and DeepWave 0.0.9. They cover traces and physical gradients, clean/noisy AMP with actual updates and restart, and fixed-source FWI improvement. The separate equivalent-work benchmark failed numerical parity, so CUDA timing and memory remain unvalidated. The [validation record](validation/validation.md) separates these outcomes; skipped CPU CUDA tests are not GPU evidence.
 
 ## Recorded tiny CPU result
 

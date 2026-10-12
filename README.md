@@ -147,7 +147,7 @@ flowchart TD
 
 ## Resume, warm start, and inspect artifacts
 
-`resume` continues the **same** run and restores the physical state, critic if present, optimizers, schedulers, random streams, data identity, and next epoch/batch position. Keep the run directory's `run.json`, `config.json`, and `observations.pt` with its checkpoint. Load only trusted checkpoints.
+`resume` continues the **same** run and restores the physical state, critic if present, optimizers, schedulers, random streams, data identity, and next epoch/batch position. Keep the run directory's `run.json`, `config.json`, and `observations.pt` with its checkpoint. Load only trusted checkpoints. Restored RNG and state do not guarantee a bit-exact GPU training trajectory; see the [numerical limits](docs/validation/validation.md#gpu-numerical-limits).
 
 ```python
 continued = Experiment.resume("runs/<run-id>/checkpoint.pt", device="cpu")
@@ -232,12 +232,12 @@ Run `python -m pytest -q` for contracts, strategy behavior, gradient checks, and
 
 | Recorded check | Result |
 | --- | --- |
-| Full CPU suite | 196 passed; four CUDA-dependent tests skipped |
+| Hosted CPU suite at `f54f251` | Push and PR checks each passed 215 tests; four optional CUDA tests skipped on CPU |
 | CLI and notebooks | Simulation, both methods, interruption/resume and evaluation exercised; both notebooks executed |
-| RTX 4090 CUDA checks | All four passed: traces/gradients, clean/noisy AMP and resume, and FWI data-fit improvement |
-| Full GPU suite and benchmark | First suite: 199 passed, one absent-device RNG fixture failed. The fixture is corrected; the full rerun and GPU timing/memory are blocked by RunPod provisioning failures. |
+| RTX 4090 GPU suite at `7339f63` | 215 passed, zero failed or skipped, including all four CUDA-specific checks |
+| Equivalent-work GPU benchmark | Tiny-clean failed numerical parity after two epochs across physical, critic, optimizer and gradient state; no CUDA timing or memory result is accepted |
 
-Exact commits, tolerances, test counts, the fixture-only correction, and verified deletion of the test Pods are in [the validation record](docs/validation/validation.md). CUDA checks do not establish measured GPU speedup, full Marmousi recovery, or superiority of the adversarial objective. No GPU benchmark figure is included until real timing and memory results exist.
+Exact commits, tolerances, failed comparison paths, and verified deletion of the test Pods are in [the validation record](docs/validation/validation.md). The opt-in repeatability diagnostic has passed CPU checks but has not run on CUDA; a subsequent GPU provisioning attempt failed before creating a Pod. CUDA checks do not establish measured GPU speedup, full Marmousi recovery, or superiority of the adversarial objective. No GPU benchmark figure is included until a complete numerically accepted all-workload run exists.
 
 The next scientific steps are low-to-high frequency continuation, constrained source/noise studies, a separately validated per-shot critic, and a separately calibrated modern DeepWave backend. Keep method, data, acquisition, and independent evaluation fixed when comparing new methods.
 
