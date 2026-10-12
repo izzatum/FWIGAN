@@ -43,6 +43,8 @@ counts.set(title='Actual DeepWave adjoints per shot group',ylabel='Adjoint calls
 cycles='/'.join(str(value) for value in sorted({work['config']['critic_cycles'] for work in report['workloads'].values()}))
 fig.suptitle(f'Tiny synthetic {report["device"].upper()} benchmark · {cycles} critic cycles\nEquivalent warmed optimizer work; no full-scale speedup claim',fontsize=13)
 for suffix in ('png','svg'):
-    fig.savefig(args.output_dir/f'tiny-cpu-benchmark.{suffix}',dpi=190,bbox_inches='tight')
+    destination=args.output_dir/f'tiny-cpu-benchmark.{suffix}'
+    fig.savefig(destination,dpi=190,bbox_inches='tight')
+    if suffix=='svg':destination.write_text('\n'.join(line.rstrip() for line in destination.read_text().splitlines())+'\n')
 plt.close(fig)
 print(args.output_dir/'tiny-cpu-benchmark.png')

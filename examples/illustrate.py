@@ -78,7 +78,9 @@ def compute():
 
 
 def save(fig, name):
-    fig.savefig(ROOT / "assets" / f"{name}.svg", bbox_inches="tight")
+    svg = ROOT / "assets" / f"{name}.svg"
+    fig.savefig(svg, bbox_inches="tight")
+    svg.write_text("\n".join(line.rstrip() for line in svg.read_text().splitlines()) + "\n")
     fig.savefig(ROOT / "assets" / f"{name}.png", dpi=190, bbox_inches="tight")
     plt.close(fig)
 
