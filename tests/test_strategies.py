@@ -367,3 +367,18 @@ def test_invalid_observed_tensor_type_raises_clear_value_error():
     f=inversion();data=make_tiny_data(nt=64);config=ExperimentConfig(batches=1)
     with pytest.raises(ValueError,match='float32 tensor'):
         f.FWIGANStrategy(parameters(data,config),LegacyDeepwave(),data,config,observed=[1,2])
+
+
+def test_controlled_initial_velocity_prior_improves_datafit_and_model_error():
+    f=inversion();data=make_tiny_data(nt=64,shots=2,receivers=8)
+    # The prior uses the supplied initial model only, not reference truth.
+    config=ExperimentConfig(method='fwi',velocity_lr=2.,velocity_min=data.initial_velocity.min().item())
+    strategy=f.FWIStrategy(parameters(data,config),LegacyDeepwave(),data,config)
+    def data_loss(v):
+        return (LegacyDeepwave().predict(v,data.source,data.acquisition,data.grid,data.sampling)-data.traces).square().mean()
+    def model_error(v): return (v-data.reference_velocity).square().mean().sqrt()
+    initial_loss=data_loss(data.initial_velocity).item()
+    initial_error=model_error(data.initial_velocity).item()
+    for _ in range(6): strategy.step_epoch()
+    assert data_loss(strategy.parameters.velocity).item()<initial_loss*.9
+    assert model_error(strategy.parameters.velocity).item()<initial_error
