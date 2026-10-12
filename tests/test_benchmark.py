@@ -8,6 +8,9 @@ from types import SimpleNamespace
 import numpy as np
 import pytest
 import torch
+from fwigan.checkpoints import rng_snapshot, restore_rng, seed_all
+from fwigan.inversion.adversarial import gradient_penalty as production_gradient_penalty
+from reference import gradient_penalty as frozen_gradient_penalty
 
 
 class MetadataQueryReached(Exception):
@@ -20,6 +23,56 @@ def load_benchmark():
     benchmark = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(benchmark)
     return benchmark
+
+
+def test_frozen_and_production_penalties_consume_identical_seeded_beta_stream(monkeypatch):
+    """A shared checkpoint must give both real penalty functions the same draws."""
+    entry_rng = rng_snapshot()
+    try:
+        seed_all(42)
+        common_rng = rng_snapshot()
+        observed = torch.linspace(-1, 1, 2 * 128 * 60).reshape(1, 2, 128, 60)
+        predicted = observed.flip(-1).clone()
+
+        def critic(values):
+            return values.square().flatten(1).sum(dim=1)
+
+        def run(penalty, frozen):
+            restore_rng(common_rng)
+            betas = []
+            real_rand = torch.rand
+
+            def capture_rand(*args, **kwargs):
+                value = real_rand(*args, **kwargs)
+                betas.append(value.clone())
+                return value
+
+            with monkeypatch.context() as patch:
+                patch.setattr(torch, 'rand', capture_rand)
+                for _ in range(12):
+                    if frozen:
+                        penalty(critic, observed, predicted, device='cpu')
+                    else:
+                        penalty(critic, observed, predicted)
+            return betas, rng_snapshot()
+
+        frozen_betas, frozen_end = run(frozen_gradient_penalty, True)
+        production_betas, production_end = run(production_gradient_penalty, False)
+
+        assert len(frozen_betas) == len(production_betas) == 12
+        assert all(beta.shape == (1, 1, 1, 1) for beta in frozen_betas + production_betas)
+        assert all(torch.equal(left, right) for left, right in zip(frozen_betas, production_betas))
+        assert not torch.equal(common_rng['torch'], frozen_end['torch'])
+        for key in ('python', 'cudnn_deterministic', 'cudnn_benchmark'):
+            assert frozen_end[key] == production_end[key]
+        assert torch.equal(frozen_end['torch'], production_end['torch'])
+        assert len(frozen_end['cuda']) == len(production_end['cuda'])
+        assert all(torch.equal(left, right) for left, right in zip(frozen_end['cuda'], production_end['cuda']))
+        assert frozen_end['numpy'][0] == production_end['numpy'][0]
+        np.testing.assert_array_equal(frozen_end['numpy'][1], production_end['numpy'][1])
+        assert frozen_end['numpy'][2:] == production_end['numpy'][2:]
+    finally:
+        restore_rng(entry_rng)
 
 
 class FakeState:
