@@ -316,7 +316,7 @@ def main():
                                  cudnn_allow_tf32=torch.backends.cudnn.allow_tf32,
                                  matmul_allow_tf32=torch.backends.cuda.matmul.allow_tf32)
     if device.type == 'cuda':
-        report['gpu'] = dict(name=torch.cuda.get_device_name(device), cudnn=torch.backends.cudnn.version(), free_total_bytes=list(torch.cuda.mem_get_info(device)))
+        report['gpu'] = dict(name=torch.cuda.get_device_name(device), cudnn=torch.backends.cudnn.version(), free_total_bytes=list(torch.cuda.mem_get_info()))
     workloads = [('tiny-'+name, name == 'noisy', False) for name in ('clean', 'noisy') if args.variant in ('both', name)]
     if args.suite == 'all': workloads.append(('representative-clean', False, True))
     for label, noisy, representative in workloads:
