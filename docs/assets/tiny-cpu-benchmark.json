@@ -1,0 +1,4621 @@
+{
+  "schema": 1,
+  "device": "cpu",
+  "suite": "tiny",
+  "seed": 42,
+  "threads": 2,
+  "torch": "1.13.1+cpu",
+  "deepwave": "0.0.9",
+  "python": "3.10.22",
+  "cuda_build": null,
+  "timing_scope": "synchronized wall time of complete train epochs; excludes construction, warmup, checkpoint transfer and instrumentation",
+  "cpu_contention": "caller certified exclusive",
+  "provenance": {
+    "tests/reference/notebook_cells.json": "420d9bd1da6cb4501c21cf15e4ccd1aeb983488b85d2b6e9a0cf846f2fb31a3b",
+    "tests/reference/strategy.py": "dd5801865c786121e7f2fa3f101877b9d5b3e3bf61e090dca9713cc6b89e0820",
+    "src/fwigan/inversion/adversarial.py": "a55971e3b06ee6593b8e0a81b537efbcc42a4c7bcfbd3cc12aa5396a2d588caa",
+    "src/fwigan/physics/deepwave.py": "0e7e24c65094336d277ef42958371e71efd3dba9b53c16f81778662ccbf9f4b3"
+  },
+  "frozen_revision": "c7ec47ed89ba1380ad7a02bbc4526b93675e76f3",
+  "numerical_tolerance": {
+    "rtol": 0.0,
+    "atol": 0.0,
+    "cpu_critic_loss_atol": 2e-06,
+    "cpu_critic_loss_rtol": 2e-07
+  },
+  "workloads": {
+    "tiny-clean": {
+      "synthetic": true,
+      "geometry": {
+        "model": [
+          40,
+          70
+        ],
+        "nt": 128,
+        "shots": 2,
+        "receivers": 60,
+        "spacing_m": 30.0,
+        "dt_s": 0.003
+      },
+      "config": {
+        "method": "fwigan",
+        "seed": 42,
+        "device": "cpu",
+        "epochs": 401,
+        "batches": 1,
+        "batch_size": 2,
+        "critic_cycles": 6,
+        "amp": false,
+        "noise": false,
+        "observation_noise_level": 0.05,
+        "checkpoint_interval": 50,
+        "evaluation_interval": 10,
+        "sigma_init": 0.08,
+        "velocity_lr": 5.0,
+        "source_lr": 0.001,
+        "sigma_lr": 0.01,
+        "critic_lr": 0.001,
+        "velocity_min": 1000.0,
+        "velocity_max": 6000.0,
+        "regularization": 0.0,
+        "physical_scheduler_step_size": 150,
+        "critic_scheduler_step_size": 100,
+        "scheduler_gamma": 0.5,
+        "adam_betas": [
+          0.5,
+          0.9
+        ],
+        "gradient_penalty_weight": 10.0,
+        "critic_drift": 0.001,
+        "velocity_clip": 1000.0,
+        "critic_clip": 1000000.0,
+        "train_source": true,
+        "train_sigma": false,
+        "observation_mode": "raw"
+      },
+      "steps_per_window": 2,
+      "repetitions": 3,
+      "warmup_original": [
+        {
+          "actual_updates": [
+            1,
+            6
+          ],
+          "scales": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "actual_updates": [
+            1,
+            6
+          ],
+          "scales": [
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "warmup_optimized": [
+        {
+          "actual_updates": {
+            "physical": 1,
+            "critic": 6
+          },
+          "scales": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "actual_updates": {
+            "physical": 1,
+            "critic": 6
+          },
+          "scales": [
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "windows": {
+        "original": [
+          {
+            "seconds": 0.8376828870004829,
+            "seconds_per_batch": 0.41884144350024144,
+            "actual_updates": {
+              "physical": 2,
+              "critic": 12
+            },
+            "memory": null
+          },
+          {
+            "seconds": 0.7586729750000814,
+            "seconds_per_batch": 0.3793364875000407,
+            "actual_updates": {
+              "physical": 2,
+              "critic": 12
+            },
+            "memory": null
+          },
+          {
+            "seconds": 0.7536342220009828,
+            "seconds_per_batch": 0.3768171110004914,
+            "actual_updates": {
+              "physical": 2,
+              "critic": 12
+            },
+            "memory": null
+          }
+        ],
+        "optimized": [
+          {
+            "seconds": 0.33973675499873934,
+            "seconds_per_batch": 0.16986837749936967,
+            "actual_updates": {
+              "physical": 2,
+              "critic": 12
+            },
+            "memory": null
+          },
+          {
+            "seconds": 0.4340702240006067,
+            "seconds_per_batch": 0.21703511200030334,
+            "actual_updates": {
+              "physical": 2,
+              "critic": 12
+            },
+            "memory": null
+          },
+          {
+            "seconds": 0.34308082799907424,
+            "seconds_per_batch": 0.17154041399953712,
+            "actual_updates": {
+              "physical": 2,
+              "critic": 12
+            },
+            "memory": null
+          }
+        ]
+      },
+      "median_seconds_per_batch": {
+        "original": 0.3793364875000407,
+        "optimized": 0.17154041399953712
+      },
+      "original_over_optimized_time_ratio": 2.2113534569239426,
+      "numerical_comparisons": [
+        {
+          "physical": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "sigma": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_changes": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "sigma": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "critic": {
+            "conv_block.0.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.0.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.3.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.3.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.6.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.6.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.9.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.9.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.12.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.12.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.0.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.0.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.2.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.2.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.4.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.4.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_optimizer": {
+            "state": {
+              "0": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "1": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              }
+            },
+            "param_groups": [
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              },
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "critic_optimizer": {
+            "state": {
+              "0": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "1": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "2": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "3": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "4": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "5": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "6": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "7": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "8": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "9": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "10": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "11": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "12": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "13": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "14": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "15": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              }
+            },
+            "param_groups": [
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "gradients": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_scheduler": {
+            "step_size": {
+              "max_absolute": 0
+            },
+            "gamma": {
+              "max_absolute": 0.0
+            },
+            "base_lrs": [
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              }
+            ],
+            "last_epoch": {
+              "max_absolute": 0
+            },
+            "verbose": {
+              "max_absolute": 0
+            },
+            "_step_count": {
+              "max_absolute": 0
+            },
+            "_get_lr_called_within_step": {
+              "max_absolute": 0
+            },
+            "_last_lr": [
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              }
+            ]
+          },
+          "critic_scheduler": {
+            "step_size": {
+              "max_absolute": 0
+            },
+            "gamma": {
+              "max_absolute": 0.0
+            },
+            "base_lrs": [
+              {
+                "max_absolute": 0.0
+              }
+            ],
+            "last_epoch": {
+              "max_absolute": 0
+            },
+            "verbose": {
+              "max_absolute": 0
+            },
+            "_step_count": {
+              "max_absolute": 0
+            },
+            "_get_lr_called_within_step": {
+              "max_absolute": 0
+            },
+            "_last_lr": [
+              {
+                "max_absolute": 0.0
+              }
+            ]
+          },
+          "physical_scaler": {},
+          "critic_scaler": {},
+          "losses": [
+            [
+              {
+                "generator_loss": {
+                  "max_absolute": 0.0
+                },
+                "critic_loss": {
+                  "max_absolute": 3.1789143406513176e-07
+                }
+              }
+            ],
+            [
+              {
+                "generator_loss": {
+                  "max_absolute": 0.0
+                },
+                "critic_loss": {
+                  "max_absolute": 2.1616617829067764e-05
+                }
+              }
+            ]
+          ],
+          "torch_rng_equal": true,
+          "cuda_rng_equal": true,
+          "python_rng_equal": true,
+          "numpy_rng_equal": true,
+          "physical_change_l2": {
+            "original": {
+              "velocity": 259.275634765625,
+              "source": 0.020633872598409653,
+              "sigma": 0.0
+            },
+            "optimized": {
+              "velocity": 259.275634765625,
+              "source": 0.020633872598409653,
+              "sigma": 0.0
+            }
+          }
+        },
+        {
+          "physical": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "sigma": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_changes": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "sigma": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "critic": {
+            "conv_block.0.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.0.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.3.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.3.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.6.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.6.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.9.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.9.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.12.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.12.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.0.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.0.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.2.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.2.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.4.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.4.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_optimizer": {
+            "state": {
+              "0": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "1": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              }
+            },
+            "param_groups": [
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              },
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "critic_optimizer": {
+            "state": {
+              "0": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "1": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "2": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "3": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "4": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "5": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "6": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "7": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "8": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "9": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "10": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "11": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "12": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "13": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "14": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "15": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              }
+            },
+            "param_groups": [
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "gradients": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_scheduler": {
+            "step_size": {
+              "max_absolute": 0
+            },
+            "gamma": {
+              "max_absolute": 0.0
+            },
+            "base_lrs": [
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              }
+            ],
+            "last_epoch": {
+              "max_absolute": 0
+            },
+            "verbose": {
+              "max_absolute": 0
+            },
+            "_step_count": {
+              "max_absolute": 0
+            },
+            "_get_lr_called_within_step": {
+              "max_absolute": 0
+            },
+            "_last_lr": [
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              }
+            ]
+          },
+          "critic_scheduler": {
+            "step_size": {
+              "max_absolute": 0
+            },
+            "gamma": {
+              "max_absolute": 0.0
+            },
+            "base_lrs": [
+              {
+                "max_absolute": 0.0
+              }
+            ],
+            "last_epoch": {
+              "max_absolute": 0
+            },
+            "verbose": {
+              "max_absolute": 0
+            },
+            "_step_count": {
+              "max_absolute": 0
+            },
+            "_get_lr_called_within_step": {
+              "max_absolute": 0
+            },
+            "_last_lr": [
+              {
+                "max_absolute": 0.0
+              }
+            ]
+          },
+          "physical_scaler": {},
+          "critic_scaler": {},
+          "losses": [
+            [
+              {
+                "generator_loss": {
+                  "max_absolute": 0.0
+                },
+                "critic_loss": {
+                  "max_absolute": 3.1789143406513176e-07
+                }
+              }
+            ],
+            [
+              {
+                "generator_loss": {
+                  "max_absolute": 0.0
+                },
+                "critic_loss": {
+                  "max_absolute": 2.1616617829067764e-05
+                }
+              }
+            ]
+          ],
+          "torch_rng_equal": true,
+          "cuda_rng_equal": true,
+          "python_rng_equal": true,
+          "numpy_rng_equal": true,
+          "physical_change_l2": {
+            "optimized": {
+              "velocity": 259.275634765625,
+              "source": 0.020633872598409653,
+              "sigma": 0.0
+            },
+            "original": {
+              "velocity": 259.275634765625,
+              "source": 0.020633872598409653,
+              "sigma": 0.0
+            }
+          }
+        },
+        {
+          "physical": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "sigma": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_changes": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "sigma": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "critic": {
+            "conv_block.0.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.0.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.3.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.3.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.6.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.6.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.9.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.9.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.12.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.12.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.0.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.0.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.2.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.2.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.4.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.4.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_optimizer": {
+            "state": {
+              "0": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "1": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              }
+            },
+            "param_groups": [
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              },
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "critic_optimizer": {
+            "state": {
+              "0": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "1": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "2": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "3": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "4": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "5": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "6": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "7": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "8": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "9": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "10": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "11": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "12": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "13": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "14": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "15": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              }
+            },
+            "param_groups": [
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "gradients": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_scheduler": {
+            "step_size": {
+              "max_absolute": 0
+            },
+            "gamma": {
+              "max_absolute": 0.0
+            },
+            "base_lrs": [
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              }
+            ],
+            "last_epoch": {
+              "max_absolute": 0
+            },
+            "verbose": {
+              "max_absolute": 0
+            },
+            "_step_count": {
+              "max_absolute": 0
+            },
+            "_get_lr_called_within_step": {
+              "max_absolute": 0
+            },
+            "_last_lr": [
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              }
+            ]
+          },
+          "critic_scheduler": {
+            "step_size": {
+              "max_absolute": 0
+            },
+            "gamma": {
+              "max_absolute": 0.0
+            },
+            "base_lrs": [
+              {
+                "max_absolute": 0.0
+              }
+            ],
+            "last_epoch": {
+              "max_absolute": 0
+            },
+            "verbose": {
+              "max_absolute": 0
+            },
+            "_step_count": {
+              "max_absolute": 0
+            },
+            "_get_lr_called_within_step": {
+              "max_absolute": 0
+            },
+            "_last_lr": [
+              {
+                "max_absolute": 0.0
+              }
+            ]
+          },
+          "physical_scaler": {},
+          "critic_scaler": {},
+          "losses": [
+            [
+              {
+                "generator_loss": {
+                  "max_absolute": 0.0
+                },
+                "critic_loss": {
+                  "max_absolute": 3.1789143406513176e-07
+                }
+              }
+            ],
+            [
+              {
+                "generator_loss": {
+                  "max_absolute": 0.0
+                },
+                "critic_loss": {
+                  "max_absolute": 2.1616617829067764e-05
+                }
+              }
+            ]
+          ],
+          "torch_rng_equal": true,
+          "cuda_rng_equal": true,
+          "python_rng_equal": true,
+          "numpy_rng_equal": true,
+          "physical_change_l2": {
+            "original": {
+              "velocity": 259.275634765625,
+              "source": 0.020633872598409653,
+              "sigma": 0.0
+            },
+            "optimized": {
+              "velocity": 259.275634765625,
+              "source": 0.020633872598409653,
+              "sigma": 0.0
+            }
+          }
+        }
+      ],
+      "untimed_counts": {
+        "original": {
+          "solver_forward": 1,
+          "solver_adjoint": 7,
+          "critic_forward": 19,
+          "saved_wavefield_bytes": [
+            18481152
+          ],
+          "actual_updates": {
+            "physical": 1,
+            "critic": 6
+          }
+        },
+        "optimized": {
+          "solver_forward": 1,
+          "solver_adjoint": 1,
+          "critic_forward": 19,
+          "saved_wavefield_bytes": [
+            18481152
+          ],
+          "actual_updates": {
+            "physical": 1,
+            "critic": 6
+          }
+        }
+      },
+      "limitation": "synthetic training-loop evidence; not convergence or full Marmousi performance"
+    },
+    "tiny-noisy": {
+      "synthetic": true,
+      "geometry": {
+        "model": [
+          40,
+          70
+        ],
+        "nt": 128,
+        "shots": 2,
+        "receivers": 60,
+        "spacing_m": 30.0,
+        "dt_s": 0.003
+      },
+      "config": {
+        "method": "fwigan",
+        "seed": 42,
+        "device": "cpu",
+        "epochs": 401,
+        "batches": 1,
+        "batch_size": 2,
+        "critic_cycles": 6,
+        "amp": false,
+        "noise": true,
+        "observation_noise_level": 0.05,
+        "checkpoint_interval": 50,
+        "evaluation_interval": 10,
+        "sigma_init": 0.08,
+        "velocity_lr": 5.0,
+        "source_lr": 0.001,
+        "sigma_lr": 0.01,
+        "critic_lr": 0.001,
+        "velocity_min": 1000.0,
+        "velocity_max": 6000.0,
+        "regularization": 0.0,
+        "physical_scheduler_step_size": 150,
+        "critic_scheduler_step_size": 100,
+        "scheduler_gamma": 0.5,
+        "adam_betas": [
+          0.5,
+          0.9
+        ],
+        "gradient_penalty_weight": 10.0,
+        "critic_drift": 0.001,
+        "velocity_clip": 1000.0,
+        "critic_clip": 1000000.0,
+        "train_source": true,
+        "train_sigma": true,
+        "observation_mode": "raw"
+      },
+      "steps_per_window": 2,
+      "repetitions": 3,
+      "warmup_original": [
+        {
+          "actual_updates": [
+            1,
+            6
+          ],
+          "scales": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "actual_updates": [
+            1,
+            6
+          ],
+          "scales": [
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "warmup_optimized": [
+        {
+          "actual_updates": {
+            "physical": 1,
+            "critic": 6
+          },
+          "scales": [
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "actual_updates": {
+            "physical": 1,
+            "critic": 6
+          },
+          "scales": [
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "windows": {
+        "original": [
+          {
+            "seconds": 0.7146668240002327,
+            "seconds_per_batch": 0.35733341200011637,
+            "actual_updates": {
+              "physical": 2,
+              "critic": 12
+            },
+            "memory": null
+          },
+          {
+            "seconds": 0.7077619510000659,
+            "seconds_per_batch": 0.35388097550003295,
+            "actual_updates": {
+              "physical": 2,
+              "critic": 12
+            },
+            "memory": null
+          },
+          {
+            "seconds": 0.7228813509991596,
+            "seconds_per_batch": 0.3614406754995798,
+            "actual_updates": {
+              "physical": 2,
+              "critic": 12
+            },
+            "memory": null
+          }
+        ],
+        "optimized": [
+          {
+            "seconds": 0.34481482400042296,
+            "seconds_per_batch": 0.17240741200021148,
+            "actual_updates": {
+              "physical": 2,
+              "critic": 12
+            },
+            "memory": null
+          },
+          {
+            "seconds": 0.34710399600044184,
+            "seconds_per_batch": 0.17355199800022092,
+            "actual_updates": {
+              "physical": 2,
+              "critic": 12
+            },
+            "memory": null
+          },
+          {
+            "seconds": 0.34690219500043895,
+            "seconds_per_batch": 0.17345109750021948,
+            "actual_updates": {
+              "physical": 2,
+              "critic": 12
+            },
+            "memory": null
+          }
+        ]
+      },
+      "median_seconds_per_batch": {
+        "original": 0.35733341200011637,
+        "optimized": 0.17345109750021948
+      },
+      "original_over_optimized_time_ratio": 2.0601392389556037,
+      "numerical_comparisons": [
+        {
+          "physical": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "sigma": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_changes": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "sigma": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "critic": {
+            "conv_block.0.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.0.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.3.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.3.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.6.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.6.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.9.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.9.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.12.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.12.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.0.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.0.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.2.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.2.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.4.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.4.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_optimizer": {
+            "state": {
+              "0": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "1": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "2": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              }
+            },
+            "param_groups": [
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              },
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              },
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "critic_optimizer": {
+            "state": {
+              "0": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "1": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "2": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "3": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "4": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "5": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "6": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "7": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "8": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "9": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "10": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "11": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "12": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "13": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "14": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "15": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              }
+            },
+            "param_groups": [
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "gradients": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "sigma": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_scheduler": {
+            "step_size": {
+              "max_absolute": 0
+            },
+            "gamma": {
+              "max_absolute": 0.0
+            },
+            "base_lrs": [
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              }
+            ],
+            "last_epoch": {
+              "max_absolute": 0
+            },
+            "verbose": {
+              "max_absolute": 0
+            },
+            "_step_count": {
+              "max_absolute": 0
+            },
+            "_get_lr_called_within_step": {
+              "max_absolute": 0
+            },
+            "_last_lr": [
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              }
+            ]
+          },
+          "critic_scheduler": {
+            "step_size": {
+              "max_absolute": 0
+            },
+            "gamma": {
+              "max_absolute": 0.0
+            },
+            "base_lrs": [
+              {
+                "max_absolute": 0.0
+              }
+            ],
+            "last_epoch": {
+              "max_absolute": 0
+            },
+            "verbose": {
+              "max_absolute": 0
+            },
+            "_step_count": {
+              "max_absolute": 0
+            },
+            "_get_lr_called_within_step": {
+              "max_absolute": 0
+            },
+            "_last_lr": [
+              {
+                "max_absolute": 0.0
+              }
+            ]
+          },
+          "physical_scaler": {},
+          "critic_scaler": {},
+          "losses": [
+            [
+              {
+                "generator_loss": {
+                  "max_absolute": 0.0
+                },
+                "critic_loss": {
+                  "max_absolute": 5.7220458984375e-06
+                }
+              }
+            ],
+            [
+              {
+                "generator_loss": {
+                  "max_absolute": 0.0
+                },
+                "critic_loss": {
+                  "max_absolute": 9.218851729997368e-06
+                }
+              }
+            ]
+          ],
+          "torch_rng_equal": true,
+          "cuda_rng_equal": true,
+          "python_rng_equal": true,
+          "numpy_rng_equal": true,
+          "physical_change_l2": {
+            "original": {
+              "velocity": 253.52818298339844,
+              "source": 0.01996316760778427,
+              "sigma": 0.01759186014533043
+            },
+            "optimized": {
+              "velocity": 253.52818298339844,
+              "source": 0.01996316760778427,
+              "sigma": 0.01759186014533043
+            }
+          }
+        },
+        {
+          "physical": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "sigma": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_changes": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "sigma": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "critic": {
+            "conv_block.0.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.0.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.3.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.3.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.6.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.6.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.9.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.9.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.12.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.12.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.0.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.0.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.2.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.2.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.4.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.4.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_optimizer": {
+            "state": {
+              "0": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "1": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "2": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              }
+            },
+            "param_groups": [
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              },
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              },
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "critic_optimizer": {
+            "state": {
+              "0": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "1": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "2": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "3": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "4": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "5": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "6": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "7": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "8": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "9": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "10": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "11": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "12": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "13": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "14": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "15": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              }
+            },
+            "param_groups": [
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "gradients": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "sigma": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_scheduler": {
+            "step_size": {
+              "max_absolute": 0
+            },
+            "gamma": {
+              "max_absolute": 0.0
+            },
+            "base_lrs": [
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              }
+            ],
+            "last_epoch": {
+              "max_absolute": 0
+            },
+            "verbose": {
+              "max_absolute": 0
+            },
+            "_step_count": {
+              "max_absolute": 0
+            },
+            "_get_lr_called_within_step": {
+              "max_absolute": 0
+            },
+            "_last_lr": [
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              }
+            ]
+          },
+          "critic_scheduler": {
+            "step_size": {
+              "max_absolute": 0
+            },
+            "gamma": {
+              "max_absolute": 0.0
+            },
+            "base_lrs": [
+              {
+                "max_absolute": 0.0
+              }
+            ],
+            "last_epoch": {
+              "max_absolute": 0
+            },
+            "verbose": {
+              "max_absolute": 0
+            },
+            "_step_count": {
+              "max_absolute": 0
+            },
+            "_get_lr_called_within_step": {
+              "max_absolute": 0
+            },
+            "_last_lr": [
+              {
+                "max_absolute": 0.0
+              }
+            ]
+          },
+          "physical_scaler": {},
+          "critic_scaler": {},
+          "losses": [
+            [
+              {
+                "generator_loss": {
+                  "max_absolute": 0.0
+                },
+                "critic_loss": {
+                  "max_absolute": 5.7220458984375e-06
+                }
+              }
+            ],
+            [
+              {
+                "generator_loss": {
+                  "max_absolute": 0.0
+                },
+                "critic_loss": {
+                  "max_absolute": 9.218851729997368e-06
+                }
+              }
+            ]
+          ],
+          "torch_rng_equal": true,
+          "cuda_rng_equal": true,
+          "python_rng_equal": true,
+          "numpy_rng_equal": true,
+          "physical_change_l2": {
+            "optimized": {
+              "velocity": 253.52818298339844,
+              "source": 0.01996316760778427,
+              "sigma": 0.01759186014533043
+            },
+            "original": {
+              "velocity": 253.52818298339844,
+              "source": 0.01996316760778427,
+              "sigma": 0.01759186014533043
+            }
+          }
+        },
+        {
+          "physical": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "sigma": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_changes": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "sigma": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "critic": {
+            "conv_block.0.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.0.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.3.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.3.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.6.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.6.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.9.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.9.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.12.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "conv_block.12.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.0.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.0.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.2.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.2.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.4.weight": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "dense_block.4.bias": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_optimizer": {
+            "state": {
+              "0": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "1": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "2": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              }
+            },
+            "param_groups": [
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              },
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              },
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "critic_optimizer": {
+            "state": {
+              "0": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "1": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "2": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "3": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "4": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "5": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "6": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "7": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "8": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "9": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "10": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "11": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "12": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "13": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "14": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              },
+              "15": {
+                "step": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                },
+                "exp_avg_sq": {
+                  "max_absolute": 0.0,
+                  "max_relative": 0.0
+                }
+              }
+            },
+            "param_groups": [
+              {
+                "name": {
+                  "equal": true
+                },
+                "lr": {
+                  "max_absolute": 0.0
+                },
+                "betas": [
+                  {
+                    "max_absolute": 0.0
+                  },
+                  {
+                    "max_absolute": 0.0
+                  }
+                ],
+                "eps": {
+                  "max_absolute": 0.0
+                },
+                "weight_decay": {
+                  "max_absolute": 0
+                },
+                "amsgrad": {
+                  "max_absolute": 0
+                },
+                "maximize": {
+                  "max_absolute": 0
+                },
+                "foreach": {
+                  "equal": true
+                },
+                "capturable": {
+                  "max_absolute": 0
+                },
+                "differentiable": {
+                  "max_absolute": 0
+                },
+                "fused": {
+                  "max_absolute": 0
+                },
+                "initial_lr": {
+                  "max_absolute": 0.0
+                },
+                "params": [
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  },
+                  {
+                    "max_absolute": 0
+                  }
+                ]
+              }
+            ]
+          },
+          "gradients": {
+            "velocity": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "source": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            },
+            "sigma": {
+              "max_absolute": 0.0,
+              "max_relative": 0.0
+            }
+          },
+          "physical_scheduler": {
+            "step_size": {
+              "max_absolute": 0
+            },
+            "gamma": {
+              "max_absolute": 0.0
+            },
+            "base_lrs": [
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              }
+            ],
+            "last_epoch": {
+              "max_absolute": 0
+            },
+            "verbose": {
+              "max_absolute": 0
+            },
+            "_step_count": {
+              "max_absolute": 0
+            },
+            "_get_lr_called_within_step": {
+              "max_absolute": 0
+            },
+            "_last_lr": [
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              },
+              {
+                "max_absolute": 0.0
+              }
+            ]
+          },
+          "critic_scheduler": {
+            "step_size": {
+              "max_absolute": 0
+            },
+            "gamma": {
+              "max_absolute": 0.0
+            },
+            "base_lrs": [
+              {
+                "max_absolute": 0.0
+              }
+            ],
+            "last_epoch": {
+              "max_absolute": 0
+            },
+            "verbose": {
+              "max_absolute": 0
+            },
+            "_step_count": {
+              "max_absolute": 0
+            },
+            "_get_lr_called_within_step": {
+              "max_absolute": 0
+            },
+            "_last_lr": [
+              {
+                "max_absolute": 0.0
+              }
+            ]
+          },
+          "physical_scaler": {},
+          "critic_scaler": {},
+          "losses": [
+            [
+              {
+                "generator_loss": {
+                  "max_absolute": 0.0
+                },
+                "critic_loss": {
+                  "max_absolute": 5.7220458984375e-06
+                }
+              }
+            ],
+            [
+              {
+                "generator_loss": {
+                  "max_absolute": 0.0
+                },
+                "critic_loss": {
+                  "max_absolute": 9.218851729997368e-06
+                }
+              }
+            ]
+          ],
+          "torch_rng_equal": true,
+          "cuda_rng_equal": true,
+          "python_rng_equal": true,
+          "numpy_rng_equal": true,
+          "physical_change_l2": {
+            "original": {
+              "velocity": 253.52818298339844,
+              "source": 0.01996316760778427,
+              "sigma": 0.01759186014533043
+            },
+            "optimized": {
+              "velocity": 253.52818298339844,
+              "source": 0.01996316760778427,
+              "sigma": 0.01759186014533043
+            }
+          }
+        }
+      ],
+      "untimed_counts": {
+        "original": {
+          "solver_forward": 1,
+          "solver_adjoint": 7,
+          "critic_forward": 19,
+          "saved_wavefield_bytes": [
+            18481152
+          ],
+          "actual_updates": {
+            "physical": 1,
+            "critic": 6
+          }
+        },
+        "optimized": {
+          "solver_forward": 1,
+          "solver_adjoint": 1,
+          "critic_forward": 19,
+          "saved_wavefield_bytes": [
+            18481152
+          ],
+          "actual_updates": {
+            "physical": 1,
+            "critic": 6
+          }
+        }
+      },
+      "limitation": "synthetic training-loop evidence; not convergence or full Marmousi performance"
+    }
+  },
+  "benchmark_sha256": "a32cd3c9a1d84f390261d196aa6010ff9106dcaed258b8d317b25d17ee778cc2",
+  "cuda_numerics": {
+    "cudnn_deterministic": true,
+    "cudnn_benchmark": false,
+    "cudnn_allow_tf32": true,
+    "matmul_allow_tf32": false
+  }
+}

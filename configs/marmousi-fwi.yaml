@@ -1,0 +1,20 @@
+# EXPENSIVE opt-in original grids; requires separately validated CUDA backend.
+experiment:
+  method: fwi
+  device: cuda
+  seed: 42
+  epochs: 401
+  batches: 6
+  batch_size: 5
+  critic_cycles: 6
+  amp: false
+  noise: false
+  sigma_init: 1.0
+  observation_noise_level: 0.05
+  checkpoint_interval: 50
+  evaluation_interval: 10
+dataset:
+  kind: marmousi
+  truth_path: ../models/marmousi_3.bin
+  initial_path: ../models/marmousi_30.bin
+  nt: 2000
