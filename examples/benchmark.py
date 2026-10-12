@@ -420,6 +420,221 @@ def record_comparison(report, label, repetition, diagnostics, output):
         raise AssertionError(work['error'])
 
 
+class DiagnosticError(RuntimeError):
+    def __init__(self, message, report):
+        super().__init__(message)
+        self.report = report
+
+
+DIAGNOSTIC_FIELDS = ('physical', 'critic', 'observed', 'physical_optimizer',
+                     'critic_optimizer', 'physical_scheduler', 'critic_scheduler',
+                     'physical_scaler', 'critic_scaler', 'counters')
+
+
+def state_fingerprint(value):
+    digest = hashlib.sha256()
+    def visit(item):
+        if torch.is_tensor(item):
+            tensor = item.detach().cpu().contiguous()
+            digest.update(f'tensor:{tensor.dtype}:{tuple(tensor.shape)}:'.encode())
+            digest.update(tensor.numpy().tobytes())
+        elif isinstance(item, np.ndarray):
+            digest.update(f'array:{item.dtype}:{item.shape}:'.encode())
+            digest.update(item.tobytes())
+        elif isinstance(item, dict):
+            digest.update(b'dict{')
+            for key in sorted(item, key=str): visit(key); visit(item[key])
+            digest.update(b'}')
+        elif isinstance(item, (list, tuple)):
+            digest.update(f'{type(item).__name__}:{len(item)}:['.encode())
+            for child in item: visit(child)
+            digest.update(b']')
+        else:
+            digest.update(f'{type(item).__name__}:{repr(item)};'.encode())
+    visit(value)
+    return digest.hexdigest()
+
+
+def diagnostic_rng_equal(left, right):
+    return dict(python=left['python'] == right['python'],
+                numpy=all(np.array_equal(a, b) for a, b in zip(left['numpy'], right['numpy'])),
+                torch=torch.equal(left['torch'], right['torch']),
+                cuda=len(left['cuda']) == len(right['cuda']) and
+                     all(torch.equal(a, b) for a, b in zip(left['cuda'], right['cuda'])))
+
+
+def diagnostic_state(state):
+    return {key: state[key] for key in DIAGNOSTIC_FIELDS} | {'rng': state['rng']}
+
+
+def tensor_stats(values):
+    result = {}
+    for name, value in values.items():
+        if value is None:
+            result[name] = dict(present=False)
+        else:
+            finite = bool(torch.isfinite(value).all())
+            result[name] = dict(present=True, shape=list(value.shape), finite=finite,
+                                l2=json_safe(float(value.float().norm())),
+                                max_absolute=json_safe(float(value.abs().max())) if value.numel() else 0.)
+    return result
+
+
+@contextlib.contextmanager
+def capture_diagnostic_cycles(branch):
+    """Observe losses and pre-step gradients without changing optimizer work."""
+    events = {'physical': [], 'critic': []}
+    originals = []
+    for name in ('physical', 'critic'):
+        scaler = getattr(branch, name+'_scaler')
+        optimizer = getattr(branch, name+'_optimizer')
+        scale = getattr(scaler, 'scale', None)
+        step = getattr(optimizer, 'step', None)
+        if callable(scale):
+            def observed_scale(loss, *args, _name=name, _scale=scale, **kwargs):
+                events[_name].append(dict(loss=json_safe(float(loss.detach())),
+                                          step_called=False))
+                return _scale(loss, *args, **kwargs)
+            scaler.scale = observed_scale
+            originals.append((scaler, 'scale', scale))
+        if callable(step):
+            def observed_step(*args, _name=name, _step=step, **kwargs):
+                event = events[_name][-1] if events[_name] else None
+                if event is not None:
+                    if _name == 'physical':
+                        event['gradients'] = branch.physical(True)
+                    else:
+                        event['gradients'] = {key: portable(parameter.grad) if parameter.grad is not None else None
+                                              for key, parameter in branch.critic.named_parameters()}
+                    event['gradient_stats'] = tensor_stats(event['gradients'])
+                value = _step(*args, **kwargs)
+                if event is not None:
+                    event['step_called'] = True
+                    event['post_weights'] = (branch.physical() if _name == 'physical'
+                                             else portable(branch.critic.state_dict()))
+                    event['weight_stats'] = tensor_stats(event['post_weights'])
+                return value
+            optimizer.step = observed_step
+            originals.append((optimizer, 'step', step))
+    try: yield events
+    finally:
+        for obj, attr, value in reversed(originals): setattr(obj, attr, value)
+
+
+def diagnostic_cycle_summary(events):
+    return {name: [dict(loss=event.get('loss'), step_called=event['step_called'],
+                        gradient_stats=event.get('gradient_stats', {}) if index == 0 else None,
+                        weight_stats=event.get('weight_stats', {}) if index == 0 else None)
+                   for index, event in enumerate(cycles)]
+            for name, cycles in events.items()}
+
+
+def diagnostic_compare(left, right, common, device_type, rtol, atol, label, bit_exact=False):
+    tolerance = (0., 0.) if bit_exact else (rtol, atol)
+    diagnostics = []
+    velocity_state = (common['physical']['velocity'], left['physical']['velocity'],
+                      right['physical']['velocity'])
+    for field in (*DIAGNOSTIC_FIELDS, 'gradients', 'physical_changes'):
+        compare_value(field, left[field], right[field], *tolerance, diagnostics,
+                      'cpu' if bit_exact else device_type, velocity_state)
+    compare_value('metrics', left['metrics'], right['metrics'], *tolerance, diagnostics,
+                  'cpu' if bit_exact else device_type)
+    if not bit_exact and device_type == 'cpu':
+        for entry in diagnostics:
+            if entry['path'].endswith('.critic_loss') and entry['kind'] == 'scalar':
+                entry['passed'] = abs(entry['original']-entry['optimized']) <= 2e-6+2e-7*abs(entry['optimized'])
+    for stream, equal in diagnostic_rng_equal(left['rng'], right['rng']).items():
+        diagnostics.append(dict(path=f'rng.{stream}', kind='rng', passed=equal))
+    for name in ('critic', 'physical'):
+        l_events, r_events = left['cycles'][name], right['cycles'][name]
+        if len(l_events) != len(r_events):
+            diagnostics.append(dict(path=f'{name}_cycles', kind='sequence', passed=False,
+                                    reason='cycle counts differ'))
+        for index, (l_event, r_event) in enumerate(zip(l_events, r_events)):
+            compare_value(f'{name}_cycles[{index}].loss', l_event.get('loss'), r_event.get('loss'),
+                          *tolerance, diagnostics, 'cpu' if bit_exact else device_type)
+            if index == 0:
+                for key in ('gradients', 'post_weights'):
+                    compare_value(f'{name}_cycles[0].{key}', l_event.get(key), r_event.get(key),
+                                  *tolerance, diagnostics, 'cpu' if bit_exact else device_type)
+    return dict(label=label, bit_exact=bit_exact, failed_fields=[entry['path'] for entry in diagnostics if not entry['passed']],
+                fields=diagnostics)
+
+
+def diagnostic_replays(make, common, config, device, replays, sync, release, rtol=2e-4, atol=2e-5):
+    """Untimed paired repeatability trace from one immutable calibrated state."""
+    report = dict(status='diagnostic_only', mode='repeatability_diagnostic', epochs_per_replay=2,
+                  replays=replays, common_fingerprint=state_fingerprint(diagnostic_state(common)),
+                  runs=[], comparisons=[])
+    pristine = portable(common)
+    internal = {'original': [], 'optimized': []}
+    for replay in range(replays):
+        for kind in ('original', 'optimized'):
+            branch = make(kind, common)
+            start = snapshot(branch, device)
+            start_fields = []
+            for field in DIAGNOSTIC_FIELDS:
+                compare_value(field, start[field], common[field], 0., 0., start_fields, 'cpu')
+            rng_equal = diagnostic_rng_equal(start['rng'], common['rng'])
+            valid = all(entry['passed'] for entry in start_fields) and all(rng_equal.values())
+            run = dict(replay=replay, kind=kind, start_valid=valid,
+                       start_fingerprint=state_fingerprint(diagnostic_state(start)),
+                       start_failures=[entry['path'] for entry in start_fields if not entry['passed']],
+                       start_rng_equal=rng_equal, epochs=[], common_unchanged=True)
+            report['runs'].append(run)
+            if not valid:
+                report['status'] = 'diagnostic_invalid'
+                run['start_diagnostics'] = [entry for entry in start_fields if not entry['passed']]
+                raise DiagnosticError(f'{kind} loaded state differs from common snapshot', report)
+            with capture_diagnostic_cycles(branch) as events:
+                for epoch in range(2):
+                    before = counters(branch)
+                    scales_before = [getattr(branch, name+'_scaler').get_scale() for name in ('physical', 'critic')]
+                    metric = branch.run(); sync()
+                    after = counters(branch)
+                    actual = [a-b for a, b in zip(after, before)]
+                    expected = [config.batches, config.batches*config.critic_cycles]
+                    state = snapshot(branch, device)
+                    state['physical_changes'] = {key: value-common['physical'][key]
+                                                 for key, value in state['physical'].items()}
+                    state['metrics'] = metric
+                    state['cycles'] = {name: events[name][epoch*(config.batches if name == 'physical' else config.batches*config.critic_cycles):
+                                                     (epoch+1)*(config.batches if name == 'physical' else config.batches*config.critic_cycles)]
+                                       for name in ('physical', 'critic')}
+                    internal[kind].append(state)
+                    run['epochs'].append(dict(epoch=epoch, actual_updates=actual,
+                                              expected_updates=expected, full_work=actual == expected,
+                                              scales_before=scales_before,
+                                              scales_after=[getattr(branch, name+'_scaler').get_scale()
+                                                            for name in ('physical', 'critic')],
+                                              metrics=json_safe(metric),
+                                              cycles=diagnostic_cycle_summary(state['cycles'])))
+            branch = None; release()
+            run['common_unchanged'] = state_fingerprint(diagnostic_state(common)) == report['common_fingerprint']
+            if not run['common_unchanged']:
+                report['status'] = 'diagnostic_invalid'
+                run['common_fingerprint_after'] = state_fingerprint(diagnostic_state(common))
+                raise DiagnosticError('common snapshot mutated during diagnostic run', report)
+    for replay in range(replays):
+        for epoch in range(2):
+            index = replay*2+epoch
+            report['comparisons'].append(diagnostic_compare(internal['original'][index], internal['optimized'][index],
+                                                            pristine, device.type, rtol, atol,
+                                                            f'cross.replay{replay}.epoch{epoch}'))
+    for kind in ('original', 'optimized'):
+        for replay in range(1, replays):
+            for epoch in range(2):
+                report['comparisons'].append(diagnostic_compare(internal[kind][epoch],
+                                                                internal[kind][replay*2+epoch], pristine,
+                                                                device.type, rtol, atol,
+                                                                f'self.{kind}.replay0_vs_{replay}.epoch{epoch}',
+                                                                bit_exact=True))
+    report['comparison_failure_count'] = sum(bool(item['failed_fields']) for item in report['comparisons'])
+    report['work_failure_count'] = sum(not epoch['full_work'] for run in report['runs']
+                                       for epoch in run['epochs'])
+    return report
+
+
 @contextlib.contextmanager
 def instrument(branch):
     scalar = importlib.import_module('deepwave.scalar.scalar')
@@ -464,7 +679,13 @@ def main():
     parser.add_argument('--rtol', type=float, default=2e-4, help='CUDA numerical tolerance (recorded)')
     parser.add_argument('--atol', type=float, default=2e-5, help='CUDA numerical tolerance (recorded)')
     parser.add_argument('--exclusive-cpu', action='store_true', help='caller certifies no overlapping CPU jobs')
+    parser.add_argument('--diagnostic-replays', type=int, choices=(2, 3),
+                        help='untimed paired two-epoch replays; diagnostic output only')
+    parser.add_argument('--diagnostic-tf32-ablation', action='store_true',
+                        help='in diagnostic mode, replay the same common state again with cuDNN TF32 disabled')
     args = parser.parse_args()
+    if args.diagnostic_tf32_ablation and args.diagnostic_replays is None:
+        parser.error('--diagnostic-tf32-ablation requires --diagnostic-replays')
     for key in ('steps', 'representative_steps', 'repeats', 'cycles', 'batches', 'tiny_nt', 'threads', 'max_warmup'):
         if getattr(args, key) < 1: parser.error(f'--{key.replace("_", "-")} must be positive')
     if args.rtol < 0 or args.atol < 0 or not np.isfinite([args.rtol, args.atol]).all(): parser.error('tolerances must be finite and nonnegative')
@@ -502,6 +723,10 @@ def main():
                                  cudnn_benchmark=torch.backends.cudnn.benchmark,
                                  cudnn_allow_tf32=torch.backends.cudnn.allow_tf32,
                                  matmul_allow_tf32=torch.backends.cuda.matmul.allow_tf32)
+    if args.diagnostic_replays:
+        report['mode'] = 'repeatability_diagnostic'
+        report['timing_scope'] = 'untimed diagnostic replays; no performance samples or speedup claim'
+        report['cpu_contention'] = 'not applicable to untimed diagnostic replays'
     if device.type == 'cuda':
         report['gpu'] = dict(name=torch.cuda.get_device_name(device), cudnn=torch.backends.cudnn.version(), free_total_bytes=list(torch.cuda.mem_get_info()))
     workloads = [('tiny-'+name, name == 'noisy', False) for name in ('clean', 'noisy') if args.variant in ('both', name)]
@@ -542,6 +767,50 @@ def main():
             args.output.parent.mkdir(parents=True, exist_ok=True)
             args.output.write_text(json.dumps(report, indent=2, allow_nan=False)+'\n')
             raise
+        if args.diagnostic_replays:
+            work = dict(status='diagnostic_only', synthetic=True, calibration=calibration,
+                        config=config.to_dict(), geometry=dict(model=list(data.grid.shape), nt=data.sampling.nt,
+                                                               shots=data.traces.shape[0], receivers=data.traces.shape[1],
+                                                               spacing_m=data.grid.spacing, dt_s=data.sampling.dt),
+                        profiles=[], limitation='untimed repeatability diagnostic; no validated performance or equivalence claim')
+            report['workloads'][label] = work
+            baseline_tf32 = torch.backends.cudnn.allow_tf32
+            try:
+                for profile_name in (('default', 'cudnn_tf32_off') if args.diagnostic_tf32_ablation else ('default',)):
+                    if profile_name == 'cudnn_tf32_off': torch.backends.cudnn.allow_tf32 = False
+                    precision = dict(name=profile_name,
+                                     cudnn_deterministic=torch.backends.cudnn.deterministic,
+                                     cudnn_benchmark=torch.backends.cudnn.benchmark,
+                                     cudnn_allow_tf32=torch.backends.cudnn.allow_tf32,
+                                     matmul_allow_tf32=torch.backends.cuda.matmul.allow_tf32,
+                                     deterministic_algorithms=torch.are_deterministic_algorithms_enabled(),
+                                     device_capability=list(torch.cuda.get_device_capability(device)) if device.type == 'cuda' else None,
+                                     cuda_build=torch.version.cuda)
+                    driver_query = getattr(torch._C, '_cuda_getDriverVersion', None)
+                    try:
+                        precision['driver_version'] = driver_query() if device.type == 'cuda' and callable(driver_query) else None
+                    except Exception:
+                        precision['driver_version'] = None
+                    try:
+                        trace = diagnostic_replays(make, common, config, device, args.diagnostic_replays,
+                                                   sync, release, args.rtol, args.atol)
+                    except DiagnosticError as error:
+                        trace = error.report
+                        work['status'] = 'diagnostic_invalid'
+                        work['error'] = str(error)
+                        work['profiles'].append(dict(precision=precision, trace=trace))
+                        args.output.parent.mkdir(parents=True, exist_ok=True)
+                        args.output.write_text(json.dumps(report, indent=2, allow_nan=False)+'\n')
+                        raise
+                    work['profiles'].append(dict(precision=precision, trace=trace))
+            finally:
+                torch.backends.cudnn.allow_tf32 = baseline_tf32
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(json.dumps(report, indent=2, allow_nan=False)+'\n')
+            print(json.dumps(dict(workload=label, status='diagnostic_only',
+                                  profile_comparison_failures=[p['trace']['comparison_failure_count']
+                                                               for p in work['profiles']])), flush=True)
+            continue
         work = dict(status='running', synthetic=True,
                     geometry=dict(model=list(data.grid.shape), nt=data.sampling.nt,
                                   shots=data.traces.shape[0], receivers=data.traces.shape[1],

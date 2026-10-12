@@ -279,6 +279,92 @@ def test_numerical_failure_json_retains_field_and_completed_work(tmp_path):
     assert 'critic.layer' in saved['error']
 
 
+def test_diagnostic_replays_compare_both_kinds_without_timing_claims():
+    benchmark = load_benchmark()
+    benchmark.seed(12)
+    config = SimpleNamespace(batches=1, critic_cycles=6)
+    starts = []
+    make = fake_factory(benchmark, {'physical': 2048, 'critic': 32}, starts)
+    common, _ = benchmark.calibrate_common(make, config, torch.device('cpu'), 'fake',
+                                           steps=2, max_warmup=24,
+                                           sync=lambda: None, release=lambda: None)
+    starts.clear()
+
+    result = benchmark.diagnostic_replays(make, common, config, torch.device('cpu'),
+                                          replays=3, sync=lambda: None, release=lambda: None)
+
+    assert result['status'] == 'diagnostic_only'
+    assert [run['kind'] for run in result['runs']] == ['original', 'optimized'] * 3
+    assert all(run['start_valid'] and run['common_unchanged'] for run in result['runs'])
+    assert all(len(run['epochs']) == 2 for run in result['runs'])
+    assert len(result['comparisons']) == 2 * (3 + 2 + 2)
+    assert all(not entry['failed_fields'] for entry in result['comparisons'])
+    assert 'median_seconds_per_batch' not in result
+    assert 'seconds' not in json.dumps(result)
+    json.dumps(result, allow_nan=False)
+
+
+def test_diagnostic_replays_keep_all_material_comparison_failures():
+    benchmark = load_benchmark()
+    benchmark.seed(12)
+    config = SimpleNamespace(batches=1, critic_cycles=6)
+    base_make = fake_factory(benchmark, {'physical': 65536, 'critic': 65536}, [],
+                             original_thresholds={'physical': 65536, 'critic': 65536})
+    common, _ = benchmark.calibrate_common(base_make, config, torch.device('cpu'), 'fake',
+                                           steps=2, max_warmup=2,
+                                           sync=lambda: None, release=lambda: None)
+
+    def make(kind, state=None):
+        branch = base_make(kind, state)
+        if kind == 'optimized' and state is not None:
+            original_run = branch.run
+            def run():
+                original_run()
+                branch.value += 1
+            branch.run = run
+        return branch
+
+    result = benchmark.diagnostic_replays(make, common, config, torch.device('cpu'),
+                                          replays=3, sync=lambda: None, release=lambda: None)
+    assert result['status'] == 'diagnostic_only'
+    assert len(result['comparisons']) == 14
+    assert result['comparison_failure_count'] == 6
+    assert all('physical.velocity' in entry['failed_fields']
+               for entry in result['comparisons'][:6])
+    assert all(not entry['failed_fields'] for entry in result['comparisons'][6:])
+    json.dumps(result, allow_nan=False)
+
+
+@pytest.mark.parametrize('fault', ['loaded_state', 'common_mutation'])
+def test_diagnostic_replays_reject_bad_start_or_common_mutation(fault):
+    benchmark = load_benchmark()
+    benchmark.seed(12)
+    config = SimpleNamespace(batches=1, critic_cycles=6)
+    base_make = fake_factory(benchmark, {'physical': 65536, 'critic': 65536}, [],
+                             original_thresholds={'physical': 65536, 'critic': 65536})
+    common, _ = benchmark.calibrate_common(base_make, config, torch.device('cpu'), 'fake',
+                                           steps=2, max_warmup=2,
+                                           sync=lambda: None, release=lambda: None)
+
+    def make(kind, state=None):
+        branch = base_make(kind, state)
+        if fault == 'loaded_state' and state is not None:
+            branch.value += 1
+        if fault == 'common_mutation' and state is not None:
+            original_run = branch.run
+            def run():
+                original_run()
+                state['physical']['velocity'] += 1
+            branch.run = run
+        return branch
+
+    with pytest.raises(benchmark.DiagnosticError, match='loaded state|common snapshot') as failure:
+        benchmark.diagnostic_replays(make, common, config, torch.device('cpu'),
+                                     replays=2, sync=lambda: None, release=lambda: None)
+    assert failure.value.report['status'] == 'diagnostic_invalid'
+    json.dumps(failure.value.report, allow_nan=False)
+
+
 def test_cuda_benchmark_memory_metadata_queries_current_device(tmp_path, monkeypatch):
     """The real pinned index validator rejects cuda without an explicit index."""
     path=Path(__file__).resolve().parents[1]/'examples'/'benchmark.py'
