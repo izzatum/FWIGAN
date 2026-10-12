@@ -15,6 +15,9 @@ class ExperimentConfig:
     critic_cycles: int = 6
     amp: bool = False
     noise: bool = False
+    observation_noise_level: float = .05
+    checkpoint_interval: int = 50
+    evaluation_interval: int = 10
     sigma_init: float = 1.
     velocity_lr: float = 5.
     source_lr: float = .001
@@ -42,14 +45,14 @@ class ExperimentConfig:
             raise ValueError('device must be cpu, cuda or auto')
         if type(self.seed) is not int or self.seed < 0:
             raise ValueError('seed must be a nonnegative integer')
-        for name in ('epochs', 'batches', 'batch_size', 'critic_cycles', 'physical_scheduler_step_size', 'critic_scheduler_step_size'):
+        for name in ('epochs', 'batches', 'batch_size', 'critic_cycles', 'physical_scheduler_step_size', 'critic_scheduler_step_size', 'checkpoint_interval', 'evaluation_interval'):
             positive_int(getattr(self, name), name)
         for name in ('velocity_lr', 'source_lr', 'sigma_lr', 'critic_lr', 'velocity_min', 'velocity_max',
                      'scheduler_gamma', 'velocity_clip', 'critic_clip'):
             value = getattr(self, name)
             if not math.isfinite(value) or value <= 0:
                 raise ValueError(f'{name} must be finite and positive')
-        for name in ('sigma_init', 'regularization', 'gradient_penalty_weight', 'critic_drift'):
+        for name in ('observation_noise_level', 'sigma_init', 'regularization', 'gradient_penalty_weight', 'critic_drift'):
             value = getattr(self, name)
             if not math.isfinite(value) or value < 0:
                 raise ValueError(f'{name} must be finite and nonnegative')
