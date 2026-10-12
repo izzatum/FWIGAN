@@ -24,9 +24,10 @@ class InversionParameters(nn.Module):
         groups = []
         for name in ('velocity', 'source', 'sigma'):
             value = getattr(self, name)
-            if isinstance(value, nn.Parameter) and value.requires_grad:
-                if name != 'velocity' and not getattr(config, f'train_{name}'):
-                    raise ValueError(f'{name} parameter enabled but frozen by configuration')
+            enabled = isinstance(value, nn.Parameter) and value.requires_grad
+            if name != 'velocity' and enabled != getattr(config, f'train_{name}'):
+                raise ValueError(f'{name} training state differs between module and configuration')
+            if enabled:
                 groups.append({'name': name, 'params': [value], 'lr': getattr(config, f'{name}_lr'),
                                'betas': config.adam_betas})
         return groups

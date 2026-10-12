@@ -63,6 +63,9 @@ class Acquisition:
     receivers: Tensor
 
     def __post_init__(self):
+        self.validate()
+
+    def validate(self):
         for name in ('sources', 'receivers'):
             value = getattr(self, name)
             finite_tensor(value, name, 3)
@@ -72,6 +75,7 @@ class Acquisition:
             raise ValueError('source and receiver shot counts differ')
         if self.sources.device != self.receivers.device:
             raise ValueError('acquisition tensors must share a device')
+        return self
 
     def select(self, indices):
         if isinstance(indices, int):
@@ -82,16 +86,26 @@ class Acquisition:
         return Acquisition(self.sources.to(device), self.receivers.to(device))
 
     def validate_grid(self, grid: GridSpec):
+        self.validate()
         for name in ('sources', 'receivers'):
             points = getattr(self, name)
-            cells = (points - points.new_tensor(grid.origin)) / grid.spacing
-            if (cells < 0).any() or (cells > points.new_tensor(grid.shape) - 1).any():
+            relative = points - points.new_tensor(grid.origin)
+            spacing = points.new_tensor(grid.spacing)
+            cells = relative / spacing
+            maximum = (points.new_tensor(grid.shape) - 1) * spacing
+            if (relative < 0).any() or (relative > maximum).any():
                 raise ValueError(f'{name} must be inside the grid')
             if not torch.allclose(cells, cells.round(), rtol=0., atol=1e-5):
                 raise ValueError(f'{name} must be grid-aligned; off-grid points are unsupported')
+            # Native 0.0.9 truncates before adding padding. Near-grid float32
+            # values below an integer can select the previous cell, including
+            # a last-grid-point value that cannot be nudged without exiting it.
+            if not torch.equal(cells.long(), cells.round().long()):
+                raise ValueError(f'{name} has unsupported coordinates: DeepWave would truncate to another grid cell')
 
 
 def validate_physics(velocity, source, acquisition, grid, sampling):
+    acquisition.validate_grid(grid)
     finite_tensor(velocity, 'velocity', 2)
     if tuple(velocity.shape) != grid.shape or (velocity <= 0).any():
         raise ValueError('velocity must be positive with shape [nz,nx] matching grid')
@@ -101,7 +115,6 @@ def validate_physics(velocity, source, acquisition, grid, sampling):
         raise ValueError('source must have shape [shots or 1,sources,time] matching acquisition and sampling')
     if velocity.device != source.device or velocity.device != acquisition.sources.device:
         raise ValueError('velocity, source and acquisition must share a device')
-    acquisition.validate_grid(grid)
 
 
 @dataclass

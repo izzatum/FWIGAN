@@ -238,3 +238,71 @@ def test_noisy_simulation_preserves_notebook_draw_mapping():
     actual=to_critic_layout(legacy_normalize(LegacyDeepwave().predict(velocity,source,acq,grid,sampling)))
     actual=actual+.3*torch.randn_like(actual)
     torch.testing.assert_close(actual,expected,rtol=0,atol=0)
+
+
+@pytest.mark.parametrize('spacing,origin,shape,cell,below', [
+    (30., (0.,0.), (40,70), 10, True),
+    (.7, (0.,0.), (40,70), 13, False),
+    (.7, (1.4,2.8), (40,70), 13, False),
+    (.7, (1.4,2.8), (40,14), 13, False),
+])
+def test_coordinates_truncated_to_previous_cell_are_rejected(spacing,origin,shape,cell,below):
+    f=package()
+    from fwigan.physics import LegacyDeepwave
+    grid=f.GridSpec(shape,spacing,origin)
+    point=torch.tensor(origin).reshape(1,1,2).clone()
+    point[...,1]=torch.tensor(float(cell))*spacing+origin[1]
+    if below:point[...,1]=torch.nextafter(point[...,1],torch.tensor(float('-inf')))
+    relative=point-point.new_tensor(origin)
+    native=dw.base.model.Model({'vp':torch.full(shape,20.)},spacing)
+    assert native.get_locations(relative)[0,0,1].item()==cell-1
+    acquisition=f.Acquisition(point,point.clone())
+    source=dw.wavelets.ricker(100.,32,.0005,.01).reshape(1,1,-1)
+    with pytest.raises(ValueError,match='unsupported.*coordinate|coordinate.*unsupported'):
+        LegacyDeepwave().predict(torch.full(shape,20.),source,acquisition,grid,f.SamplingSpec(32,.0005))
+
+
+def test_supported_fractional_spacing_origin_last_point_uses_intended_backend_cell():
+    f=package()
+    from fwigan.physics import LegacyDeepwave
+    grid=f.GridSpec((40,70),.7,(1.4,2.8))
+    point=torch.tensor(grid.origin).reshape(1,1,2).clone()
+    point[...,1]=torch.tensor(69.)*grid.spacing+grid.origin[1]
+    acquisition=f.Acquisition(point,point.clone())
+    velocity=torch.full(grid.shape,20.)
+    source=dw.wavelets.ricker(100.,32,.0005,.01).reshape(1,1,-1)
+    sampling=f.SamplingSpec(32,.0005)
+    actual=LegacyDeepwave().predict(velocity,source,acquisition,grid,sampling)
+    relative=point-point.new_tensor(grid.origin)
+    prop=dw.scalar.Propagator({'vp':velocity},grid.spacing,pml_width=grid.pml_width,survey_pad=None)
+    assert prop.model.get_locations(relative).tolist()==[[[0,69]]]
+    expected=prop(source.permute(2,0,1),relative,relative,sampling.dt).permute(1,2,0)
+    torch.testing.assert_close(actual,expected,rtol=0,atol=0)
+
+
+@pytest.mark.parametrize('name,parameter_enabled,config_enabled',[
+    ('source',False,True),('source',True,False),('sigma',False,True),('sigma',True,False),
+])
+def test_parameter_groups_reject_both_directions_of_configuration_mismatch(name,parameter_enabled,config_enabled):
+    f,grid,sampling,acq,source=specs()
+    from fwigan.parameters import InversionParameters
+    from fwigan.config import ExperimentConfig
+    flags={'train_source':False,'train_sigma':False};flags[f'train_{name}']=parameter_enabled
+    parameters=InversionParameters(torch.full(grid.shape,2000.),source,torch.tensor(1.),**flags)
+    flags[f'train_{name}']=config_enabled
+    config=ExperimentConfig(noise=True,**flags)
+    with pytest.raises(ValueError,match=name):parameters.optimizer_groups(config)
+
+
+@pytest.mark.parametrize('mutation',['double','rank','dimensions','empty','nonfinite','shots'])
+def test_mutated_acquisition_revalidates_at_all_entry_points(mutation):
+    data=observations()
+    from fwigan.physics import LegacyDeepwave
+    sources=data.acquisition.sources
+    mutations={'double':sources.double(),'rank':sources[0],
+               'dimensions':sources[...,:1],'empty':sources[:,:0],
+               'nonfinite':torch.full_like(sources,float('nan')),'shots':sources[:1]}
+    data.acquisition.sources=mutations[mutation]
+    for operation in (data.validate,data.fingerprint,
+        lambda:LegacyDeepwave().predict(data.initial_velocity,data.source,data.acquisition,data.grid,data.sampling)):
+        with pytest.raises(ValueError):operation()
