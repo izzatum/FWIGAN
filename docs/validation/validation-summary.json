@@ -1,0 +1,225 @@
+{
+  "schema": 1,
+  "as_of_utc_date": "2026-10-12",
+  "repository": "/workspace/FWIGAN",
+  "production_evidence_commit": "7885070a9b85147154113b8d9ca7d89fd09b416b",
+  "scope": "2D constant-density acoustic FWI and preserved legacy FWIGAN with pinned DeepWave 0.0.9",
+  "cpu_full_suite": {
+    "status": "passed_with_optional_skips",
+    "commit": "7885070a9b85147154113b8d9ca7d89fd09b416b",
+    "passed": 196,
+    "failed": 0,
+    "skipped_cuda": 4,
+    "warnings_upstream_matplotlib_pyparsing": 11,
+    "elapsed_seconds": 74.99,
+    "log": "docs/validation/final-cpu-tests.log",
+    "junit_xml": "docs/validation/final-cpu-tests.xml"
+  },
+  "fixture_fix_cpu_checks": {
+    "commit": "d31d28c6572197ad07df3b76f3a7d7f7cad9679a",
+    "corrected_case_passed": 1,
+    "related_rng_philox_passed": 5,
+    "skipped": 0,
+    "warnings": 0,
+    "source": "docs/validation/review.md"
+  },
+  "cli_and_notebooks": {
+    "cli_recorded_commands": 10,
+    "cli_workflows": [
+      "tiny observation simulation",
+      "FWI invert/resume/evaluate",
+      "clean FWIGAN invert/resume/evaluate",
+      "noisy FWIGAN invert/resume/evaluate"
+    ],
+    "cli_evidence": "docs/validation/task4-cli-evidence.json",
+    "notebooks": [
+      {
+        "path": "/workspace/fwigan-runtime/FWIGAN-package-executed.ipynb",
+        "code_cells_executed": 3,
+        "schema_validated": true
+      },
+      {
+        "path": "/workspace/fwigan-runtime/FWIGAN_Noisy-package-executed.ipynb",
+        "code_cells_executed": 3,
+        "schema_validated": true
+      }
+    ],
+    "report": "docs/validation/review.md"
+  },
+  "tiny_fwi_cpu": {
+    "status": "measured",
+    "epochs": 24,
+    "raw_residual_mse_initial": 46.4650764465332,
+    "raw_residual_mse_final": 0.3195361793041229,
+    "model_rmse_initial_m_per_s": 100.0,
+    "model_rmse_final_m_per_s": 91.19293975830078,
+    "velocity_lower_bound_m_per_s": 2000.0,
+    "limitation": "same-grid noise-free homogeneous example with incomplete depth recovery",
+    "metadata": "docs/assets/tiny-fwi-metadata.json"
+  },
+  "tiny_fwigan_cpu_benchmark": {
+    "status": "measured",
+    "repetitions": 3,
+    "steps_per_window": 2,
+    "critic_cycles": 6,
+    "median_seconds_per_group": {
+      "clean": {
+        "original": 0.3793364875000407,
+        "package": 0.17154041399953712
+      },
+      "noisy": {
+        "original": 0.35733341200011637,
+        "package": 0.17345109750021948
+      }
+    },
+    "native_solver_calls_per_group": {
+      "original": {
+        "forward": 1,
+        "adjoint": 7
+      },
+      "package": {
+        "forward": 1,
+        "adjoint": 1
+      }
+    },
+    "limitation": "tiny shared-host CPU training-loop measurements, not GPU or full-scale inversion performance",
+    "artifact": "docs/assets/tiny-cpu-benchmark.json"
+  },
+  "marmousi_source_calibration": {
+    "status": "measured_interior_off_source_cpu_probe",
+    "coarse_known_source_factor": 0.01,
+    "equal_coefficient_coarse_fine_norm_ratio": 100.30911176195599,
+    "corrected_relative_l2": 0.02622534790479678,
+    "limitation": "does not establish full Marmousi equivalence at product surface/colocated geometry or differing physical PML widths",
+    "artifact": "docs/validation/grid-source-calibration.json"
+  },
+  "gpu": {
+    "first_suite": {
+      "status": "failed_one_absent_device_fixture",
+      "source_commit": "7885070a9b85147154113b8d9ca7d89fd09b416b",
+      "device": "NVIDIA GeForce RTX 4090",
+      "python": "3.10.12",
+      "torch": "1.13.1+cu117",
+      "deepwave": "0.0.9",
+      "total": 200,
+      "passed": 199,
+      "failed": 1,
+      "skipped": 0,
+      "cuda_specific_checks_passed": 4,
+      "elapsed_seconds": 54.048032684251666,
+      "benchmark_started": false,
+      "report": "/workspace/runpod-setup/package-gpu-test-report-scheduler.json",
+      "pod_deleted_and_cleanup_verified": true,
+      "compute_cost_estimate_usd": 0.10236588579416275,
+      "cuda_build": "11.7",
+      "cudnn": 8500,
+      "archive_sha256": "cecf421102f5190a736cfb563ecd0f84deb81153e27d336ed337e1ec92635319",
+      "archive_bytes": 77614,
+      "report_sha256": "78a2b73d6a52dd1256b6fd7395ff105b9a2928d4883069c8ebab043b29fb376b",
+      "source_tree_dirty": false
+    },
+    "post_fix_suite": {
+      "status": "blocked_by_provider_provisioning",
+      "source_commit": "d31d28c6572197ad07df3b76f3a7d7f7cad9679a",
+      "passed": null,
+      "failed": null,
+      "skipped": null,
+      "artifact": null
+    },
+    "benchmark_all_suite": {
+      "status": "not_measured",
+      "requested_options": {
+        "steps": 2,
+        "representative_steps": 1,
+        "repeats": 3
+      },
+      "raw_samples": null,
+      "medians_seconds_per_group": null,
+      "native_solver_counts": null,
+      "peak_allocated_bytes": null,
+      "peak_reserved_bytes": null,
+      "peak_allocated_increment_bytes": null,
+      "peak_reserved_increment_bytes": null,
+      "json_artifact": null,
+      "figure_svg": null,
+      "figure_png": null
+    },
+    "cuda_specific_tolerances": {
+      "traces": {
+        "rtol": 0.0003,
+        "atol": 0.003
+      },
+      "velocity_source_gradients": {
+        "rtol": 0.002,
+        "atol": 0.0002
+      },
+      "same_device_resume_float32_tensors": {
+        "rtol": 1e-05,
+        "atol": 1e-05
+      },
+      "rng": "exact"
+    }
+  },
+  "infrastructure_history": {
+    "post_fix_upload_attempt": {
+      "status": "failed_before_install",
+      "http_status": 404,
+      "report": "/workspace/runpod-setup/package-gpu-test-report-final.json",
+      "pod_deleted_and_cleanup_verified": true,
+      "compute_cost_estimate_usd": 0.0077016814404063764
+    },
+    "post_fix_scheduler_attempt": {
+      "status": "failed_before_pod_create",
+      "http_status": 500,
+      "report": "/workspace/runpod-setup/package-gpu-test-report-validated.json",
+      "fresh_account_lists_checked": 3,
+      "owned_pods_found": 0,
+      "compute_cost_estimate_usd": null
+    },
+    "capacity_retry": {
+      "status": "failed_before_pod_create",
+      "http_status": 500,
+      "report": "/workspace/runpod-setup/package-gpu-test-report-capacity.json",
+      "trigger": "public RTX 4090 catalog showed Low stock in EU-RO-1 at 11:09:06 UTC",
+      "fresh_account_lists_checked": 3,
+      "owned_pods_found": 0,
+      "compute_cost_estimate_usd": null
+    },
+    "combined_created_pod_compute_cost_estimate_usd": 0.11006756723456913,
+    "cost_is_invoice": false,
+    "remaining_owned_pods_after_completed_attempts": 0,
+    "regional_final": {
+      "status": "stopped_before_create_no_positive_catalog_capacity",
+      "report": "/workspace/runpod-setup/package-gpu-test-report-regional-final.json",
+      "create_attempted": false,
+      "pod_created": false,
+      "compute_cost_estimate_usd": null
+    },
+    "cleanup_criterion": "Created Pods: DELETE, then GET404 and absence from fresh account Pod list. Ambiguous failed creation: three fresh lists reconciled by unique attempted name. No rejected-create deletion is claimed.",
+    "estimated_compute_cost_scope": "Two created package-validation Pods only; excludes earlier frozen-notebook baseline testing. Not a billing invoice.",
+    "final_account_check_artifact": "docs/validation/pod-cleanup.json",
+    "remaining_account_pods_after_final_check": 0
+  },
+  "unverified": [
+    "post-fix full GPU suite",
+    "CUDA all-suite timing and memory",
+    "full Marmousi inversion and convergence",
+    "hosted CI",
+    "modern DeepWave backend comparison"
+  ],
+  "validated_source_commit": "d31d28c6572197ad07df3b76f3a7d7f7cad9679a",
+  "rulings": {
+    "whole_branch_after_source_calibration": {
+      "spec": "approve",
+      "quality": "approve",
+      "source": "docs/validation/review.md"
+    },
+    "absent_cuda_rng_fixture_fix": {
+      "spec": "approve",
+      "quality": "approve",
+      "source": "docs/validation/review.md",
+      "commit": "d31d28c6572197ad07df3b76f3a7d7f7cad9679a",
+      "changes": "test-only absent-device fixture; no production code, numerical tolerances or real CUDA integration tests changed"
+    }
+  }
+}

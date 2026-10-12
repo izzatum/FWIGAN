@@ -60,7 +60,7 @@ python -m pip install -e '.[test,plot,notebook]'
 OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 python -m pytest -q
 ```
 
-This pinned backend has been exercised on CPU. CUDA needs a matching Torch/DeepWave build and separate validation. PyYAML is a runtime dependency for configuration. The `plot` extra supplies Matplotlib; `notebook` supplies the plotting and Jupyter client dependencies. The old DeepWave extension requires Torch before building, a C++ compiler, and the pinned Setuptools build tools above. Modern backend substitutions require separate numerical validation.
+This is the verified CPU installation. The pinned backend also passed four CUDA-specific integration checks on an RTX 4090 using Torch `1.13.1+cu117`; see [CUDA build instructions](docs/performance.md#cuda-measurement) and [validation status](docs/validation/validation.md). PyYAML is a runtime dependency for configuration. The `plot` extra supplies Matplotlib; `notebook` supplies the plotting and Jupyter client dependencies. The old DeepWave extension requires Torch before building, a C++ compiler, and the pinned Setuptools build tools above. Modern backend substitutions require separate numerical validation.
 
 ## Run a bounded FWI experiment
 
@@ -228,7 +228,18 @@ CPU timing applies only to this tiny workload. CUDA must be measured separately;
 
 ## Verify and extend
 
-Run `python -m pytest -q` for contracts, strategy behavior, gradient checks, and lifecycle tests. The bounded DeepWave FWI example above is an additional numerical smoke check. Existing CPU tests establish correct execution under the pinned stack; they do not establish GPU performance, a full Marmousi inversion, or superiority of the adversarial objective. The next scientific steps are low-to-high frequency continuation, constrained source/noise studies, a separately validated per-shot critic, and a separately calibrated modern DeepWave backend. Keep method, data, acquisition, and independent evaluation fixed when comparing new methods.
+Run `python -m pytest -q` for contracts, strategy behavior, gradient checks, and lifecycle tests. The bounded DeepWave FWI example above is an additional numerical smoke check.
+
+| Recorded check | Result |
+| --- | --- |
+| Full CPU suite | 196 passed; four CUDA-dependent tests skipped |
+| CLI and notebooks | Simulation, both methods, interruption/resume and evaluation exercised; both notebooks executed |
+| RTX 4090 CUDA checks | All four passed: traces/gradients, clean/noisy AMP and resume, and FWI data-fit improvement |
+| Full GPU suite and benchmark | First suite: 199 passed, one absent-device RNG fixture failed. The fixture is corrected; the full rerun and GPU timing/memory are blocked by RunPod provisioning failures. |
+
+Exact commits, tolerances, test counts, the fixture-only correction, and verified deletion of the test Pods are in [the validation record](docs/validation/validation.md). CUDA checks do not establish measured GPU speedup, full Marmousi recovery, or superiority of the adversarial objective. No GPU benchmark figure is included until real timing and memory results exist.
+
+The next scientific steps are low-to-high frequency continuation, constrained source/noise studies, a separately validated per-shot critic, and a separately calibrated modern DeepWave backend. Keep method, data, acquisition, and independent evaluation fixed when comparing new methods.
 
 ## Attribution and license
 

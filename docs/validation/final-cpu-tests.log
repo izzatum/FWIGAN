@@ -1,0 +1,27 @@
+........................................................................ [ 36%]
+ssss.................................................................... [ 72%]
+........................................................                 [100%]
+=============================== warnings summary ===============================
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+  /workspace/.venvs/fwigan/lib/python3.10/site-packages/matplotlib/_fontconfig_pattern.py:88: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    parse = parser.parseString(pattern)
+
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+  /workspace/.venvs/fwigan/lib/python3.10/site-packages/matplotlib/_fontconfig_pattern.py:92: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    parser.resetCache()
+
+tests/test_cli.py::test_plotting_public_results_writes_physical_and_trace_figures
+  /workspace/.venvs/fwigan/lib/python3.10/site-packages/matplotlib/_mathtext.py:30: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+    ParserElement.enablePackrat()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+------ generated xml file: /workspace/fwigan-runtime/final-cpu-tests.xml -------
+196 passed, 4 skipped, 11 warnings in 74.99s (0:01:14)

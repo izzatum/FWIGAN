@@ -27,7 +27,7 @@ After the all-suite benchmark successfully writes real CUDA results, render its 
 python examples/plot_gpu_benchmark.py --input runs/benchmark-cuda.json --output-dir docs/assets
 ```
 
-This renderer requires real GPU identity, all three workloads, repeated timing windows and non-null memory measurements. It rejects CPU, tiny-only and incomplete JSON; no GPU figure has been generated here.
+This renderer requires real GPU identity, all three workloads, repeated timing windows and non-null memory measurements. It rejects CPU, tiny-only and incomplete JSON. No GPU benchmark figure is included: the post-fix full-suite/benchmark run is blocked by RunPod provisioning failures, as detailed in [the validation record](validation/validation.md).
 
 The all suite adds a representative **synthetic constant-model** workload on a 100×310 inversion grid, nt2000, five shots, 60 receivers and six critic cycles. It is not a Marmousi convergence run. This workload is GPU-only; it is intentionally excluded from routine CPU training.
 
@@ -57,7 +57,7 @@ Useful knobs are bounded epoch/group budgets, FWI batch size, the existing equal
 
 `python examples/illustrate.py` repeats the real 24 epoch bounded CPU FWI case and regenerates `docs/assets/tiny-*.png/.svg`, numerical arrays and metadata with config, fingerprint, units, library versions and solver counts. `--reuse-cache` redraws existing arrays explicitly. The shared 2000 m/s lower bound equals the initializer and is a material prior. Truth and inversion use the same grid; these plots establish a small executable path and data-fit improvement.
 
-CPU benchmark JSON and plots are added only after real successful measurement. CUDA results remain unmeasured until the GPU suite actually executes; skipped CPU CUDA tests are not GPU evidence.
+CPU benchmark JSON and plots come from real successful measurement. All four CUDA-specific integration checks passed on an RTX 4090 with Torch 1.13.1+cu117 and DeepWave 0.0.9. They cover traces and physical gradients, clean/noisy AMP with actual updates and restart, and fixed-source FWI improvement. The first full GPU suite had 199 passes and one test-fixture failure, subsequently corrected without changing production code or tolerances. A post-fix full GPU suite and CUDA benchmark timing/memory remain unmeasured because new RunPod creation requests failed. The [validation record](validation/validation.md) separates these outcomes; skipped CPU CUDA tests are not GPU evidence.
 
 ## Recorded tiny CPU result
 
