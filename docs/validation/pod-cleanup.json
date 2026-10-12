@@ -66,7 +66,7 @@
   "created_pod_count": 8,
   "total_estimated_compute_cost_usd": 0.5372358833524916,
   "estimate_method": "created Pod lifetime \u00d7 reported compute rate; excludes earlier frozen-notebook tests; not a billing invoice",
-  "latest_diagnostic_create_attempt": {
+  "historical_failed_diagnostic_create_attempt": {
     "source_commit": "f54f25140dab30363e487514aa2c7ee75681ad55",
     "status": "failed_before_pod_created",
     "http_status": 500,

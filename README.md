@@ -232,7 +232,7 @@ Run `python -m pytest -q` for contracts, strategy behavior, gradient checks, and
 
 | Recorded check | Result |
 | --- | --- |
-| Hosted CPU suite at `3b0b5d2` | Push and PR checks each passed 215 tests; four optional CUDA tests skipped on CPU. The later test-only `81010f6` passed 20 focused CPU benchmark tests; its hosted checks are pending. |
+| Hosted CPU suite at `3b0b5d2` | Push and PR checks each passed 215 tests; four optional CUDA tests skipped on CPU. The later test-only `81010f6` passed 20 focused CPU benchmark tests; the added seed regression was outside the recorded GPU run. |
 | CLI and notebooks | Simulation, both methods, interruption/resume and evaluation exercised; both notebooks executed |
 | RTX 4090 GPU suite at `3b0b5d2` | 219 passed, zero failed or skipped, including all four CUDA-specific checks |
 | Untimed GPU repeatability diagnostic | Across default and cuDNN-TF32-off profiles, all 12 paired original/package epoch comparisons passed tolerance; all 16 same-implementation replay comparisons failed stricter bit-exact checks |

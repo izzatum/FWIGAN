@@ -41,7 +41,7 @@
     "benchmark_file_tests_passed": 20,
     "seed_regression": "12 frozen-vs-production CPU beta draws and all full RNG endpoints matched from same seed-42 snapshot",
     "production_seed_change": false,
-    "hosted_ci": "pending"
+    "validation_scope": "local CPU; added seed regression was outside the recorded 219-test GPU run"
   },
   "cli_and_notebooks": {
     "cli_recorded_commands": 10,
