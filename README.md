@@ -232,12 +232,13 @@ Run `python -m pytest -q` for contracts, strategy behavior, gradient checks, and
 
 | Recorded check | Result |
 | --- | --- |
-| Hosted CPU suite at `f54f251` | Push and PR checks each passed 215 tests; four optional CUDA tests skipped on CPU |
+| Hosted CPU suite at `3b0b5d2` | Push and PR checks each passed 215 tests; four optional CUDA tests skipped on CPU. The later test-only `81010f6` passed 20 focused CPU benchmark tests; its hosted checks are pending. |
 | CLI and notebooks | Simulation, both methods, interruption/resume and evaluation exercised; both notebooks executed |
-| RTX 4090 GPU suite at `7339f63` | 215 passed, zero failed or skipped, including all four CUDA-specific checks |
+| RTX 4090 GPU suite at `3b0b5d2` | 219 passed, zero failed or skipped, including all four CUDA-specific checks |
+| Untimed GPU repeatability diagnostic | Across default and cuDNN-TF32-off profiles, all 12 paired original/package epoch comparisons passed tolerance; all 16 same-implementation replay comparisons failed stricter bit-exact checks |
 | Equivalent-work GPU benchmark | Tiny-clean failed numerical parity after two epochs across physical, critic, optimizer and gradient state; no CUDA timing or memory result is accepted |
 
-Exact commits, tolerances, failed comparison paths, and verified deletion of the test Pods are in [the validation record](docs/validation/validation.md). The opt-in repeatability diagnostic has passed CPU checks but has not run on CUDA; a subsequent GPU provisioning attempt failed before creating a Pod. CUDA checks do not establish measured GPU speedup, full Marmousi recovery, or superiority of the adversarial objective. No GPU benchmark figure is included until a complete numerically accepted all-workload run exists.
+Exact commits, tolerances, replay findings, failed benchmark paths, and verified deletion of the test Pods are in [the validation record](docs/validation/validation.md). The diagnostic is instrumented and untimed; its passing paired comparisons do not overturn the earlier material benchmark failure. Fixed seed and restored RNG do not ensure bit-exact native GPU training. No accepted CUDA speedup, full Marmousi recovery, or superiority of the adversarial objective is established. No GPU benchmark figure is included until a complete numerically accepted all-workload run exists.
 
 The next scientific steps are low-to-high frequency continuation, constrained source/noise studies, a separately validated per-shot critic, and a separately calibrated modern DeepWave backend. Keep method, data, acquisition, and independent evaluation fixed when comparing new methods.
 

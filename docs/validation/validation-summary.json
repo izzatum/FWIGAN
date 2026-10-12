@@ -5,32 +5,28 @@
     "number": 1,
     "draft": true
   },
-  "current_source_commit": "f54f25140dab30363e487514aa2c7ee75681ad55",
+  "current_source_commit": "81010f68c34b263e6b97d5988ee7198833e2d222",
   "scope": "2D constant-density acoustic FWI and preserved legacy FWIGAN with pinned DeepWave 0.0.9",
   "hosted_cpu_ci": [
     {
       "event": "push",
-      "run_id": 38258548614,
-      "head_sha": "f54f25140dab30363e487514aa2c7ee75681ad55",
+      "source_commit": "3b0b5d2ce2525ffee479d63df03c1c37b2ee3cf0",
       "conclusion": "success",
       "passed": 215,
       "failed": 0,
       "skipped_optional_cuda": 4,
       "warnings_upstream_plotting": 11,
-      "elapsed_seconds": 43.8,
-      "url": "https://github.com/izzatum/FWIGAN/actions/runs/38258548614"
+      "external_log_sha256": "d9b2e3e1d806edf714118625a027773c10c521eb00a5435410ab1c977a38a481"
     },
     {
       "event": "pull_request",
-      "run_id": 38258554963,
-      "head_sha": "f54f25140dab30363e487514aa2c7ee75681ad55",
+      "source_commit": "3b0b5d2ce2525ffee479d63df03c1c37b2ee3cf0",
       "conclusion": "success",
       "passed": 215,
       "failed": 0,
       "skipped_optional_cuda": 4,
       "warnings_upstream_plotting": 11,
-      "elapsed_seconds": 38.18,
-      "url": "https://github.com/izzatum/FWIGAN/actions/runs/38258554963"
+      "external_log_sha256": "eb10eb73a4de82be5b93d705750b2340712197be8ea390e2b459f4be504f774d"
     }
   ],
   "prior_hosted_cpu_ci": {
@@ -41,9 +37,11 @@
     "skipped_optional_cuda_each": 4
   },
   "current_source_focused_cpu": {
-    "passed": 19,
-    "two_profile_cpu_diagnostic_smoke": "passed",
-    "cuda_diagnostic": "not_run"
+    "source_commit": "81010f68c34b263e6b97d5988ee7198833e2d222",
+    "benchmark_file_tests_passed": 20,
+    "seed_regression": "12 frozen-vs-production CPU beta draws and all full RNG endpoints matched from same seed-42 snapshot",
+    "production_seed_change": false,
+    "hosted_ci": "pending"
   },
   "cli_and_notebooks": {
     "cli_recorded_commands": 10,
@@ -89,17 +87,18 @@
     "artifact": "docs/validation/grid-source-calibration.json"
   },
   "gpu_suite": {
-    "source_commit": "7339f63ba603e030556c1e794a81dae8da86d382",
+    "source_commit": "3b0b5d2ce2525ffee479d63df03c1c37b2ee3cf0",
     "device": "NVIDIA GeForce RTX 4090",
     "torch": "1.13.1+cu117",
     "deepwave": "0.0.9",
-    "passed": 215,
+    "passed": 219,
     "failed": 0,
     "skipped": 0,
     "cuda_specific_passed": 4,
-    "elapsed_seconds": 22.554260909557343,
-    "summary": "docs/validation/gpu-tests-7339f63.json",
-    "log": "docs/validation/gpu-tests-7339f63.log"
+    "elapsed_seconds": 40.554086739895865,
+    "summary": "docs/validation/gpu-tests-3b0b5d2.json",
+    "log": "docs/validation/gpu-tests-3b0b5d2.log",
+    "later_seed_regression_included": false
   },
   "gpu_equivalent_work_benchmark": {
     "source_commit": "7339f63ba603e030556c1e794a81dae8da86d382",
@@ -124,7 +123,8 @@
     "cuda_replays_run": false,
     "fresh_empty_account_lists": 3,
     "public_catalog_positive_rtx4090_regions": 0,
-    "created_pod": false
+    "created_pod": false,
+    "later_success_source_commit": "3b0b5d2ce2525ffee479d63df03c1c37b2ee3cf0"
   },
   "gpu_history": [
     {
@@ -149,17 +149,39 @@
     }
   ],
   "cleanup": {
-    "created_package_pods": 7,
+    "created_package_pods": 8,
     "all_deleted_and_absent": true,
-    "estimated_compute_cost_usd": 0.45204786413378184,
+    "estimated_compute_cost_usd": 0.5372358833524916,
     "is_billing_invoice": false,
     "artifact": "docs/validation/pod-cleanup.json"
   },
   "unverified": [
     "accepted all-workload CUDA timing and memory",
-    "CUDA repeatability diagnosis",
+    "cause of earlier material benchmark divergence",
     "full Marmousi inversion and convergence",
     "general GPU speedup",
     "modern DeepWave backend"
-  ]
+  ],
+  "gpu_untimed_repeatability_diagnostic": {
+    "source_commit": "3b0b5d2ce2525ffee479d63df03c1c37b2ee3cf0",
+    "status": "diagnostic_only",
+    "seed": 42,
+    "workload": "tiny-clean",
+    "profiles": [
+      "default",
+      "cudnn_tf32_off"
+    ],
+    "replays_per_profile": 3,
+    "epochs_per_replay": 2,
+    "loaded_branch_starts_valid": 12,
+    "paired_original_package_epoch_comparisons_passed": 12,
+    "same_implementation_bit_exact_epoch_comparisons_failed": 16,
+    "work_failures": 0,
+    "tf32_off_restored_bit_exact": false,
+    "older_uninstrumented_material_failure_resolved": false,
+    "accepted_cuda_timing_memory": false,
+    "instrumentation_limit": "CPU copies and synchronization can affect scheduling",
+    "summary": "docs/validation/gpu-repeatability-summary.json",
+    "raw_gzip": "docs/validation/gpu-repeatability-diagnostic.json.gz"
+  }
 }

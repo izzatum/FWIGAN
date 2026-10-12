@@ -1,0 +1,79 @@
+{
+  "schema": 1,
+  "as_of_utc_date": "2026-10-12",
+  "source_commit": "3b0b5d2ce2525ffee479d63df03c1c37b2ee3cf0",
+  "device": "NVIDIA GeForce RTX 4090",
+  "python": "3.10.12",
+  "torch": "1.13.1+cu117",
+  "deepwave": "0.0.9",
+  "mode": "repeatability_diagnostic",
+  "test_suite": {
+    "exit_code": 0,
+    "elapsed_seconds": 40.554086739895865,
+    "failures_detail": [],
+    "tests": 219,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 219,
+    "expected_failures": 0,
+    "ordinary_skips": 0,
+    "cuda_tests": 4,
+    "cuda_skipped": 0
+  },
+  "workload": "tiny-clean",
+  "seed": 42,
+  "profiles": [
+    {
+      "name": "default",
+      "cudnn_allow_tf32": true,
+      "common_fingerprint": "88d586836d5e2c81a1d419c6366e7b4d6a17e8310d5a8954d608bdff3b9f06ab",
+      "replays": 3,
+      "epochs_per_replay": 2,
+      "cross_implementation_comparisons": 6,
+      "cross_implementation_passed": 6,
+      "same_implementation_bit_exact_comparisons": 8,
+      "same_implementation_bit_exact_failed": 8,
+      "work_failure_count": 0,
+      "scope": "untimed instrumented diagnostic; not accepted performance or benchmark equivalence"
+    },
+    {
+      "name": "cudnn_tf32_off",
+      "cudnn_allow_tf32": false,
+      "common_fingerprint": "88d586836d5e2c81a1d419c6366e7b4d6a17e8310d5a8954d608bdff3b9f06ab",
+      "replays": 3,
+      "epochs_per_replay": 2,
+      "cross_implementation_comparisons": 6,
+      "cross_implementation_passed": 6,
+      "same_implementation_bit_exact_comparisons": 8,
+      "same_implementation_bit_exact_failed": 8,
+      "work_failure_count": 0,
+      "scope": "untimed instrumented diagnostic; not accepted performance or benchmark equivalence"
+    }
+  ],
+  "interpretation": {
+    "cross_implementation_within_retained_tolerance": "all 12 paired epoch comparisons passed",
+    "same_implementation_bit_exact": "all 16 replay comparisons failed",
+    "tf32_off_restored_bit_exact": false,
+    "previous_uninstrumented_benchmark_failure_resolved": false,
+    "accepted_cuda_timing_or_memory": false,
+    "causal_kernel_attribution": "unproven"
+  },
+  "raw_artifact": {
+    "compression": "gzip mtime=0",
+    "raw_bytes": 3502771,
+    "raw_sha256": "bfcfd31f51876bc5f7c8e3d42b824c26402e75b37efa5b1cb4f52b194268d10e",
+    "gzip_bytes": 108781,
+    "gzip_sha256": "4450461d5b3341c6fff49ac1f6736fbad1952d18c69b89f6767aff8cd3a1a484",
+    "repository_path": "docs/validation/gpu-repeatability-diagnostic.json.gz"
+  },
+  "pod": {
+    "id": "5pxnp1ewikg3xr",
+    "cleanup_verified": true,
+    "remaining_pod_ids": [],
+    "lifetime_seconds": 344.58075189590454,
+    "estimated_compute_cost_usd": 0.08518801921870973,
+    "is_billing_invoice": false
+  },
+  "report_sha256": "2416ed9a3d72d1e7291be9bdd9fc83f5db1873ffe21a9ab715ab539bc24446a4"
+}

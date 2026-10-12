@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "checked_at_unix_utc": 1791813482.0573146,
+  "checked_at_unix_utc": 1791814216.7731457,
   "account_list_http_status": 200,
   "account_pod_count": 0,
   "remaining_pod_ids": [],
@@ -54,10 +54,17 @@
       "cleanup_verified": true,
       "estimated_compute_cost_usd": 0.05359099344015121,
       "evidence_report_name": "package-gpu-pr1-resolution-20261012T1334.json"
+    },
+    {
+      "pod_id": "5pxnp1ewikg3xr",
+      "source_commit": "3b0b5d2ce2525ffee479d63df03c1c37b2ee3cf0",
+      "cleanup_verified": true,
+      "estimated_compute_cost_usd": 0.08518801921870973,
+      "evidence_report_name": "package-gpu-pr1-diagnostic-stock-20261012T1403.json"
     }
   ],
-  "created_pod_count": 7,
-  "total_estimated_compute_cost_usd": 0.45204786413378184,
+  "created_pod_count": 8,
+  "total_estimated_compute_cost_usd": 0.5372358833524916,
   "estimate_method": "created Pod lifetime \u00d7 reported compute rate; excludes earlier frozen-notebook tests; not a billing invoice",
   "latest_diagnostic_create_attempt": {
     "source_commit": "f54f25140dab30363e487514aa2c7ee75681ad55",
