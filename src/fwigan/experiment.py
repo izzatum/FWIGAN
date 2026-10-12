@@ -178,6 +178,9 @@ class Experiment:
     def save_checkpoint(self,path=None):
         if fingerprint_config(self.config.to_dict())!=self._runtime_config_fingerprint:
             raise ValueError('run configuration changed; use a new run')
+        # Cached at reconstruction, so an explicit resume device override is allowed.
+        if fingerprint_config(self.strategy.config.to_dict())!=self._runtime_config_fingerprint:
+            raise ValueError('strategy configuration changed; use a new run')
         if (self.data.fingerprint()!=self.data_fingerprint
             or self.strategy.data.fingerprint()!=self.data_fingerprint):raise ValueError('immutable dataset fingerprint changed')
         observed=self.strategy.observed if self.config.method=='fwigan' else None
@@ -258,11 +261,22 @@ class Experiment:
             if row['solver_forward']>counts['forward'] or row['solver_adjoint']>counts['adjoint']:
                 raise ValueError('inconsistent solver counters and history')
         if counts['adjoint']>counts['forward']:raise ValueError('inconsistent solver/adjoint counters')
+        Experiment._validate_solver_history(payload,config,data)
         _number_tree(payload['elapsed_seconds'])
         if payload['elapsed_seconds']<0:raise ValueError('invalid elapsed time')
+        recorded_elapsed=math.fsum(row['elapsed_seconds'] for row in payload['metrics'])
+        if (payload['elapsed_seconds']<recorded_elapsed and not math.isclose(
+            payload['elapsed_seconds'],recorded_elapsed,rel_tol=1e-12,abs_tol=1e-12)):
+            raise ValueError('aggregate elapsed time undercounts recorded steps')
         validate_rng(payload['rng'])
         strategy=payload['strategy']
         if not isinstance(strategy,dict):raise ValueError('invalid strategy state')
+        expected_config=config.to_dict()
+        for key in ('epochs','device'):expected_config.pop(key)
+        expected_signature=dict(method=config.method,config=expected_config,
+            shape=tuple(data.traces.shape),grid=data.grid,sampling=data.sampling)
+        if strategy.get('signature')!=expected_signature:
+            raise ValueError('strategy signature differs from immutable experiment configuration')
         if config.method=='fwigan':
             observed=strategy.get('observed');finite_tensor(observed,'observed',3)
             if observed.shape!=data.traces.shape or fingerprint_tensor(observed)!=payload['observed_fingerprint']:
@@ -286,6 +300,31 @@ class Experiment:
                 or scheduler.get('gamma')!=config.scheduler_gamma):
                 raise ValueError('inconsistent scheduler configuration or epoch state')
         return config,data
+
+    @staticmethod
+    def _validate_solver_history(payload,config,data):
+        # Training rows record completion before evaluations at the same step.
+        # Preserve evaluation insertion order, including repeated explicit calls.
+        events=[(row['global_step'],0,index,row) for index,row in enumerate(payload['metrics'])]
+        previous_step=0
+        for index,row in enumerate(payload['evaluations']):
+            if row['global_step']<previous_step:raise ValueError('decreasing solver evaluation history')
+            previous_step=row['global_step']
+            events.append((row['global_step'],1,index,row))
+        training_calls=1 if config.method=='fwigan' else (data.traces.shape[0]+config.batch_size-1)//config.batch_size
+        previous_forward=previous_adjoint=0
+        for _,kind,_,row in sorted(events,key=lambda event:event[:3]):
+            forward_work=training_calls if kind==0 else 1
+            adjoint_work=training_calls if kind==0 else 0
+            if (row['solver_forward']<previous_forward+forward_work
+                or row['solver_adjoint']<previous_adjoint+adjoint_work
+                or row['solver_adjoint']>row['solver_forward']):
+                raise ValueError('inconsistent cumulative solver history or recorded work')
+            previous_forward=row['solver_forward'];previous_adjoint=row['solver_adjoint']
+        counts=payload['solver_counts']
+        if counts['forward']<previous_forward or counts['adjoint']<previous_adjoint:
+            raise ValueError('aggregate solver counters undercount recorded work')
+        # Extra attempted solves/adjoints after failures may exceed these bounds.
 
     @classmethod
     def resume(cls,checkpoint,device=None,forward=None):

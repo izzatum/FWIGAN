@@ -334,3 +334,92 @@ def test_warm_start_validates_cuda_snapshot_on_cpu_without_old_runtime(tmp_path)
     new=E.warm_start(snapshot,config(noise=True),data,tmp_path)
     same(new.parameters.state_dict(),old.parameters.state_dict())
     assert new.parameters.velocity.device.type=='cpu' and new.metrics==[]
+
+
+@pytest.mark.parametrize('method',['fwigan','fwi'])
+@pytest.mark.parametrize('corruption',['zero','descending','evaluation_descending','missing_evaluation_work','under_counted_training'])
+def test_solver_accounting_rejects_nonnegative_impossible_histories(tmp_path,method,corruption):
+    E=experiment();data=make_tiny_data(nt=32,shots=4,receivers=8 if method=='fwi' else 60)
+    run=E.create(config(method=method,batch_size=3),data,tmp_path)
+    run.evaluate();run.run();run.evaluate()
+    payload=torch.load(run.save_checkpoint(),map_location='cpu')
+    if corruption=='zero':
+        payload['solver_counts']={'forward':0,'adjoint':0}
+        for row in payload['metrics']+payload['evaluations']:row['solver_forward']=row['solver_adjoint']=0
+    elif corruption=='descending':
+        payload['metrics'][1]['solver_forward']=payload['metrics'][1]['solver_adjoint']=0
+    elif corruption=='evaluation_descending':
+        payload['evaluations'][-1]['solver_forward']=payload['evaluations'][-1]['solver_adjoint']=0
+    elif corruption=='missing_evaluation_work':
+        for row in payload['metrics']+payload['evaluations']:row['solver_forward']-=1
+        payload['solver_counts']['forward']-=1
+    else:
+        payload['metrics'][0]['solver_adjoint']=0 if method=='fwigan' else 1
+    path=tmp_path/'invalid-accounting.pt';torch.save(payload,path)
+    with pytest.raises(ValueError,match='solver'):E.resume(path)
+
+
+def test_failed_fwi_solves_allow_larger_cumulative_accounting(tmp_path):
+    from fwigan.physics import LegacyDeepwave
+    E=experiment();data=make_tiny_data(nt=64,shots=3,receivers=8)
+    class FailOnce:
+        def __init__(self):self.calls=0
+        def predict(self,*args):
+            self.calls+=1
+            if self.calls==2:raise RuntimeError('one failed solve')
+            return LegacyDeepwave().predict(*args)
+    run=E.create(config(method='fwi',batch_size=2),data,tmp_path,forward=FailOnce())
+    with pytest.raises(RuntimeError,match='failed solve'):run.run(max_batches=1)
+    run.evaluate();run.run(max_batches=1)
+    assert run.solver_counts.forward==5 and run.solver_counts.adjoint==3
+    restored=E.resume(run.save_checkpoint())
+    assert restored.solver_counts==run.solver_counts
+    same(restored.parameters.state_dict(),run.parameters.state_dict())
+
+
+@pytest.mark.parametrize('field,value',[('observation_noise_level',.06),('epochs',3),('device','auto')])
+def test_strategy_config_divergence_cannot_replace_restart_point(tmp_path,field,value):
+    E=experiment();run=E.create(config(),make_tiny_data(nt=32,shots=4),tmp_path)
+    run.run(max_batches=1);checkpoint=run.save_checkpoint();before=checkpoint.read_bytes()
+    setattr(run.strategy.config,field,value)
+    with pytest.raises(ValueError,match='strategy.*config'):run.save_checkpoint()
+    assert checkpoint.read_bytes()==before
+    assert E.resume(checkpoint).position.global_step==1
+
+
+def test_corrupt_training_signature_rejected_by_snapshot_boundary(tmp_path):
+    E=experiment();run=E.create(config(),make_tiny_data(nt=32,shots=4),tmp_path)
+    payload=torch.load(run.save_checkpoint(),map_location='cpu')
+    payload['strategy']['signature']['config']['observation_noise_level']+=.01
+    with pytest.raises(ValueError,match='strategy.*config'):E._validate_structure(payload)
+
+
+def test_resumed_runtime_device_override_keeps_expected_strategy_config(tmp_path):
+    from fwigan.checkpoints import fingerprint_config
+    E=experiment();run=E.create(config(),make_tiny_data(nt=32,shots=4),tmp_path)
+    checkpoint=run.save_checkpoint();payload=torch.load(checkpoint,map_location='cpu')
+    payload['config']['device']='cuda';payload['config_fingerprint']=fingerprint_config(payload['config'])
+    (run.run_dir/'config.json').write_text(json.dumps(payload['config']))
+    manifest=json.loads((run.run_dir/'run.json').read_text())
+    manifest['config_fingerprint']=payload['config_fingerprint'];(run.run_dir/'run.json').write_text(json.dumps(manifest))
+    torch.save(payload,checkpoint)
+    restored=E.resume(checkpoint,device='cpu');saved=torch.load(restored.save_checkpoint(),map_location='cpu')
+    assert saved['config']['device']=='cuda'
+    assert restored.config.device==restored.strategy.config.device=='cpu'
+
+
+def test_elapsed_aggregate_cannot_undercount_successful_step_times(tmp_path):
+    E=experiment();run=E.create(config(),make_tiny_data(nt=32,shots=4),tmp_path)
+    run.run();payload=torch.load(run.save_checkpoint(),map_location='cpu')
+    assert sum(row['elapsed_seconds'] for row in payload['metrics'])>0
+    payload['elapsed_seconds']=0.
+    with pytest.raises(ValueError,match='elapsed'):E._validate_structure(payload)
+
+
+def test_elapsed_aggregate_allows_roundoff_and_additional_failed_work(tmp_path):
+    import math
+    E=experiment();run=E.create(config(),make_tiny_data(nt=32,shots=4),tmp_path)
+    run.run();payload=torch.load(run.save_checkpoint(),map_location='cpu')
+    total=math.fsum(row['elapsed_seconds'] for row in payload['metrics'])
+    for elapsed in (total-1e-13,total+1.):
+        payload['elapsed_seconds']=elapsed;E._validate_structure(payload)
