@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "interrupted_attempt": {
+    "status": "interrupted_executor_outage_user_terminated",
+    "pod_id": "h843dkfh09gge5",
+    "epochs": 120,
+    "cleanup_verified": true,
+    "cleanup_method": "user_termination_independently_verified_get404_and_fresh_list_absence",
+    "pod_lifetime_upper_bound_seconds": 1598.5636720657349,
+    "estimated_compute_cost_upper_bound": 0.2619868240329954,
+    "artifact_retrieval_unavailable": true
+  },
+  "completed_retry": {
+    "status": "completed",
+    "pod_id": "0q2d9l3fzhxa8v",
+    "epochs": 120,
+    "cleanup_verified": true,
+    "cleanup_method": "owned_get404_and_fresh_list_absence",
+    "pod_lifetime_seconds": 3066.6920788288116,
+    "estimated_compute_cost": 0.5025967573636108,
+    "reported_compute_rate_per_hour": 0.59
+  },
+  "completed_archive": {
+    "archive_bytes": 73862706,
+    "archive_sha256": "ca0ecaf8e62c059276e42180541a3d4dc2e34389d5a6b132c751be9ef2fdd38e",
+    "verified": true
+  },
+  "note": "The interrupted first attempt produced no 120-epoch result; its compute is a conservative upper bound. The retry produced the published artifacts. Cost figures are estimates, not invoices."
+}

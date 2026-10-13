@@ -40,6 +40,14 @@ Single-pair training times were lower for the package (1.86/1.70 original-to-pac
 
 The owned workflow Pod was deleted and GET404 plus absence from a fresh account list independently verified. Duration × reported-rate compute estimate was $0.144249, with a conservative tracked budget total below $10. The full resumable checkpoint exceeded the fixed retrieval allowance and was omitted; resume was exercised on the Pod and final physical exports were retrieved. See the report for exact costs, hashes, omissions and limitations.
 
+## Full-grid notebook workflows at 120 epochs
+
+The [120-epoch extension](marmousi-120epoch.md) used source `788e39f` and completed all five notebooks on an A40. Four CUDA checks passed, both GAN pairs matched initial data/physical/critic/full RNG state, and each package workflow resumed after epoch 2. The independent artifact/scientific/lifecycle audit passed 170 checks, including every epoch row and executed code cell.
+
+Both GAN variants improved velocity RMSE relative to their initial 478.003 m/s; package clean/noisy outcomes were 412.915/462.523 m/s. The conventional FWI raw-data MSE improved 42.85%. Training-loop times were lower for the package, while instrumented whole-notebook times were higher. Final field differences and AMP update counts remained material; this is bounded recovery evidence, not acceptance of the separate failed numerical-equivalence benchmark.
+
+The first 120-epoch attempt lost its cloud executor during the build and was terminated by the user, then independently confirmed absent. Its conservative creation-to-verified-absence compute upper bound was $0.261987. The successful retry cost an estimated $0.502597; its verified 73,862,706-byte archive was retrieved before DELETE/GET404/fresh-list confirmation. Both attempts fit the tracked $10 budget, and no owned Pod remains. The oversized full checkpoint was omitted; actual resume and final physical exports were verified.
+
 ## Audit and remaining work
 
 All eight uniquely created package-validation Pods were deleted and their cleanup verified; [cleanup summary](pod-cleanup.json) records IDs and scope. Their combined **$0.537236** duration × reported-rate estimate excludes earlier legacy notebook tests and is **not a billing invoice**. Failed pre-create requests created no Pod and have no compute estimate.

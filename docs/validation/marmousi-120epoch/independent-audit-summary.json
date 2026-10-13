@@ -1,0 +1,49 @@
+{
+  "schema": 1,
+  "status": "passed",
+  "checks_passed": 170,
+  "checks_failed": 0,
+  "field_differences": {
+    "FWIGAN": {
+      "velocity": {
+        "rms": 138.65442150069393,
+        "max_absolute": 848.6865234375
+      },
+      "source": {
+        "rms": 0.003957227685281078,
+        "max_absolute": 0.10917211044579744
+      },
+      "sigma": {
+        "rms": 0.0,
+        "max_absolute": 0.0
+      },
+      "predicted": {
+        "rms": 0.7613599711016362,
+        "max_absolute": 94.37071228027344
+      }
+    },
+    "FWIGAN_Noisy": {
+      "velocity": {
+        "rms": 177.64660568897392,
+        "max_absolute": 826.7421875
+      },
+      "source": {
+        "rms": 0.008442879323223552,
+        "max_absolute": 0.05985565111041069
+      },
+      "sigma": {
+        "rms": 0.0045633502304553986,
+        "max_absolute": 0.0045633502304553986
+      },
+      "predicted": {
+        "rms": 1.1947059789231322,
+        "max_absolute": 112.83148956298828
+      }
+    }
+  },
+  "shared": {
+    "file_sha256": "20b9d72e97b0ab2e08b02d10534f6665aa9b407bdb011039e9d9c0715ba65db1",
+    "raw_sha256": "7d3f351e4c14e2e302257988122b9d3bb131f7f3d948ac2b9a96808e4acd21f2",
+    "fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8"
+  }
+}

@@ -226,6 +226,21 @@ CPU timing applies only to this tiny workload. CUDA must be measured separately;
 
 *Actual clean/noisy nt128, two-shot, six-cycle CPU samples: original medians 0.3793/0.3573 seconds per group, package 0.1715/0.1735. Physical/Adam/gradient updates and RNG agree exactly; native adjoints decrease seven to one. This shared-host tiny result does not establish GPU or full Marmousi performance. [Raw JSON and measurement details](docs/performance.md#recorded-tiny-cpu-result).*
 
+### Full Marmousi notebook comparison: 120 epochs
+
+All five full-grid workflows completed **120 epochs on an A40**: original/package clean and noisy FWIGAN, plus conventional FWI. Both package GAN notebooks resumed after epoch 2. Data, physical parameters, critic and complete seed-42 RNG states matched at each paired start. [Report, executed notebooks, metric histories and figures](docs/validation/marmousi-120epoch.md).
+
+| Velocity RMSE at epoch 120 | Shared initial | Original | Package |
+| --- | ---: | ---: | ---: |
+| Clean FWIGAN | 478.00 m/s | 432.33 m/s | 412.91 m/s |
+| Noisy FWIGAN | 478.00 m/s | 464.58 m/s | 462.52 m/s |
+
+Package velocity RMSE improved **13.6% clean / 3.2% noisy** from the common initializer. Its clean-normalized data MSE reached **0.001952 clean / 0.003844 noisy**. The conventional FWI companion reduced raw-data MSE by **42.9%** from its own initial value. These are bounded, single-run scientific observations rather than full 401-epoch convergence or method superiority.
+
+![Actual full-grid Marmousi reference, initial and final velocity maps after 120 epochs](docs/assets/marmousi-120epoch-velocity-models.png)
+
+Recorded training times were 572.29 → 298.00 s clean and 567.88 → 302.22 s noisy (original/package ratios **1.92 / 1.88**). Total instrumented package notebook times were higher because the driver exercised resume and wrote checkpoints each epoch. Final old/new velocity differences remain material: **138.65 / 177.65 m/s RMS clean/noisy**, with differing AMP update counts; this is not numerical-equivalence benchmark acceptance. Estimated compute for the completed run was **$0.50**; including the interrupted attempt's conservative upper bound, the two 120-epoch attempts total **about $0.76**, within the $10 cap. Both Pods were deleted and absence verified.
+
 ### Full Marmousi notebook comparison: 20 epochs
 
 The original and package clean/noisy notebooks each completed **20 epochs on an A40**, using the full Marmousi acquisition and identical seed-42 starting data, physical parameters, critic and RNG states. Both package notebooks resumed after epoch 2 and continued to epoch 20. A conventional FWI companion also completed 20 epochs. [Report, executed notebooks and raw metrics](docs/validation/marmousi-20epoch.md).
@@ -253,8 +268,9 @@ Run `python -m pytest -q` for contracts, strategy behavior, gradient checks, and
 | Untimed GPU repeatability diagnostic | Across default and cuDNN-TF32-off profiles, all 12 paired original/package epoch comparisons passed tolerance; all 16 same-implementation replay comparisons failed stricter bit-exact checks |
 | Equivalent-work GPU benchmark | Tiny-clean failed numerical parity after two epochs across physical, critic, optimizer and gradient state; no CUDA timing or memory result is accepted |
 | Full-grid Marmousi workflow at `2b179f9` | Four A40 CUDA checks passed; old/new clean/noisy GAN and package FWI each completed 20 epochs, with package checkpoint/resume exercised |
+| Full-grid 120-epoch workflow at `788e39f` | Four CUDA checks passed; all five notebooks completed 120 epochs; 170 independent evidence checks passed, with owned Pod deletion verified |
 
-Exact commits, tolerances, replay findings, failed benchmark paths, and verified deletion of the test Pods are in [the validation record](docs/validation/validation.md). The diagnostic is instrumented and untimed; its passing paired comparisons do not overturn the earlier material benchmark failure. Fixed seed and restored RNG do not ensure bit-exact native GPU training. The bounded Marmousi figures and training times above are workflow observations; they establish neither an accepted equivalent-work CUDA speedup nor full Marmousi recovery or superiority of the adversarial objective.
+Exact commits, tolerances, replay findings, failed benchmark paths, and verified deletion of the test Pods are in [the validation record](docs/validation/validation.md). The diagnostic is instrumented and untimed; its passing paired comparisons do not overturn the earlier material benchmark failure. Fixed seed and restored RNG do not ensure bit-exact native GPU training. The bounded 20- and 120-epoch Marmousi figures and training times above are workflow observations; they establish neither an accepted equivalent-work CUDA speedup nor full Marmousi recovery or superiority of the adversarial objective.
 
 The next scientific steps are low-to-high frequency continuation, constrained source/noise studies, a separately validated per-shot critic, and a separately calibrated modern DeepWave backend. Keep method, data, acquisition, and independent evaluation fixed when comparing new methods.
 
