@@ -1,0 +1,95 @@
+{
+  "schema": 1,
+  "scope": "Full-grid 120-epoch Marmousi GPU",
+  "full_marmousi_comparison": true,
+  "input_bundle": "/workspace/fwigan-validation/120epoch-gpu-retry-20261013T0753Z.artifacts",
+  "result_sha256": "e2ec04cf9425e60716c9223cc85a37f3be5c44c4f1ce3ea859c69240cd20c78e",
+  "artifact_manifest_sha256": "08d78cd1a0de0013ef3ef1131a7982ef1d8dffa3f5c40bcc383a91559d06c579",
+  "manifest_verified_inputs": [
+    "shared_observations.pt",
+    "result.json",
+    "FWIGAN-old-metrics.json",
+    "FWIGAN-new-metrics.json",
+    "FWIGAN_Noisy-old-metrics.json",
+    "FWIGAN_Noisy-new-metrics.json",
+    "FWIGAN-old-final.pt",
+    "FWIGAN-new-runs/fwigan-5b82310c191c44f39ef84866202c1d35/final.pt",
+    "FWIGAN_Noisy-old-final.pt",
+    "FWIGAN_Noisy-new-runs/fwigan-17f62cf07e8d4ec6b6592319cb0ad516/final.pt",
+    "FWI-new-metrics.json",
+    "FWI-new-runs/fwi-ab064b0a00ae43dea8fb4128a3b22f91/final.pt"
+  ],
+  "shared_observations_sha256": "20b9d72e97b0ab2e08b02d10534f6665aa9b407bdb011039e9d9c0715ba65db1",
+  "case_metrics_sha256": {
+    "FWIGAN-old": "13ef096e1c2d5600db75d51464d4099c8af4365f38e23b59085d0b96b9cedac6",
+    "FWIGAN-new": "0ea821a843f51e65600c1af2dcda6e23d7935c2be00840f07a624c623d4a7f4b",
+    "FWIGAN_Noisy-old": "dd59793d78dd10d025a1641a15f317976e26559a75f893dd5115832c406bfef4",
+    "FWIGAN_Noisy-new": "b32983ed5143b0151af707bfbd03324fd5415d0bb0590fbdbdb90ffdc19b942b"
+  },
+  "final_tensors_sha256": {
+    "FWIGAN-old": "54faa42e457adf5cbf388aaab25ef0fe522a907a3a1f5f83655ef6a9f3733359",
+    "FWIGAN-new": "753255a70606dda473998529578732c9131fb8d4663f4cf369ab74857abb40bf",
+    "FWIGAN_Noisy-old": "74310355521aeaf6dd9702bfb544b29cdc406a7ea783a194bf8779180d055a07",
+    "FWIGAN_Noisy-new": "f0ab67fd0604ce60ba3ae62ba9b37d831337e568d994b720108048cb1c8bbb02"
+  },
+  "figures": [
+    "velocity-models",
+    "velocity-differences",
+    "metric-histories",
+    "source-and-sigma",
+    "work-and-resources"
+  ],
+  "fwi_companion_metrics_sha256": "eef5a8d973b0c547f91818172866a88438863a7c64306e751a748b8ef0ec5f0c",
+  "limitations": [
+    "No full 401-epoch convergence or method-superiority claim"
+  ],
+  "renderer_source_sha256": "ca8a9a5211e9802d1eee1d1b72e173aa9c494ec067aa6d6b84990d8b18e7a6fe",
+  "published_renderer_sha256": "ca8a9a5211e9802d1eee1d1b72e173aa9c494ec067aa6d6b84990d8b18e7a6fe",
+  "published_assets": {
+    "velocity-models": {
+      "png_sha256": "15d19d334e2f1747fc8380d08daa10156d15be929e0ac17064e05b1ef2d0484f",
+      "original_svg_sha256": "685020660ee9cd512836308f67ac0ed6d441bf3b12ae8f02fa0250bb2e3cf9e7",
+      "published_svg_sha256": "0c171479ec5037a2d667a69cf826409273a8fa1a6092201f6e0d0c1ac04f2631",
+      "trailing_whitespace_normalized": true,
+      "xml_drawing_values_unchanged": true,
+      "png_path": "docs/assets/marmousi-120epoch-velocity-models.png",
+      "svg_path": "docs/assets/marmousi-120epoch-velocity-models.svg"
+    },
+    "velocity-differences": {
+      "png_sha256": "7708cff5d93f6e2ed29b7632c21c654c467e9de905b589745a84c3b6a362c6c4",
+      "original_svg_sha256": "f99ec83e8c7accdeabf3e7707016f799e6d149f2fe963d4fa821e92b7301a188",
+      "published_svg_sha256": "258284fe506532cb0d45829fad032db31b776630382b0eb30ab3ac11e3b53cf7",
+      "trailing_whitespace_normalized": true,
+      "xml_drawing_values_unchanged": true,
+      "png_path": "docs/assets/marmousi-120epoch-velocity-differences.png",
+      "svg_path": "docs/assets/marmousi-120epoch-velocity-differences.svg"
+    },
+    "metric-histories": {
+      "png_sha256": "91850c347b514ea6e72a4255b792adc955cf3b6763d7389478aef864cc0c5127",
+      "original_svg_sha256": "65aafddec3fc9c689ce0b97e839d3d6fd486be804154a2855869dbe3cc5c5eb5",
+      "published_svg_sha256": "ca0daad69b1c93f23b72ba5a88958953a802207c5845417d49c193cb90dc1394",
+      "trailing_whitespace_normalized": true,
+      "xml_drawing_values_unchanged": true,
+      "png_path": "docs/assets/marmousi-120epoch-metric-histories.png",
+      "svg_path": "docs/assets/marmousi-120epoch-metric-histories.svg"
+    },
+    "source-and-sigma": {
+      "png_sha256": "21615a226089333386586a05d36f72514ce8ebd27f196b0171f7e4e8b7ad9bd2",
+      "original_svg_sha256": "0797e856f2390d41226ac63f5f3f303f1cd8ca1fd8338fb1fcbbf5dd535dbc43",
+      "published_svg_sha256": "e93952d33c818bbf7c3ad0a3e94159bb5312888e195e4da44a5fb9453c9c7f27",
+      "trailing_whitespace_normalized": true,
+      "xml_drawing_values_unchanged": true,
+      "png_path": "docs/assets/marmousi-120epoch-source-and-sigma.png",
+      "svg_path": "docs/assets/marmousi-120epoch-source-and-sigma.svg"
+    },
+    "work-and-resources": {
+      "png_sha256": "55ab090f229f3f107d00945650d88af652b7af132e06ce2c985006d687fd74b1",
+      "original_svg_sha256": "5ab9a30af2df282958e2fea00a000b6f14110129d90e218b69918182741e3d98",
+      "published_svg_sha256": "8f72e01e19ec44dbd3210b576b30f10f9494d829fb9ec4a1749ab92efc74117b",
+      "trailing_whitespace_normalized": true,
+      "xml_drawing_values_unchanged": true,
+      "png_path": "docs/assets/marmousi-120epoch-work-and-resources.png",
+      "svg_path": "docs/assets/marmousi-120epoch-work-and-resources.svg"
+    }
+  }
+}

@@ -1,0 +1,450 @@
+{
+  "schema": 1,
+  "files": [
+    {
+      "path": "FWI-new-executed.ipynb",
+      "bytes": 4012,
+      "sha256": "242fc1d80d762200bf0a4313e8bc16927361309d7b4a3924506431550ed13d62"
+    },
+    {
+      "path": "FWI-new-figures/traces.png",
+      "bytes": 121745,
+      "sha256": "7f0d9ced1f0f2da3636fa43a19d0338a473910bb53eba1e1c04448a9d3315a7f"
+    },
+    {
+      "path": "FWI-new-figures/velocity.png",
+      "bytes": 148775,
+      "sha256": "7ca989e17a2aeab521d3185e1add2db1c6b3faf3bcf2262450df04c4cba98c96"
+    },
+    {
+      "path": "FWI-new-metrics.json",
+      "bytes": 384665,
+      "sha256": "eef5a8d973b0c547f91818172866a88438863a7c64306e751a748b8ef0ec5f0c"
+    },
+    {
+      "path": "FWI-new-runs/fwi-ab064b0a00ae43dea8fb4128a3b22f91/config.json",
+      "bytes": 776,
+      "sha256": "6c6b940866ba936e98d86ba38eecc35c5c4a8786f43b5ddd0d904f68063faf22"
+    },
+    {
+      "path": "FWI-new-runs/fwi-ab064b0a00ae43dea8fb4128a3b22f91/final.pt",
+      "bytes": 14534751,
+      "sha256": "b3506709aebec0f24f088daf7f29885e2c1019bcf17492404be84b35aae1cbc5"
+    },
+    {
+      "path": "FWI-new-runs/fwi-ab064b0a00ae43dea8fb4128a3b22f91/run.json",
+      "bytes": 427,
+      "sha256": "e7ae691552d81ccb82b1a4cf5cf0f1b0150e5f078b4fd9957cc4c3a94ebed75e"
+    },
+    {
+      "path": "FWIGAN-new-executed.ipynb",
+      "bytes": 5115,
+      "sha256": "34d585c7f50f67eabec9698ed63b31a219d438ce192aa89c762b8dc178a45259"
+    },
+    {
+      "path": "FWIGAN-new-figures/traces.png",
+      "bytes": 110737,
+      "sha256": "0023fb81f0a582ab09d312bdfdcd9991e14c666b8c35e8380369dc21fd843077"
+    },
+    {
+      "path": "FWIGAN-new-figures/velocity.png",
+      "bytes": 218756,
+      "sha256": "4138fc80e220516438f19304a1855ee42ac183ea57d3ec2d2f931f89bc11457e"
+    },
+    {
+      "path": "FWIGAN-new-metrics.json",
+      "bytes": 431641,
+      "sha256": "0ea821a843f51e65600c1af2dcda6e23d7935c2be00840f07a624c623d4a7f4b"
+    },
+    {
+      "path": "FWIGAN-new-runs/fwigan-5b82310c191c44f39ef84866202c1d35/config.json",
+      "bytes": 777,
+      "sha256": "e7da0c2b63530c6a86a4a0ecfc5cbadb387e4b1634a89996d85c16d65039e2cf"
+    },
+    {
+      "path": "FWIGAN-new-runs/fwigan-5b82310c191c44f39ef84866202c1d35/final.pt",
+      "bytes": 14534815,
+      "sha256": "753255a70606dda473998529578732c9131fb8d4663f4cf369ab74857abb40bf"
+    },
+    {
+      "path": "FWIGAN-new-runs/fwigan-5b82310c191c44f39ef84866202c1d35/run.json",
+      "bytes": 427,
+      "sha256": "b43147ed8364e9cf62d8b0978e1a617ee082a2bd6e15238ff765619d737579f9"
+    },
+    {
+      "path": "FWIGAN-old-executed.ipynb",
+      "bytes": 405920,
+      "sha256": "1054bf142710d9b74d29e93d9a65d79304777f00cb3be851795ebda45e411d87"
+    },
+    {
+      "path": "FWIGAN-old-figures/original-figure-01.png",
+      "bytes": 62341,
+      "sha256": "0ea239c3c1683668a2aeaf350648d272e7a79b7f5789c157d7362535aaba09d0"
+    },
+    {
+      "path": "FWIGAN-old-figures/original-figure-02.png",
+      "bytes": 255105,
+      "sha256": "5f6dff87c5f4e2cebc9dca89a4ed9a042fd1e2afbdad62f6447ffc5a3a911aac"
+    },
+    {
+      "path": "FWIGAN-old-figures/original-figure-03.png",
+      "bytes": 214126,
+      "sha256": "53d39fd2c266ec72abf57b4ae8f79ede2d0f93bcc453578845d63e08ecf83537"
+    },
+    {
+      "path": "FWIGAN-old-figures/original-figure-04.png",
+      "bytes": 41632,
+      "sha256": "cffa7a07e2dc20a63f695439aa425e442c93459046ad5b6e452d2259097c91f6"
+    },
+    {
+      "path": "FWIGAN-old-figures/original-figure-05.png",
+      "bytes": 62980,
+      "sha256": "a721765d6bfa9ca646211987523643d3f7c2e5c399e678fb54feb23ba4ee6558"
+    },
+    {
+      "path": "FWIGAN-old-figures/original-figure-06.png",
+      "bytes": 153760,
+      "sha256": "4ea282086cc99afdf0955da9d2fe478a04b008b2315a2152cc55ea8defed8ba0"
+    },
+    {
+      "path": "FWIGAN-old-figures/original-figure-07.png",
+      "bytes": 158639,
+      "sha256": "6928a1f762b1a0a8ad0ee51917a336a7c778ad41e20553f25cf859362e81c7f6"
+    },
+    {
+      "path": "FWIGAN-old-figures/original-figure-08.png",
+      "bytes": 162236,
+      "sha256": "666e6b013b5b4125958c137e764fc0e8f2c402a1e65fb1565a2488887e9a35a7"
+    },
+    {
+      "path": "FWIGAN-old-figures/original-figure-09.png",
+      "bytes": 166110,
+      "sha256": "7ee1492049e5bcf20fa461245d49220e6d99a679b3471d2a690c1f10f6f8e5b5"
+    },
+    {
+      "path": "FWIGAN-old-figures/original-figure-10.png",
+      "bytes": 170756,
+      "sha256": "5c4070abe0beff7e936fbeb9ca34fa11e2e3b10c37733ec7030293b980a46098"
+    },
+    {
+      "path": "FWIGAN-old-figures/original-figure-11.png",
+      "bytes": 174270,
+      "sha256": "89f398dfcdeb241a65014343d9cf384b1df3256be65a500f3753e53245fd9b55"
+    },
+    {
+      "path": "FWIGAN-old-figures/original-figure-12.png",
+      "bytes": 177433,
+      "sha256": "5883dad9b539b474a11b312da087c29f0c234018c75192b81bcc8bb0f6ff8bf1"
+    },
+    {
+      "path": "FWIGAN-old-final.pt",
+      "bytes": 14533589,
+      "sha256": "54faa42e457adf5cbf388aaab25ef0fe522a907a3a1f5f83655ef6a9f3733359"
+    },
+    {
+      "path": "FWIGAN-old-metrics.json",
+      "bytes": 2262469,
+      "sha256": "13ef096e1c2d5600db75d51464d4099c8af4365f38e23b59085d0b96b9cedac6"
+    },
+    {
+      "path": "FWIGAN-old-physical-latest.pt",
+      "bytes": 133442,
+      "sha256": "65764fd1e5db2e8d44580cce98e792c1e4ac81b7b649ddf999fb24d1ce920836"
+    },
+    {
+      "path": "FWIGAN_Noisy-new-executed.ipynb",
+      "bytes": 5133,
+      "sha256": "962771023fdde468c16cc9cbc588a1c75c75bbd27b759e1001a640ca7ef6d551"
+    },
+    {
+      "path": "FWIGAN_Noisy-new-figures/traces.png",
+      "bytes": 120941,
+      "sha256": "b6dc63b336404ac5e86618a8cbf67c8ae770a6149c29069928f30386cbb224b0"
+    },
+    {
+      "path": "FWIGAN_Noisy-new-figures/velocity.png",
+      "bytes": 219220,
+      "sha256": "3441b6f25c1b61b26437ed4e902cdd0c8787d007634d4be69632aba7f32a4164"
+    },
+    {
+      "path": "FWIGAN_Noisy-new-metrics.json",
+      "bytes": 442917,
+      "sha256": "b32983ed5143b0151af707bfbd03324fd5415d0bb0590fbdbdb90ffdc19b942b"
+    },
+    {
+      "path": "FWIGAN_Noisy-new-runs/fwigan-17f62cf07e8d4ec6b6592319cb0ad516/config.json",
+      "bytes": 775,
+      "sha256": "295cbb637bd3f71b0b464d3932dc4ea3e1d72b35ee11d924306dc35e5b84684b"
+    },
+    {
+      "path": "FWIGAN_Noisy-new-runs/fwigan-17f62cf07e8d4ec6b6592319cb0ad516/final.pt",
+      "bytes": 14534815,
+      "sha256": "f0ab67fd0604ce60ba3ae62ba9b37d831337e568d994b720108048cb1c8bbb02"
+    },
+    {
+      "path": "FWIGAN_Noisy-new-runs/fwigan-17f62cf07e8d4ec6b6592319cb0ad516/run.json",
+      "bytes": 427,
+      "sha256": "942535fb0dd34e30964652b7247fc7b945e43c516d5dec6d6c4957c2bd50923c"
+    },
+    {
+      "path": "FWIGAN_Noisy-old-executed.ipynb",
+      "bytes": 414047,
+      "sha256": "9501d551f917b55a9a52e532cfdd80ecfe664c8077ff100acbca64c5a3615d26"
+    },
+    {
+      "path": "FWIGAN_Noisy-old-figures/original-figure-01.png",
+      "bytes": 62341,
+      "sha256": "0ea239c3c1683668a2aeaf350648d272e7a79b7f5789c157d7362535aaba09d0"
+    },
+    {
+      "path": "FWIGAN_Noisy-old-figures/original-figure-02.png",
+      "bytes": 244441,
+      "sha256": "f4f698085e5a0636ffa6612751f3acb2c23f3b7ddbecc9a528be6c4ff57c0332"
+    },
+    {
+      "path": "FWIGAN_Noisy-old-figures/original-figure-03.png",
+      "bytes": 214126,
+      "sha256": "53d39fd2c266ec72abf57b4ae8f79ede2d0f93bcc453578845d63e08ecf83537"
+    },
+    {
+      "path": "FWIGAN_Noisy-old-figures/original-figure-04.png",
+      "bytes": 42256,
+      "sha256": "ee8106124fb56a55bd95478bebb7d62d5449eaf8613abe09428e73f8919f945d"
+    },
+    {
+      "path": "FWIGAN_Noisy-old-figures/original-figure-05.png",
+      "bytes": 60002,
+      "sha256": "ac3f5259066d54756d3531a2f158737f7c88031c51b967e816994a89965591f8"
+    },
+    {
+      "path": "FWIGAN_Noisy-old-figures/original-figure-06.png",
+      "bytes": 147687,
+      "sha256": "72448be705ef56eef35f77c07212d1938a30b98e0cefa05bc1538f577523c075"
+    },
+    {
+      "path": "FWIGAN_Noisy-old-figures/original-figure-07.png",
+      "bytes": 154840,
+      "sha256": "33f1b5a39de79b91dffc84271f0f9617003e624984bb81bca48ba63ad367a9be"
+    },
+    {
+      "path": "FWIGAN_Noisy-old-figures/original-figure-08.png",
+      "bytes": 159219,
+      "sha256": "528f3616cd058b0477848d241991486015c3bc0646d9490fd8dc22432d5a8485"
+    },
+    {
+      "path": "FWIGAN_Noisy-old-figures/original-figure-09.png",
+      "bytes": 161151,
+      "sha256": "39ecff20697187f948dc0e6f42b5c76cd894df994db4df8117e7e27e68c2e46a"
+    },
+    {
+      "path": "FWIGAN_Noisy-old-figures/original-figure-10.png",
+      "bytes": 163072,
+      "sha256": "0f69f6b786a1d3631b78298184bd546ee71c804d392e447252ccc761cd16dfb2"
+    },
+    {
+      "path": "FWIGAN_Noisy-old-figures/original-figure-11.png",
+      "bytes": 166810,
+      "sha256": "791b0a2f9f3fa234ee260d3a470b41bc0784856533ec251e555ecebe44434f26"
+    },
+    {
+      "path": "FWIGAN_Noisy-old-figures/original-figure-12.png",
+      "bytes": 170589,
+      "sha256": "7615b1e294f2a33343e937de47f77bb76f009674827db4bab312f3e10093d516"
+    },
+    {
+      "path": "FWIGAN_Noisy-old-final.pt",
+      "bytes": 14533689,
+      "sha256": "74310355521aeaf6dd9702bfb544b29cdc406a7ea783a194bf8779180d055a07"
+    },
+    {
+      "path": "FWIGAN_Noisy-old-metrics.json",
+      "bytes": 2239253,
+      "sha256": "dd59793d78dd10d025a1641a15f317976e26559a75f893dd5115832c406bfef4"
+    },
+    {
+      "path": "FWIGAN_Noisy-old-physical-latest.pt",
+      "bytes": 133472,
+      "sha256": "f0b7967ed1396a5ef3a777e0986e4d22b3e8b2a1e0ebdeae6e558ae7fa40b409"
+    },
+    {
+      "path": "new-clean.yaml",
+      "bytes": 343,
+      "sha256": "d636378c66bce3cb9fe1fbb05462c5508f2011bc3c31f1472e438bab57d48e78"
+    },
+    {
+      "path": "new-fwi.yaml",
+      "bytes": 341,
+      "sha256": "cccd64548485c7bd457782b4fef47dcd48d1f2e65a178b5eced0c0fe03123619"
+    },
+    {
+      "path": "new-noisy.yaml",
+      "bytes": 342,
+      "sha256": "4d34b59a84c1f3a200a85c9c180c6ad74411dfa337633902c9748fc38a3e8013"
+    },
+    {
+      "path": "old-clean-generator.pt",
+      "bytes": 266551,
+      "sha256": "1cd9506dcb5e7d7a301b0d63ab6ddd2e557ebadea71b6e3a04225ce0226b8dcf"
+    },
+    {
+      "path": "old-noisy-generator.pt",
+      "bytes": 267343,
+      "sha256": "5c65e6c898a65783aadd66c6a9c8654c9a5e410d6e3ed724b53d4ef24dc43f59"
+    },
+    {
+      "path": "preflight/FWIGAN/FWIGAN-new-metrics.json",
+      "bytes": 2448,
+      "sha256": "ec9a133c962b338ae558483ba8c0c8a23442506d40bd21de02058dcf9f8146f8"
+    },
+    {
+      "path": "preflight/FWIGAN/FWIGAN-new-runs/fwigan-e654ab7c562d4489b7fb5f70cd589315/config.json",
+      "bytes": 777,
+      "sha256": "e7da0c2b63530c6a86a4a0ecfc5cbadb387e4b1634a89996d85c16d65039e2cf"
+    },
+    {
+      "path": "preflight/FWIGAN/FWIGAN-new-runs/fwigan-e654ab7c562d4489b7fb5f70cd589315/run.json",
+      "bytes": 427,
+      "sha256": "23f95ab1945bbc28a4fb5f0e3c2201af4a179d2ac798e192b8a3876fbbdad24c"
+    },
+    {
+      "path": "preflight/FWIGAN/FWIGAN-old-metrics.json",
+      "bytes": 2301,
+      "sha256": "1e39e70763ec5636939dd41bd55bbb86357231d407edc50d5ffeb1f36e2c7fd4"
+    },
+    {
+      "path": "preflight/FWIGAN/FWIGAN-old-physical-latest.pt",
+      "bytes": 133442,
+      "sha256": "e206a127d13070457c3757c6b19409bb7a40d6d0ef92dd5f4c70424b62161d6c"
+    },
+    {
+      "path": "preflight/FWIGAN/new-clean.yaml",
+      "bytes": 360,
+      "sha256": "c020789240e365b777c0cec6c59eea9912d62dab3101dea13ae14af18bb10bf5"
+    },
+    {
+      "path": "preflight/FWIGAN/new-initial.ipynb",
+      "bytes": 3414,
+      "sha256": "d1807bd0da31edc9da979379a12b0d4cb01816ed55706450ae15d6b564c36dea"
+    },
+    {
+      "path": "preflight/FWIGAN/old-initial.ipynb",
+      "bytes": 20480,
+      "sha256": "da4d475437ff88da21b7ac3904e0639af67452ccfc0e12c16b044f9a8a80b22b"
+    },
+    {
+      "path": "preflight/FWIGAN_Noisy/FWIGAN_Noisy-new-metrics.json",
+      "bytes": 2470,
+      "sha256": "a5b6bead2e9ed4d02aeedd0fff4d3f91a7193c12ec5d3ccfe6970d26dbdc1318"
+    },
+    {
+      "path": "preflight/FWIGAN_Noisy/FWIGAN_Noisy-new-runs/fwigan-08d2684e12054b1bac0b97f58f6e027f/config.json",
+      "bytes": 775,
+      "sha256": "295cbb637bd3f71b0b464d3932dc4ea3e1d72b35ee11d924306dc35e5b84684b"
+    },
+    {
+      "path": "preflight/FWIGAN_Noisy/FWIGAN_Noisy-new-runs/fwigan-08d2684e12054b1bac0b97f58f6e027f/run.json",
+      "bytes": 427,
+      "sha256": "1ddbd82c838d0a2d1540430f04eee953c720c501575d725b47572a5de8ef3232"
+    },
+    {
+      "path": "preflight/FWIGAN_Noisy/FWIGAN_Noisy-old-metrics.json",
+      "bytes": 2339,
+      "sha256": "ba756a53dfdc1ee54899f010a242a45fc087eaa71a6e887486cf9a8c3044878b"
+    },
+    {
+      "path": "preflight/FWIGAN_Noisy/FWIGAN_Noisy-old-physical-latest.pt",
+      "bytes": 133472,
+      "sha256": "228a8da489a190d674d83dd4c73d115fb3596dc3df00cd484599c344f1423f88"
+    },
+    {
+      "path": "preflight/FWIGAN_Noisy/new-initial.ipynb",
+      "bytes": 3450,
+      "sha256": "910d5f6eceb4ae6e2a41bfe3654feb57a1236193a15187dcb05e6478c79b82bd"
+    },
+    {
+      "path": "preflight/FWIGAN_Noisy/new-noisy.yaml",
+      "bytes": 365,
+      "sha256": "5971028c0dd0ee5813740282651e1eb95ae8d24b407fb18cf5d646ba5c6d024f"
+    },
+    {
+      "path": "preflight/FWIGAN_Noisy/old-initial.ipynb",
+      "bytes": 20625,
+      "sha256": "cde6862fb89efb73ed72a235d4636943ff4da1d3b4d81617993d215ba041009c"
+    },
+    {
+      "path": "result.json",
+      "bytes": 12378,
+      "sha256": "e2ec04cf9425e60716c9223cc85a37f3be5c44c4f1ce3ea859c69240cd20c78e"
+    },
+    {
+      "path": "shared_observations.pt",
+      "bytes": 14680979,
+      "sha256": "20b9d72e97b0ab2e08b02d10534f6665aa9b407bdb011039e9d9c0715ba65db1"
+    }
+  ],
+  "omitted": [
+    {
+      "path": "FWI-new-runs/fwi-ab064b0a00ae43dea8fb4128a3b22f91/checkpoint.pt",
+      "bytes": 15095352,
+      "reason": "uncompressed or duplicate large checkpoint"
+    },
+    {
+      "path": "FWI-new-runs/fwi-ab064b0a00ae43dea8fb4128a3b22f91/observations.pt",
+      "bytes": 14680979,
+      "reason": "uncompressed or duplicate large checkpoint"
+    },
+    {
+      "path": "FWIGAN-new-runs/fwigan-5b82310c191c44f39ef84866202c1d35/checkpoint.pt",
+      "bytes": 741029932,
+      "reason": "uncompressed or duplicate large checkpoint"
+    },
+    {
+      "path": "FWIGAN-new-runs/fwigan-5b82310c191c44f39ef84866202c1d35/observations.pt",
+      "bytes": 14680979,
+      "reason": "uncompressed or duplicate large checkpoint"
+    },
+    {
+      "path": "FWIGAN_Noisy-new-runs/fwigan-17f62cf07e8d4ec6b6592319cb0ad516/checkpoint.pt",
+      "bytes": 741030691,
+      "reason": "uncompressed or duplicate large checkpoint"
+    },
+    {
+      "path": "FWIGAN_Noisy-new-runs/fwigan-17f62cf07e8d4ec6b6592319cb0ad516/observations.pt",
+      "bytes": 14680979,
+      "reason": "uncompressed or duplicate large checkpoint"
+    },
+    {
+      "path": "old-clean-critic.pt",
+      "bytes": 711450423,
+      "reason": "uncompressed or duplicate large checkpoint"
+    },
+    {
+      "path": "old-noisy-critic.pt",
+      "bytes": 711450423,
+      "reason": "uncompressed or duplicate large checkpoint"
+    },
+    {
+      "path": "preflight/FWIGAN/FWIGAN-new-runs/fwigan-e654ab7c562d4489b7fb5f70cd589315/observations.pt",
+      "bytes": 14680979,
+      "reason": "uncompressed or duplicate large checkpoint"
+    },
+    {
+      "path": "preflight/FWIGAN/shared_observations.pt",
+      "bytes": 0,
+      "reason": "symlink excluded"
+    },
+    {
+      "path": "preflight/FWIGAN_Noisy/FWIGAN_Noisy-new-runs/fwigan-08d2684e12054b1bac0b97f58f6e027f/observations.pt",
+      "bytes": 14680979,
+      "reason": "uncompressed or duplicate large checkpoint"
+    },
+    {
+      "path": "preflight/FWIGAN_Noisy/shared_observations.pt",
+      "bytes": 0,
+      "reason": "symlink excluded"
+    }
+  ],
+  "selected_bytes": 99579299,
+  "max_selected_bytes": 2147483648,
+  "baseline_commit": "c7ec47ed89ba1380ad7a02bbc4526b93675e76f3"
+}

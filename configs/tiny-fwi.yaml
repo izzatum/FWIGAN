@@ -1,0 +1,21 @@
+# Bounded CPU synthetic example. All coordinates are physical metres.
+experiment:
+  method: fwi
+  device: cpu
+  seed: 42
+  epochs: 24
+  batches: 2
+  batch_size: 2
+  critic_cycles: 6
+  amp: false
+  noise: false
+  sigma_init: 0.08
+  evaluation_interval: 1
+  checkpoint_interval: 24
+  velocity_min: 2000.0
+  velocity_max: 2300.0
+dataset:
+  kind: tiny
+  nt: 128
+  shots: 2
+  receivers: 60

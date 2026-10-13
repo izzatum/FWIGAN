@@ -1,0 +1,2074 @@
+{
+  "name": "FWI",
+  "kind": "new",
+  "rows": [
+    {
+      "epoch": 0,
+      "position": {
+        "epoch": 0,
+        "batch": 0,
+        "global_step": 0
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 0.0,
+      "solver_counts": {
+        "forward": 1,
+        "adjoint": 0
+      },
+      "counters": {
+        "physical_updates": 0,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [],
+      "memory": {
+        "allocated": 15093760,
+        "reserved": 73400320,
+        "peak_allocated": 65590272,
+        "peak_reserved": 73400320
+      },
+      "initial": {
+        "rng": {
+          "python": "a52169fac48aa2d80acadd41f776ce38656ab70adc3b32c80c1fb1f0ee56b71f",
+          "numpy": "ae7ac7c9989b32816189b5cbf7d845311b7eb9100f4a532993523529da19548d",
+          "torch": "fa334daaf01e720bdb27c58008dfec009f5a020760e7d568113b4a8a5644f26d",
+          "cuda": [
+            "59971948134ebbef1d55373dfb8fdaff3441f4e083d729ed00ed234319e3b932"
+          ],
+          "cudnn_deterministic": true,
+          "cudnn_benchmark": false
+        },
+        "physical": {
+          "velocity": "66631b48da59bb3d0da17b7787c197416d3826c26bb72d07807929118806e9ac",
+          "source": "46d2c6e7cd8aa46ebc031302be284e8b21ff5fb7160b6facdb4860a1071b3dae",
+          "sigma": "88f0d11ae93ac2f493bacc37a68050d8103e810580cae567e49d496c928d4428"
+        },
+        "critic": null,
+        "observed": null,
+        "noise_std": null
+      },
+      "evaluation": {
+        "epoch": 0,
+        "batch": 0,
+        "global_step": 0,
+        "solver_forward": 2,
+        "solver_adjoint": 0,
+        "raw_residual_mse": 0.002469319850206375,
+        "model_rmse": 478.0025329589844,
+        "normalized_clean_mse": 0.02867603302001953,
+        "source_correlation": 1.0,
+        "source_norm_ratio_unscaled": 0.010000000707805157,
+        "source_norm_ratio_coarse": 1.0,
+        "sigma_signed": 1.0,
+        "sigma_magnitude": 1.0,
+        "normalized_noise_std_reference": 0.05
+      }
+    },
+    {
+      "epoch": 1,
+      "position": {
+        "epoch": 1,
+        "batch": 0,
+        "global_step": 1
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 0.5530327307060361,
+      "solver_counts": {
+        "forward": 8,
+        "adjoint": 6
+      },
+      "counters": {
+        "physical_updates": 1,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 0,
+          "batch": 0,
+          "global_step": 1,
+          "elapsed_seconds": 0.5530327307060361,
+          "solver_forward": 8,
+          "solver_adjoint": 6,
+          "data_loss": 0.0024693200830370188,
+          "regularization_loss": 0.0,
+          "loss": 0.0024693200830370188,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5043650560,
+        "peak_allocated": 4999145984,
+        "peak_reserved": 5043650560
+      }
+    },
+    {
+      "epoch": 2,
+      "position": {
+        "epoch": 2,
+        "batch": 0,
+        "global_step": 2
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 1.0950803887099028,
+      "solver_counts": {
+        "forward": 14,
+        "adjoint": 12
+      },
+      "counters": {
+        "physical_updates": 2,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 0,
+          "batch": 0,
+          "global_step": 1,
+          "elapsed_seconds": 0.5530327307060361,
+          "solver_forward": 8,
+          "solver_adjoint": 6,
+          "data_loss": 0.0024693200830370188,
+          "regularization_loss": 0.0,
+          "loss": 0.0024693200830370188,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 1,
+          "batch": 0,
+          "global_step": 2,
+          "elapsed_seconds": 0.5420476580038667,
+          "solver_forward": 14,
+          "solver_adjoint": 12,
+          "data_loss": 0.0024512261152267456,
+          "regularization_loss": 0.0,
+          "loss": 0.0024512261152267456,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5043650560,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5043650560
+      },
+      "evaluation": {
+        "epoch": 2,
+        "batch": 0,
+        "global_step": 2,
+        "solver_forward": 15,
+        "solver_adjoint": 12,
+        "raw_residual_mse": 0.002433484187349677,
+        "model_rmse": 477.99200439453125,
+        "normalized_clean_mse": 0.02841257117688656,
+        "source_correlation": 1.0,
+        "source_norm_ratio_unscaled": 0.010000000707805157,
+        "source_norm_ratio_coarse": 1.0,
+        "sigma_signed": 1.0,
+        "sigma_magnitude": 1.0,
+        "normalized_noise_std_reference": 0.05
+      }
+    },
+    {
+      "epoch": 3,
+      "position": {
+        "epoch": 3,
+        "batch": 0,
+        "global_step": 3
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 1.6397680817171931,
+      "solver_counts": {
+        "forward": 20,
+        "adjoint": 18
+      },
+      "counters": {
+        "physical_updates": 3,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 0,
+          "batch": 0,
+          "global_step": 1,
+          "elapsed_seconds": 0.5530327307060361,
+          "solver_forward": 8,
+          "solver_adjoint": 6,
+          "data_loss": 0.0024693200830370188,
+          "regularization_loss": 0.0,
+          "loss": 0.0024693200830370188,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 1,
+          "batch": 0,
+          "global_step": 2,
+          "elapsed_seconds": 0.5420476580038667,
+          "solver_forward": 14,
+          "solver_adjoint": 12,
+          "data_loss": 0.0024512261152267456,
+          "regularization_loss": 0.0,
+          "loss": 0.0024512261152267456,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 2,
+          "batch": 0,
+          "global_step": 3,
+          "elapsed_seconds": 0.5446876930072904,
+          "solver_forward": 20,
+          "solver_adjoint": 18,
+          "data_loss": 0.0024334844201803207,
+          "regularization_loss": 0.0,
+          "loss": 0.0024334844201803207,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      }
+    },
+    {
+      "epoch": 4,
+      "position": {
+        "epoch": 4,
+        "batch": 0,
+        "global_step": 4
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 2.189285270869732,
+      "solver_counts": {
+        "forward": 26,
+        "adjoint": 24
+      },
+      "counters": {
+        "physical_updates": 4,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 0,
+          "batch": 0,
+          "global_step": 1,
+          "elapsed_seconds": 0.5530327307060361,
+          "solver_forward": 8,
+          "solver_adjoint": 6,
+          "data_loss": 0.0024693200830370188,
+          "regularization_loss": 0.0,
+          "loss": 0.0024693200830370188,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 1,
+          "batch": 0,
+          "global_step": 2,
+          "elapsed_seconds": 0.5420476580038667,
+          "solver_forward": 14,
+          "solver_adjoint": 12,
+          "data_loss": 0.0024512261152267456,
+          "regularization_loss": 0.0,
+          "loss": 0.0024512261152267456,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 2,
+          "batch": 0,
+          "global_step": 3,
+          "elapsed_seconds": 0.5446876930072904,
+          "solver_forward": 20,
+          "solver_adjoint": 18,
+          "data_loss": 0.0024334844201803207,
+          "regularization_loss": 0.0,
+          "loss": 0.0024334844201803207,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 3,
+          "batch": 0,
+          "global_step": 4,
+          "elapsed_seconds": 0.5495171891525388,
+          "solver_forward": 26,
+          "solver_adjoint": 24,
+          "data_loss": 0.0024160933680832386,
+          "regularization_loss": 0.0,
+          "loss": 0.0024160933680832386,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      }
+    },
+    {
+      "epoch": 5,
+      "position": {
+        "epoch": 5,
+        "batch": 0,
+        "global_step": 5
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 2.742750112898648,
+      "solver_counts": {
+        "forward": 32,
+        "adjoint": 30
+      },
+      "counters": {
+        "physical_updates": 5,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 0,
+          "batch": 0,
+          "global_step": 1,
+          "elapsed_seconds": 0.5530327307060361,
+          "solver_forward": 8,
+          "solver_adjoint": 6,
+          "data_loss": 0.0024693200830370188,
+          "regularization_loss": 0.0,
+          "loss": 0.0024693200830370188,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 1,
+          "batch": 0,
+          "global_step": 2,
+          "elapsed_seconds": 0.5420476580038667,
+          "solver_forward": 14,
+          "solver_adjoint": 12,
+          "data_loss": 0.0024512261152267456,
+          "regularization_loss": 0.0,
+          "loss": 0.0024512261152267456,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 2,
+          "batch": 0,
+          "global_step": 3,
+          "elapsed_seconds": 0.5446876930072904,
+          "solver_forward": 20,
+          "solver_adjoint": 18,
+          "data_loss": 0.0024334844201803207,
+          "regularization_loss": 0.0,
+          "loss": 0.0024334844201803207,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 3,
+          "batch": 0,
+          "global_step": 4,
+          "elapsed_seconds": 0.5495171891525388,
+          "solver_forward": 26,
+          "solver_adjoint": 24,
+          "data_loss": 0.0024160933680832386,
+          "regularization_loss": 0.0,
+          "loss": 0.0024160933680832386,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 4,
+          "batch": 0,
+          "global_step": 5,
+          "elapsed_seconds": 0.5534648420289159,
+          "solver_forward": 32,
+          "solver_adjoint": 30,
+          "data_loss": 0.002399032935500145,
+          "regularization_loss": 0.0,
+          "loss": 0.002399032935500145,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      },
+      "evaluation": {
+        "epoch": 5,
+        "batch": 0,
+        "global_step": 5,
+        "solver_forward": 33,
+        "solver_adjoint": 30,
+        "raw_residual_mse": 0.0023823005612939596,
+        "model_rmse": 477.9768371582031,
+        "normalized_clean_mse": 0.02814890630543232,
+        "source_correlation": 1.0,
+        "source_norm_ratio_unscaled": 0.010000000707805157,
+        "source_norm_ratio_coarse": 1.0,
+        "sigma_signed": 1.0,
+        "sigma_magnitude": 1.0,
+        "normalized_noise_std_reference": 0.05
+      }
+    },
+    {
+      "epoch": 6,
+      "position": {
+        "epoch": 6,
+        "batch": 0,
+        "global_step": 6
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 3.2954271947965026,
+      "solver_counts": {
+        "forward": 39,
+        "adjoint": 36
+      },
+      "counters": {
+        "physical_updates": 6,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 0,
+          "batch": 0,
+          "global_step": 1,
+          "elapsed_seconds": 0.5530327307060361,
+          "solver_forward": 8,
+          "solver_adjoint": 6,
+          "data_loss": 0.0024693200830370188,
+          "regularization_loss": 0.0,
+          "loss": 0.0024693200830370188,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 1,
+          "batch": 0,
+          "global_step": 2,
+          "elapsed_seconds": 0.5420476580038667,
+          "solver_forward": 14,
+          "solver_adjoint": 12,
+          "data_loss": 0.0024512261152267456,
+          "regularization_loss": 0.0,
+          "loss": 0.0024512261152267456,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 2,
+          "batch": 0,
+          "global_step": 3,
+          "elapsed_seconds": 0.5446876930072904,
+          "solver_forward": 20,
+          "solver_adjoint": 18,
+          "data_loss": 0.0024334844201803207,
+          "regularization_loss": 0.0,
+          "loss": 0.0024334844201803207,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 3,
+          "batch": 0,
+          "global_step": 4,
+          "elapsed_seconds": 0.5495171891525388,
+          "solver_forward": 26,
+          "solver_adjoint": 24,
+          "data_loss": 0.0024160933680832386,
+          "regularization_loss": 0.0,
+          "loss": 0.0024160933680832386,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 4,
+          "batch": 0,
+          "global_step": 5,
+          "elapsed_seconds": 0.5534648420289159,
+          "solver_forward": 32,
+          "solver_adjoint": 30,
+          "data_loss": 0.002399032935500145,
+          "regularization_loss": 0.0,
+          "loss": 0.002399032935500145,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 5,
+          "batch": 0,
+          "global_step": 6,
+          "elapsed_seconds": 0.5526770818978548,
+          "solver_forward": 39,
+          "solver_adjoint": 36,
+          "data_loss": 0.0023823005612939596,
+          "regularization_loss": 0.0,
+          "loss": 0.0023823005612939596,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      }
+    },
+    {
+      "epoch": 7,
+      "position": {
+        "epoch": 7,
+        "batch": 0,
+        "global_step": 7
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 3.8450710885226727,
+      "solver_counts": {
+        "forward": 45,
+        "adjoint": 42
+      },
+      "counters": {
+        "physical_updates": 7,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 1,
+          "batch": 0,
+          "global_step": 2,
+          "elapsed_seconds": 0.5420476580038667,
+          "solver_forward": 14,
+          "solver_adjoint": 12,
+          "data_loss": 0.0024512261152267456,
+          "regularization_loss": 0.0,
+          "loss": 0.0024512261152267456,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 2,
+          "batch": 0,
+          "global_step": 3,
+          "elapsed_seconds": 0.5446876930072904,
+          "solver_forward": 20,
+          "solver_adjoint": 18,
+          "data_loss": 0.0024334844201803207,
+          "regularization_loss": 0.0,
+          "loss": 0.0024334844201803207,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 3,
+          "batch": 0,
+          "global_step": 4,
+          "elapsed_seconds": 0.5495171891525388,
+          "solver_forward": 26,
+          "solver_adjoint": 24,
+          "data_loss": 0.0024160933680832386,
+          "regularization_loss": 0.0,
+          "loss": 0.0024160933680832386,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 4,
+          "batch": 0,
+          "global_step": 5,
+          "elapsed_seconds": 0.5534648420289159,
+          "solver_forward": 32,
+          "solver_adjoint": 30,
+          "data_loss": 0.002399032935500145,
+          "regularization_loss": 0.0,
+          "loss": 0.002399032935500145,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 5,
+          "batch": 0,
+          "global_step": 6,
+          "elapsed_seconds": 0.5526770818978548,
+          "solver_forward": 39,
+          "solver_adjoint": 36,
+          "data_loss": 0.0023823005612939596,
+          "regularization_loss": 0.0,
+          "loss": 0.0023823005612939596,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 6,
+          "batch": 0,
+          "global_step": 7,
+          "elapsed_seconds": 0.5496438937261701,
+          "solver_forward": 45,
+          "solver_adjoint": 42,
+          "data_loss": 0.0023658631835132837,
+          "regularization_loss": 0.0,
+          "loss": 0.0023658631835132837,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      }
+    },
+    {
+      "epoch": 8,
+      "position": {
+        "epoch": 8,
+        "batch": 0,
+        "global_step": 8
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 4.398393251933157,
+      "solver_counts": {
+        "forward": 51,
+        "adjoint": 48
+      },
+      "counters": {
+        "physical_updates": 8,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 2,
+          "batch": 0,
+          "global_step": 3,
+          "elapsed_seconds": 0.5446876930072904,
+          "solver_forward": 20,
+          "solver_adjoint": 18,
+          "data_loss": 0.0024334844201803207,
+          "regularization_loss": 0.0,
+          "loss": 0.0024334844201803207,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 3,
+          "batch": 0,
+          "global_step": 4,
+          "elapsed_seconds": 0.5495171891525388,
+          "solver_forward": 26,
+          "solver_adjoint": 24,
+          "data_loss": 0.0024160933680832386,
+          "regularization_loss": 0.0,
+          "loss": 0.0024160933680832386,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 4,
+          "batch": 0,
+          "global_step": 5,
+          "elapsed_seconds": 0.5534648420289159,
+          "solver_forward": 32,
+          "solver_adjoint": 30,
+          "data_loss": 0.002399032935500145,
+          "regularization_loss": 0.0,
+          "loss": 0.002399032935500145,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 5,
+          "batch": 0,
+          "global_step": 6,
+          "elapsed_seconds": 0.5526770818978548,
+          "solver_forward": 39,
+          "solver_adjoint": 36,
+          "data_loss": 0.0023823005612939596,
+          "regularization_loss": 0.0,
+          "loss": 0.0023823005612939596,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 6,
+          "batch": 0,
+          "global_step": 7,
+          "elapsed_seconds": 0.5496438937261701,
+          "solver_forward": 45,
+          "solver_adjoint": 42,
+          "data_loss": 0.0023658631835132837,
+          "regularization_loss": 0.0,
+          "loss": 0.0023658631835132837,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 7,
+          "batch": 0,
+          "global_step": 8,
+          "elapsed_seconds": 0.5533221634104848,
+          "solver_forward": 51,
+          "solver_adjoint": 48,
+          "data_loss": 0.0023497126530855894,
+          "regularization_loss": 0.0,
+          "loss": 0.0023497126530855894,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      }
+    },
+    {
+      "epoch": 9,
+      "position": {
+        "epoch": 9,
+        "batch": 0,
+        "global_step": 9
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 4.951045042835176,
+      "solver_counts": {
+        "forward": 57,
+        "adjoint": 54
+      },
+      "counters": {
+        "physical_updates": 9,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 3,
+          "batch": 0,
+          "global_step": 4,
+          "elapsed_seconds": 0.5495171891525388,
+          "solver_forward": 26,
+          "solver_adjoint": 24,
+          "data_loss": 0.0024160933680832386,
+          "regularization_loss": 0.0,
+          "loss": 0.0024160933680832386,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 4,
+          "batch": 0,
+          "global_step": 5,
+          "elapsed_seconds": 0.5534648420289159,
+          "solver_forward": 32,
+          "solver_adjoint": 30,
+          "data_loss": 0.002399032935500145,
+          "regularization_loss": 0.0,
+          "loss": 0.002399032935500145,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 5,
+          "batch": 0,
+          "global_step": 6,
+          "elapsed_seconds": 0.5526770818978548,
+          "solver_forward": 39,
+          "solver_adjoint": 36,
+          "data_loss": 0.0023823005612939596,
+          "regularization_loss": 0.0,
+          "loss": 0.0023823005612939596,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 6,
+          "batch": 0,
+          "global_step": 7,
+          "elapsed_seconds": 0.5496438937261701,
+          "solver_forward": 45,
+          "solver_adjoint": 42,
+          "data_loss": 0.0023658631835132837,
+          "regularization_loss": 0.0,
+          "loss": 0.0023658631835132837,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 7,
+          "batch": 0,
+          "global_step": 8,
+          "elapsed_seconds": 0.5533221634104848,
+          "solver_forward": 51,
+          "solver_adjoint": 48,
+          "data_loss": 0.0023497126530855894,
+          "regularization_loss": 0.0,
+          "loss": 0.0023497126530855894,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 8,
+          "batch": 0,
+          "global_step": 9,
+          "elapsed_seconds": 0.5526517909020185,
+          "solver_forward": 57,
+          "solver_adjoint": 54,
+          "data_loss": 0.0023338221944868565,
+          "regularization_loss": 0.0,
+          "loss": 0.0023338221944868565,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      }
+    },
+    {
+      "epoch": 10,
+      "position": {
+        "epoch": 10,
+        "batch": 0,
+        "global_step": 10
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 5.506395588628948,
+      "solver_counts": {
+        "forward": 64,
+        "adjoint": 60
+      },
+      "counters": {
+        "physical_updates": 10,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 4,
+          "batch": 0,
+          "global_step": 5,
+          "elapsed_seconds": 0.5534648420289159,
+          "solver_forward": 32,
+          "solver_adjoint": 30,
+          "data_loss": 0.002399032935500145,
+          "regularization_loss": 0.0,
+          "loss": 0.002399032935500145,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 5,
+          "batch": 0,
+          "global_step": 6,
+          "elapsed_seconds": 0.5526770818978548,
+          "solver_forward": 39,
+          "solver_adjoint": 36,
+          "data_loss": 0.0023823005612939596,
+          "regularization_loss": 0.0,
+          "loss": 0.0023823005612939596,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 6,
+          "batch": 0,
+          "global_step": 7,
+          "elapsed_seconds": 0.5496438937261701,
+          "solver_forward": 45,
+          "solver_adjoint": 42,
+          "data_loss": 0.0023658631835132837,
+          "regularization_loss": 0.0,
+          "loss": 0.0023658631835132837,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 7,
+          "batch": 0,
+          "global_step": 8,
+          "elapsed_seconds": 0.5533221634104848,
+          "solver_forward": 51,
+          "solver_adjoint": 48,
+          "data_loss": 0.0023497126530855894,
+          "regularization_loss": 0.0,
+          "loss": 0.0023497126530855894,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 8,
+          "batch": 0,
+          "global_step": 9,
+          "elapsed_seconds": 0.5526517909020185,
+          "solver_forward": 57,
+          "solver_adjoint": 54,
+          "data_loss": 0.0023338221944868565,
+          "regularization_loss": 0.0,
+          "loss": 0.0023338221944868565,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 9,
+          "batch": 0,
+          "global_step": 10,
+          "elapsed_seconds": 0.5553505457937717,
+          "solver_forward": 63,
+          "solver_adjoint": 60,
+          "data_loss": 0.0023181731812655926,
+          "regularization_loss": 0.0,
+          "loss": 0.0023181731812655926,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      },
+      "evaluation": {
+        "epoch": 10,
+        "batch": 0,
+        "global_step": 10,
+        "solver_forward": 65,
+        "solver_adjoint": 60,
+        "raw_residual_mse": 0.0023027413990348577,
+        "model_rmse": 477.9523010253906,
+        "normalized_clean_mse": 0.027873095124959946,
+        "source_correlation": 1.0,
+        "source_norm_ratio_unscaled": 0.010000000707805157,
+        "source_norm_ratio_coarse": 1.0,
+        "sigma_signed": 1.0,
+        "sigma_magnitude": 1.0,
+        "normalized_noise_std_reference": 0.05
+      }
+    },
+    {
+      "epoch": 11,
+      "position": {
+        "epoch": 11,
+        "batch": 0,
+        "global_step": 11
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 6.064629019238055,
+      "solver_counts": {
+        "forward": 71,
+        "adjoint": 66
+      },
+      "counters": {
+        "physical_updates": 11,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 5,
+          "batch": 0,
+          "global_step": 6,
+          "elapsed_seconds": 0.5526770818978548,
+          "solver_forward": 39,
+          "solver_adjoint": 36,
+          "data_loss": 0.0023823005612939596,
+          "regularization_loss": 0.0,
+          "loss": 0.0023823005612939596,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 6,
+          "batch": 0,
+          "global_step": 7,
+          "elapsed_seconds": 0.5496438937261701,
+          "solver_forward": 45,
+          "solver_adjoint": 42,
+          "data_loss": 0.0023658631835132837,
+          "regularization_loss": 0.0,
+          "loss": 0.0023658631835132837,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 7,
+          "batch": 0,
+          "global_step": 8,
+          "elapsed_seconds": 0.5533221634104848,
+          "solver_forward": 51,
+          "solver_adjoint": 48,
+          "data_loss": 0.0023497126530855894,
+          "regularization_loss": 0.0,
+          "loss": 0.0023497126530855894,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 8,
+          "batch": 0,
+          "global_step": 9,
+          "elapsed_seconds": 0.5526517909020185,
+          "solver_forward": 57,
+          "solver_adjoint": 54,
+          "data_loss": 0.0023338221944868565,
+          "regularization_loss": 0.0,
+          "loss": 0.0023338221944868565,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 9,
+          "batch": 0,
+          "global_step": 10,
+          "elapsed_seconds": 0.5553505457937717,
+          "solver_forward": 63,
+          "solver_adjoint": 60,
+          "data_loss": 0.0023181731812655926,
+          "regularization_loss": 0.0,
+          "loss": 0.0023181731812655926,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 10,
+          "batch": 0,
+          "global_step": 11,
+          "elapsed_seconds": 0.558233430609107,
+          "solver_forward": 71,
+          "solver_adjoint": 66,
+          "data_loss": 0.0023027413990348577,
+          "regularization_loss": 0.0,
+          "loss": 0.0023027413990348577,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      }
+    },
+    {
+      "epoch": 12,
+      "position": {
+        "epoch": 12,
+        "batch": 0,
+        "global_step": 12
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 6.617531653493643,
+      "solver_counts": {
+        "forward": 77,
+        "adjoint": 72
+      },
+      "counters": {
+        "physical_updates": 12,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 6,
+          "batch": 0,
+          "global_step": 7,
+          "elapsed_seconds": 0.5496438937261701,
+          "solver_forward": 45,
+          "solver_adjoint": 42,
+          "data_loss": 0.0023658631835132837,
+          "regularization_loss": 0.0,
+          "loss": 0.0023658631835132837,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 7,
+          "batch": 0,
+          "global_step": 8,
+          "elapsed_seconds": 0.5533221634104848,
+          "solver_forward": 51,
+          "solver_adjoint": 48,
+          "data_loss": 0.0023497126530855894,
+          "regularization_loss": 0.0,
+          "loss": 0.0023497126530855894,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 8,
+          "batch": 0,
+          "global_step": 9,
+          "elapsed_seconds": 0.5526517909020185,
+          "solver_forward": 57,
+          "solver_adjoint": 54,
+          "data_loss": 0.0023338221944868565,
+          "regularization_loss": 0.0,
+          "loss": 0.0023338221944868565,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 9,
+          "batch": 0,
+          "global_step": 10,
+          "elapsed_seconds": 0.5553505457937717,
+          "solver_forward": 63,
+          "solver_adjoint": 60,
+          "data_loss": 0.0023181731812655926,
+          "regularization_loss": 0.0,
+          "loss": 0.0023181731812655926,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 10,
+          "batch": 0,
+          "global_step": 11,
+          "elapsed_seconds": 0.558233430609107,
+          "solver_forward": 71,
+          "solver_adjoint": 66,
+          "data_loss": 0.0023027413990348577,
+          "regularization_loss": 0.0,
+          "loss": 0.0023027413990348577,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 11,
+          "batch": 0,
+          "global_step": 12,
+          "elapsed_seconds": 0.552902634255588,
+          "solver_forward": 77,
+          "solver_adjoint": 72,
+          "data_loss": 0.0022875159047544003,
+          "regularization_loss": 0.0,
+          "loss": 0.0022875159047544003,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      }
+    },
+    {
+      "epoch": 13,
+      "position": {
+        "epoch": 13,
+        "batch": 0,
+        "global_step": 13
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 7.167165400460362,
+      "solver_counts": {
+        "forward": 83,
+        "adjoint": 78
+      },
+      "counters": {
+        "physical_updates": 13,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 7,
+          "batch": 0,
+          "global_step": 8,
+          "elapsed_seconds": 0.5533221634104848,
+          "solver_forward": 51,
+          "solver_adjoint": 48,
+          "data_loss": 0.0023497126530855894,
+          "regularization_loss": 0.0,
+          "loss": 0.0023497126530855894,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 8,
+          "batch": 0,
+          "global_step": 9,
+          "elapsed_seconds": 0.5526517909020185,
+          "solver_forward": 57,
+          "solver_adjoint": 54,
+          "data_loss": 0.0023338221944868565,
+          "regularization_loss": 0.0,
+          "loss": 0.0023338221944868565,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 9,
+          "batch": 0,
+          "global_step": 10,
+          "elapsed_seconds": 0.5553505457937717,
+          "solver_forward": 63,
+          "solver_adjoint": 60,
+          "data_loss": 0.0023181731812655926,
+          "regularization_loss": 0.0,
+          "loss": 0.0023181731812655926,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 10,
+          "batch": 0,
+          "global_step": 11,
+          "elapsed_seconds": 0.558233430609107,
+          "solver_forward": 71,
+          "solver_adjoint": 66,
+          "data_loss": 0.0023027413990348577,
+          "regularization_loss": 0.0,
+          "loss": 0.0023027413990348577,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 11,
+          "batch": 0,
+          "global_step": 12,
+          "elapsed_seconds": 0.552902634255588,
+          "solver_forward": 77,
+          "solver_adjoint": 72,
+          "data_loss": 0.0022875159047544003,
+          "regularization_loss": 0.0,
+          "loss": 0.0022875159047544003,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 12,
+          "batch": 0,
+          "global_step": 13,
+          "elapsed_seconds": 0.5496337469667196,
+          "solver_forward": 83,
+          "solver_adjoint": 78,
+          "data_loss": 0.0022724901791661978,
+          "regularization_loss": 0.0,
+          "loss": 0.0022724901791661978,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      }
+    },
+    {
+      "epoch": 14,
+      "position": {
+        "epoch": 14,
+        "batch": 0,
+        "global_step": 14
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 7.72104034665972,
+      "solver_counts": {
+        "forward": 89,
+        "adjoint": 84
+      },
+      "counters": {
+        "physical_updates": 14,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 8,
+          "batch": 0,
+          "global_step": 9,
+          "elapsed_seconds": 0.5526517909020185,
+          "solver_forward": 57,
+          "solver_adjoint": 54,
+          "data_loss": 0.0023338221944868565,
+          "regularization_loss": 0.0,
+          "loss": 0.0023338221944868565,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 9,
+          "batch": 0,
+          "global_step": 10,
+          "elapsed_seconds": 0.5553505457937717,
+          "solver_forward": 63,
+          "solver_adjoint": 60,
+          "data_loss": 0.0023181731812655926,
+          "regularization_loss": 0.0,
+          "loss": 0.0023181731812655926,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 10,
+          "batch": 0,
+          "global_step": 11,
+          "elapsed_seconds": 0.558233430609107,
+          "solver_forward": 71,
+          "solver_adjoint": 66,
+          "data_loss": 0.0023027413990348577,
+          "regularization_loss": 0.0,
+          "loss": 0.0023027413990348577,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 11,
+          "batch": 0,
+          "global_step": 12,
+          "elapsed_seconds": 0.552902634255588,
+          "solver_forward": 77,
+          "solver_adjoint": 72,
+          "data_loss": 0.0022875159047544003,
+          "regularization_loss": 0.0,
+          "loss": 0.0022875159047544003,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 12,
+          "batch": 0,
+          "global_step": 13,
+          "elapsed_seconds": 0.5496337469667196,
+          "solver_forward": 83,
+          "solver_adjoint": 78,
+          "data_loss": 0.0022724901791661978,
+          "regularization_loss": 0.0,
+          "loss": 0.0022724901791661978,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 13,
+          "batch": 0,
+          "global_step": 14,
+          "elapsed_seconds": 0.5538749461993575,
+          "solver_forward": 89,
+          "solver_adjoint": 84,
+          "data_loss": 0.0022576276678591967,
+          "regularization_loss": 0.0,
+          "loss": 0.0022576276678591967,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      }
+    },
+    {
+      "epoch": 15,
+      "position": {
+        "epoch": 15,
+        "batch": 0,
+        "global_step": 15
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 8.274113952182233,
+      "solver_counts": {
+        "forward": 95,
+        "adjoint": 90
+      },
+      "counters": {
+        "physical_updates": 15,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 9,
+          "batch": 0,
+          "global_step": 10,
+          "elapsed_seconds": 0.5553505457937717,
+          "solver_forward": 63,
+          "solver_adjoint": 60,
+          "data_loss": 0.0023181731812655926,
+          "regularization_loss": 0.0,
+          "loss": 0.0023181731812655926,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 10,
+          "batch": 0,
+          "global_step": 11,
+          "elapsed_seconds": 0.558233430609107,
+          "solver_forward": 71,
+          "solver_adjoint": 66,
+          "data_loss": 0.0023027413990348577,
+          "regularization_loss": 0.0,
+          "loss": 0.0023027413990348577,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 11,
+          "batch": 0,
+          "global_step": 12,
+          "elapsed_seconds": 0.552902634255588,
+          "solver_forward": 77,
+          "solver_adjoint": 72,
+          "data_loss": 0.0022875159047544003,
+          "regularization_loss": 0.0,
+          "loss": 0.0022875159047544003,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 12,
+          "batch": 0,
+          "global_step": 13,
+          "elapsed_seconds": 0.5496337469667196,
+          "solver_forward": 83,
+          "solver_adjoint": 78,
+          "data_loss": 0.0022724901791661978,
+          "regularization_loss": 0.0,
+          "loss": 0.0022724901791661978,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 13,
+          "batch": 0,
+          "global_step": 14,
+          "elapsed_seconds": 0.5538749461993575,
+          "solver_forward": 89,
+          "solver_adjoint": 84,
+          "data_loss": 0.0022576276678591967,
+          "regularization_loss": 0.0,
+          "loss": 0.0022576276678591967,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 14,
+          "batch": 0,
+          "global_step": 15,
+          "elapsed_seconds": 0.5530736055225134,
+          "solver_forward": 95,
+          "solver_adjoint": 90,
+          "data_loss": 0.0022429274395108223,
+          "regularization_loss": 0.0,
+          "loss": 0.0022429274395108223,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      },
+      "evaluation": {
+        "epoch": 15,
+        "batch": 0,
+        "global_step": 15,
+        "solver_forward": 96,
+        "solver_adjoint": 90,
+        "raw_residual_mse": 0.002228378551080823,
+        "model_rmse": 477.9286804199219,
+        "normalized_clean_mse": 0.02764526568353176,
+        "source_correlation": 1.0,
+        "source_norm_ratio_unscaled": 0.010000000707805157,
+        "source_norm_ratio_coarse": 1.0,
+        "sigma_signed": 1.0,
+        "sigma_magnitude": 1.0,
+        "normalized_noise_std_reference": 0.05
+      }
+    },
+    {
+      "epoch": 16,
+      "position": {
+        "epoch": 16,
+        "batch": 0,
+        "global_step": 16
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 8.8269819682464,
+      "solver_counts": {
+        "forward": 102,
+        "adjoint": 96
+      },
+      "counters": {
+        "physical_updates": 16,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 10,
+          "batch": 0,
+          "global_step": 11,
+          "elapsed_seconds": 0.558233430609107,
+          "solver_forward": 71,
+          "solver_adjoint": 66,
+          "data_loss": 0.0023027413990348577,
+          "regularization_loss": 0.0,
+          "loss": 0.0023027413990348577,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 11,
+          "batch": 0,
+          "global_step": 12,
+          "elapsed_seconds": 0.552902634255588,
+          "solver_forward": 77,
+          "solver_adjoint": 72,
+          "data_loss": 0.0022875159047544003,
+          "regularization_loss": 0.0,
+          "loss": 0.0022875159047544003,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 12,
+          "batch": 0,
+          "global_step": 13,
+          "elapsed_seconds": 0.5496337469667196,
+          "solver_forward": 83,
+          "solver_adjoint": 78,
+          "data_loss": 0.0022724901791661978,
+          "regularization_loss": 0.0,
+          "loss": 0.0022724901791661978,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 13,
+          "batch": 0,
+          "global_step": 14,
+          "elapsed_seconds": 0.5538749461993575,
+          "solver_forward": 89,
+          "solver_adjoint": 84,
+          "data_loss": 0.0022576276678591967,
+          "regularization_loss": 0.0,
+          "loss": 0.0022576276678591967,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 14,
+          "batch": 0,
+          "global_step": 15,
+          "elapsed_seconds": 0.5530736055225134,
+          "solver_forward": 95,
+          "solver_adjoint": 90,
+          "data_loss": 0.0022429274395108223,
+          "regularization_loss": 0.0,
+          "loss": 0.0022429274395108223,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 15,
+          "batch": 0,
+          "global_step": 16,
+          "elapsed_seconds": 0.552868016064167,
+          "solver_forward": 102,
+          "solver_adjoint": 96,
+          "data_loss": 0.0022283787839114666,
+          "regularization_loss": 0.0,
+          "loss": 0.0022283787839114666,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      }
+    },
+    {
+      "epoch": 17,
+      "position": {
+        "epoch": 17,
+        "batch": 0,
+        "global_step": 17
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 9.377525083720684,
+      "solver_counts": {
+        "forward": 108,
+        "adjoint": 102
+      },
+      "counters": {
+        "physical_updates": 17,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 11,
+          "batch": 0,
+          "global_step": 12,
+          "elapsed_seconds": 0.552902634255588,
+          "solver_forward": 77,
+          "solver_adjoint": 72,
+          "data_loss": 0.0022875159047544003,
+          "regularization_loss": 0.0,
+          "loss": 0.0022875159047544003,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 12,
+          "batch": 0,
+          "global_step": 13,
+          "elapsed_seconds": 0.5496337469667196,
+          "solver_forward": 83,
+          "solver_adjoint": 78,
+          "data_loss": 0.0022724901791661978,
+          "regularization_loss": 0.0,
+          "loss": 0.0022724901791661978,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 13,
+          "batch": 0,
+          "global_step": 14,
+          "elapsed_seconds": 0.5538749461993575,
+          "solver_forward": 89,
+          "solver_adjoint": 84,
+          "data_loss": 0.0022576276678591967,
+          "regularization_loss": 0.0,
+          "loss": 0.0022576276678591967,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 14,
+          "batch": 0,
+          "global_step": 15,
+          "elapsed_seconds": 0.5530736055225134,
+          "solver_forward": 95,
+          "solver_adjoint": 90,
+          "data_loss": 0.0022429274395108223,
+          "regularization_loss": 0.0,
+          "loss": 0.0022429274395108223,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 15,
+          "batch": 0,
+          "global_step": 16,
+          "elapsed_seconds": 0.552868016064167,
+          "solver_forward": 102,
+          "solver_adjoint": 96,
+          "data_loss": 0.0022283787839114666,
+          "regularization_loss": 0.0,
+          "loss": 0.0022283787839114666,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 16,
+          "batch": 0,
+          "global_step": 17,
+          "elapsed_seconds": 0.5505431154742837,
+          "solver_forward": 108,
+          "solver_adjoint": 102,
+          "data_loss": 0.0022139681968837976,
+          "regularization_loss": 0.0,
+          "loss": 0.0022139681968837976,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      }
+    },
+    {
+      "epoch": 18,
+      "position": {
+        "epoch": 18,
+        "batch": 0,
+        "global_step": 18
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 9.931285712867975,
+      "solver_counts": {
+        "forward": 114,
+        "adjoint": 108
+      },
+      "counters": {
+        "physical_updates": 18,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 12,
+          "batch": 0,
+          "global_step": 13,
+          "elapsed_seconds": 0.5496337469667196,
+          "solver_forward": 83,
+          "solver_adjoint": 78,
+          "data_loss": 0.0022724901791661978,
+          "regularization_loss": 0.0,
+          "loss": 0.0022724901791661978,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 13,
+          "batch": 0,
+          "global_step": 14,
+          "elapsed_seconds": 0.5538749461993575,
+          "solver_forward": 89,
+          "solver_adjoint": 84,
+          "data_loss": 0.0022576276678591967,
+          "regularization_loss": 0.0,
+          "loss": 0.0022576276678591967,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 14,
+          "batch": 0,
+          "global_step": 15,
+          "elapsed_seconds": 0.5530736055225134,
+          "solver_forward": 95,
+          "solver_adjoint": 90,
+          "data_loss": 0.0022429274395108223,
+          "regularization_loss": 0.0,
+          "loss": 0.0022429274395108223,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 15,
+          "batch": 0,
+          "global_step": 16,
+          "elapsed_seconds": 0.552868016064167,
+          "solver_forward": 102,
+          "solver_adjoint": 96,
+          "data_loss": 0.0022283787839114666,
+          "regularization_loss": 0.0,
+          "loss": 0.0022283787839114666,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 16,
+          "batch": 0,
+          "global_step": 17,
+          "elapsed_seconds": 0.5505431154742837,
+          "solver_forward": 108,
+          "solver_adjoint": 102,
+          "data_loss": 0.0022139681968837976,
+          "regularization_loss": 0.0,
+          "loss": 0.0022139681968837976,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 17,
+          "batch": 0,
+          "global_step": 18,
+          "elapsed_seconds": 0.5537606291472912,
+          "solver_forward": 114,
+          "solver_adjoint": 108,
+          "data_loss": 0.0021996900904923677,
+          "regularization_loss": 0.0,
+          "loss": 0.0021996900904923677,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      }
+    },
+    {
+      "epoch": 19,
+      "position": {
+        "epoch": 19,
+        "batch": 0,
+        "global_step": 19
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 10.485049762763083,
+      "solver_counts": {
+        "forward": 120,
+        "adjoint": 114
+      },
+      "counters": {
+        "physical_updates": 19,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 13,
+          "batch": 0,
+          "global_step": 14,
+          "elapsed_seconds": 0.5538749461993575,
+          "solver_forward": 89,
+          "solver_adjoint": 84,
+          "data_loss": 0.0022576276678591967,
+          "regularization_loss": 0.0,
+          "loss": 0.0022576276678591967,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 14,
+          "batch": 0,
+          "global_step": 15,
+          "elapsed_seconds": 0.5530736055225134,
+          "solver_forward": 95,
+          "solver_adjoint": 90,
+          "data_loss": 0.0022429274395108223,
+          "regularization_loss": 0.0,
+          "loss": 0.0022429274395108223,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 15,
+          "batch": 0,
+          "global_step": 16,
+          "elapsed_seconds": 0.552868016064167,
+          "solver_forward": 102,
+          "solver_adjoint": 96,
+          "data_loss": 0.0022283787839114666,
+          "regularization_loss": 0.0,
+          "loss": 0.0022283787839114666,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 16,
+          "batch": 0,
+          "global_step": 17,
+          "elapsed_seconds": 0.5505431154742837,
+          "solver_forward": 108,
+          "solver_adjoint": 102,
+          "data_loss": 0.0022139681968837976,
+          "regularization_loss": 0.0,
+          "loss": 0.0022139681968837976,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 17,
+          "batch": 0,
+          "global_step": 18,
+          "elapsed_seconds": 0.5537606291472912,
+          "solver_forward": 114,
+          "solver_adjoint": 108,
+          "data_loss": 0.0021996900904923677,
+          "regularization_loss": 0.0,
+          "loss": 0.0021996900904923677,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 18,
+          "batch": 0,
+          "global_step": 19,
+          "elapsed_seconds": 0.5537640498951077,
+          "solver_forward": 120,
+          "solver_adjoint": 114,
+          "data_loss": 0.002185535617172718,
+          "regularization_loss": 0.0,
+          "loss": 0.002185535617172718,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      }
+    },
+    {
+      "epoch": 20,
+      "position": {
+        "epoch": 20,
+        "batch": 0,
+        "global_step": 20
+      },
+      "run_id": "7c39b7de451140958b9a4ae941c5c188",
+      "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+      "config_fingerprint": "41c56077f4de6626f1d737e69571fd1073e7ff58f2cb9425f61bb0569a9bbb7b",
+      "elapsed_train_seconds": 11.037137232720852,
+      "solver_counts": {
+        "forward": 127,
+        "adjoint": 120
+      },
+      "counters": {
+        "physical_updates": 20,
+        "physical_skipped": 0
+      },
+      "recent_group_metrics": [
+        {
+          "epoch": 14,
+          "batch": 0,
+          "global_step": 15,
+          "elapsed_seconds": 0.5530736055225134,
+          "solver_forward": 95,
+          "solver_adjoint": 90,
+          "data_loss": 0.0022429274395108223,
+          "regularization_loss": 0.0,
+          "loss": 0.0022429274395108223,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 15,
+          "batch": 0,
+          "global_step": 16,
+          "elapsed_seconds": 0.552868016064167,
+          "solver_forward": 102,
+          "solver_adjoint": 96,
+          "data_loss": 0.0022283787839114666,
+          "regularization_loss": 0.0,
+          "loss": 0.0022283787839114666,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 16,
+          "batch": 0,
+          "global_step": 17,
+          "elapsed_seconds": 0.5505431154742837,
+          "solver_forward": 108,
+          "solver_adjoint": 102,
+          "data_loss": 0.0022139681968837976,
+          "regularization_loss": 0.0,
+          "loss": 0.0022139681968837976,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 17,
+          "batch": 0,
+          "global_step": 18,
+          "elapsed_seconds": 0.5537606291472912,
+          "solver_forward": 114,
+          "solver_adjoint": 108,
+          "data_loss": 0.0021996900904923677,
+          "regularization_loss": 0.0,
+          "loss": 0.0021996900904923677,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 18,
+          "batch": 0,
+          "global_step": 19,
+          "elapsed_seconds": 0.5537640498951077,
+          "solver_forward": 120,
+          "solver_adjoint": 114,
+          "data_loss": 0.002185535617172718,
+          "regularization_loss": 0.0,
+          "loss": 0.002185535617172718,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        },
+        {
+          "epoch": 19,
+          "batch": 0,
+          "global_step": 20,
+          "elapsed_seconds": 0.5520874699577689,
+          "solver_forward": 126,
+          "solver_adjoint": 120,
+          "data_loss": 0.002171500353142619,
+          "regularization_loss": 0.0,
+          "loss": 0.002171500353142619,
+          "physical_updates": 1,
+          "physical_skipped": 0
+        }
+      ],
+      "memory": {
+        "allocated": 15467008,
+        "reserved": 5045747712,
+        "peak_allocated": 4999394816,
+        "peak_reserved": 5045747712
+      },
+      "evaluation": {
+        "epoch": 20,
+        "batch": 0,
+        "global_step": 20,
+        "solver_forward": 128,
+        "solver_adjoint": 120,
+        "raw_residual_mse": 0.002157578244805336,
+        "model_rmse": 477.9060974121094,
+        "normalized_clean_mse": 0.02740938402712345,
+        "source_correlation": 1.0,
+        "source_norm_ratio_unscaled": 0.010000000707805157,
+        "source_norm_ratio_coarse": 1.0,
+        "sigma_signed": 1.0,
+        "sigma_magnitude": 1.0,
+        "normalized_noise_std_reference": 0.05
+      }
+    }
+  ]
+}

@@ -1,0 +1,195 @@
+"""Reproduce the bounded DeepWave CPU illustrations for the README.
+
+Run with Python 3.10, torch 1.13.1, DeepWave 0.0.9 and matplotlib:
+    OPENBLAS_NUM_THREADS=2 OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 \
+      python examples/illustrate.py
+
+The cached NPZ and metadata are generated from a real solver run. The plots
+can be redrawn without repeating inversion by running the command again.
+"""
+from __future__ import annotations
+
+import json
+import os
+from pathlib import Path
+import argparse
+import platform
+import deepwave
+
+REPO = Path(__file__).resolve().parents[1]
+ROOT = REPO / "docs"
+WORK = REPO / "runs" / "illustrations"
+os.environ.setdefault("MPLCONFIGDIR", str(WORK / "matplotlib"))
+os.environ.setdefault("XDG_CACHE_HOME", str(WORK / "xdg"))
+
+import matplotlib
+matplotlib.use("Agg")
+import matplotlib.pyplot as plt
+import numpy as np
+import torch
+
+from fwigan.config import ExperimentConfig
+from fwigan.data.synthetic import make_tiny_data
+from fwigan.experiment import Experiment
+
+
+def compute():
+    torch.set_num_threads(2)
+    data = make_tiny_data(seed=42, nt=128, shots=2, receivers=60)
+    config = ExperimentConfig(method="fwi", device="cpu", seed=42, epochs=24,
+        batch_size=2, velocity_lr=5.0, velocity_min=2000., velocity_max=2300.,
+        evaluation_interval=1, checkpoint_interval=24)
+    run = Experiment.create(config, data, WORK / "runs")
+    before = run.evaluate()
+    initial_prediction = torch.load(run.export_final(run.run_dir / "initial.pt"), map_location="cpu")["predicted"].numpy().copy()
+    run.run()
+    after = run.evaluations[-1]
+    final = run.export_final()
+    archive = ROOT / "assets" / "tiny-fwi-results.npz"
+    np.savez_compressed(archive,
+        truth=data.reference_velocity.numpy(), initial=data.initial_velocity.numpy(),
+        inverted=run.parameters.velocity.detach().cpu().numpy(),
+        observed=data.traces.numpy(), initial_prediction=initial_prediction,
+        final_prediction=torch.load(final, map_location="cpu")["predicted"].numpy(), source=data.source.numpy(),
+        source_xyz=data.acquisition.sources.numpy(), receiver_xyz=data.acquisition.receivers.numpy(),
+        epochs=np.array([0] + [row["epoch"] for row in run.evaluations[1:]]),
+        residual_mse=np.array([before["raw_residual_mse"]] +
+            [row["raw_residual_mse"] for row in run.evaluations[1:]]),
+        model_rmse=np.array([before["model_rmse"]] +
+            [row["model_rmse"] for row in run.evaluations[1:]]))
+    metadata = {
+        "description": "Actual bounded CPU FWI run, not full Marmousi or a FWIGAN comparison",
+        "run_id": run.run_id, "run_dir": str(run.run_dir.relative_to(REPO)), "archive": str(archive.relative_to(REPO)),
+        "final_artifact": str(final.relative_to(REPO)), "data_fingerprint": run.data_fingerprint,
+        "versions": {"python": platform.python_version(), "torch": torch.__version__, "deepwave": getattr(deepwave,"__version__","0.0.9"), "numpy": np.__version__, "matplotlib": matplotlib.__version__},
+        "solver_counts": {"forward": run.solver_counts.forward, "adjoint": run.solver_counts.adjoint},
+        "config": config.to_dict(),
+        "grid": {"shape": list(data.grid.shape), "spacing_m": data.grid.spacing,
+                 "origin_zx_m": list(data.grid.origin)},
+        "sampling": {"nt": data.sampling.nt, "dt_s": data.sampling.dt},
+        "units": {"velocity": "m/s", "position": "m", "time": "s", "amplitude": "arbitrary units"},
+        "layout": {"velocity": "[z,x]", "traces": "[shot,receiver,time]",
+                   "coordinates": "[shot,point,zx]"},
+        "initial": before, "final": after,
+        "interpretation": "The 2000 m/s lower bound equals the initial model and is an explicit prior; the example is a tiny homogeneous synthetic test."
+    }
+    (ROOT / "assets" / "tiny-fwi-metadata.json").write_text(json.dumps(metadata, indent=2) + "\n")
+    return metadata
+
+
+def save(fig, name):
+    svg = ROOT / "assets" / f"{name}.svg"
+    fig.savefig(svg, bbox_inches="tight")
+    svg.write_text("\n".join(line.rstrip() for line in svg.read_text().splitlines()) + "\n")
+    fig.savefig(ROOT / "assets" / f"{name}.png", dpi=190, bbox_inches="tight")
+    plt.close(fig)
+
+
+def plot():
+    data = np.load(ROOT / "assets" / "tiny-fwi-results.npz")
+    meta = json.loads((ROOT / "assets" / "tiny-fwi-metadata.json").read_text())
+    nx = data["truth"].shape[1]
+    nz = data["truth"].shape[0]
+    dx = meta["grid"]["spacing_m"]
+    dt = meta["sampling"]["dt_s"]
+    x_extent = (nx - 1) * dx
+    z_extent = (nz - 1) * dx
+    time_extent = (meta["sampling"]["nt"] - 1) * dt
+    plt.rcParams.update({"font.family": "DejaVu Sans", "font.size": 10,
+        "axes.spines.top": False, "axes.spines.right": False,
+        "figure.facecolor": "white", "axes.facecolor": "white",
+        "savefig.facecolor": "white", "svg.fonttype": "none"})
+
+    # Geometry, source and a measured-looking record are all generated by the
+    # solver, with exact synthetic acquisition positions and no image edits.
+    fig = plt.figure(figsize=(12.2, 7.6), layout="constrained")
+    gs = fig.add_gridspec(2, 2, width_ratios=[1.15, 1], height_ratios=[1.15, 1])
+    ax = fig.add_subplot(gs[0, 0])
+    vel = ax.imshow(data["truth"], extent=(0, x_extent, z_extent, 0),
+                    vmin=1950, vmax=2150, cmap="viridis", aspect="auto")
+    receiver = data["receiver_xyz"][0]
+    source = data["source_xyz"]
+    ax.scatter(receiver[:, 1], receiver[:, 0], s=9, c="#f3f5fa", edgecolors="#36424d",
+               linewidths=.35, label="Receivers", zorder=3)
+    ax.scatter(source[:, 0, 1], source[:, 0, 0], marker="v", s=95, c="#d95f02",
+               edgecolors="white", linewidths=.8, label="Sources", zorder=4)
+    ax.set(xlabel="Horizontal position x (m)", ylabel="Depth z (m)",
+           title="A 2D acoustic survey over the true synthetic model")
+    ax.set_ylim(z_extent, -90)
+    ax.legend(loc="lower right", framealpha=.94, fontsize=8)
+    fig.colorbar(vel, ax=ax, label="Velocity (m/s)", fraction=.046, pad=.03)
+
+    ax = fig.add_subplot(gs[1, 0])
+    times = np.arange(data["source"].shape[-1]) * dt
+    ax.plot(times, data["source"][0, 0], color="#0072b2", lw=2)
+    ax.axhline(0, color="#626870", lw=.7)
+    ax.set(xlabel="Time (s)", ylabel="Amplitude (a.u.)", title="Known 25 Hz Ricker source")
+
+    ax = fig.add_subplot(gs[:, 1])
+    obs = data["observed"][0]
+    scale = np.percentile(np.abs(obs), 99.5)
+    im = ax.imshow(obs.T, extent=(0, receiver[-1, 1], time_extent, 0),
+                   cmap="PuOr", vmin=-scale, vmax=scale, aspect="auto")
+    ax.set(xlabel="Receiver position x (m)", ylabel="Time (s)",
+           title="Observed shot record · shot 1")
+    fig.colorbar(im, ax=ax, label="Pressure amplitude (a.u.)", fraction=.046, pad=.03)
+    save(fig, "tiny-acquisition")
+
+    # Fixed shared color scale makes the three physical models comparable.
+    fig, axes = plt.subplots(1, 3, figsize=(12.4, 4.1), layout="constrained")
+    for ax, name, key in zip(axes,
+        ["True velocity", "Initial velocity", "FWI after 24 epochs"],
+        ["truth", "initial", "inverted"]):
+        im = ax.imshow(data[key], extent=(0, x_extent, z_extent, 0),
+                       cmap="viridis", vmin=1950, vmax=2150, aspect="equal")
+        ax.set(xlabel="Horizontal position x (m)", title=name)
+        ax.set_ylabel("Depth z (m)")
+    fig.colorbar(im, ax=axes, label="Velocity (m/s)", shrink=.8, pad=.015)
+    save(fig, "tiny-reconstruction")
+
+    # An independent raw-amplitude metric accompanies the waveforms; the
+    # plot does not imply global model recovery from a small synthetic case.
+    fig = plt.figure(figsize=(12.4, 7.2), layout="constrained")
+    gs = fig.add_gridspec(2, 2, width_ratios=[1, 1.08], height_ratios=[1, 1.2])
+    ax_trace = fig.add_subplot(gs[0, 0])
+    ax_residual = fig.add_subplot(gs[1, 0])
+    ax_history = fig.add_subplot(gs[:, 1])
+    rec = min(29, obs.shape[0] - 1)
+    trace_time = np.arange(obs.shape[-1]) * dt
+    ax_trace.plot(trace_time, obs[rec], color="#111827", lw=1.5, label="Observed")
+    ax_trace.plot(trace_time, data["initial_prediction"][0, rec], color="#d55e00",
+                 lw=1.2, label="Initial prediction")
+    ax_trace.plot(trace_time, data["final_prediction"][0, rec], color="#0072b2",
+                 lw=1.2, label="Final prediction")
+    ax_trace.set(xlabel="Time (s)", ylabel="Pressure amplitude (a.u.)",
+                title=f"One receiver trace · shot 1, receiver {rec+1}")
+    ax_trace.legend(frameon=False, fontsize=8)
+    residual = data["final_prediction"][0] - obs
+    residual_scale = np.percentile(np.abs(residual), 99.5)
+    im = ax_residual.imshow(residual.T, extent=(0, receiver[-1, 1], time_extent, 0),
+                            cmap="PuOr", vmin=-residual_scale, vmax=residual_scale,
+                            aspect="auto")
+    ax_residual.set(xlabel="Receiver position x (m)", ylabel="Time (s)",
+                    title="Final predicted − observed · shot 1")
+    fig.colorbar(im, ax=ax_residual, label="Residual amplitude (a.u.)", fraction=.046, pad=.03)
+    ax_history.plot(data["epochs"], data["residual_mse"], marker="o", ms=3,
+                 color="#0072b2", lw=1.8)
+    ax_history.set(xlabel="Completed epochs", ylabel="Mean squared pressure residual (a.u.²)",
+                title="Full-shot raw data fit")
+    ax_history.set_xlim(0, 24)
+    ax_history.grid(alpha=.2)
+    save(fig, "tiny-data-fit")
+
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--reuse-cache", action="store_true", help="redraw existing numeric evidence")
+    args = parser.parse_args()
+    (ROOT / "assets").mkdir(parents=True, exist_ok=True)
+    WORK.mkdir(parents=True, exist_ok=True)
+    if not args.reuse_cache or not (ROOT / "assets" / "tiny-fwi-results.npz").exists():
+        compute()
+    plot()
+    metadata = json.loads((ROOT / "assets" / "tiny-fwi-metadata.json").read_text())
+    print(json.dumps({"initial": metadata["initial"], "final": metadata["final"],
+                      "run_dir": metadata["run_dir"]}, indent=2))

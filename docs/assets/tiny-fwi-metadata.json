@@ -1,0 +1,100 @@
+{
+  "description": "Actual bounded CPU FWI run, not full Marmousi or a FWIGAN comparison",
+  "run_id": "e7c9a1cdcd824346a3cbbe4150ca70e7",
+  "run_dir": "runs/illustrations/runs/fwi-e7c9a1cdcd824346a3cbbe4150ca70e7",
+  "archive": "docs/assets/tiny-fwi-results.npz",
+  "final_artifact": "runs/illustrations/runs/fwi-e7c9a1cdcd824346a3cbbe4150ca70e7/final.pt",
+  "data_fingerprint": "e7a58a415d7252d970b7505ea8655ad65eb31c4bf7655c5f8fc0e7b32d5b6790",
+  "versions": {
+    "python": "3.10.22",
+    "torch": "1.13.1+cpu",
+    "deepwave": "0.0.9",
+    "numpy": "1.23.5",
+    "matplotlib": "3.7.5"
+  },
+  "solver_counts": {
+    "forward": 49,
+    "adjoint": 24
+  },
+  "config": {
+    "method": "fwi",
+    "seed": 42,
+    "device": "cpu",
+    "epochs": 24,
+    "batches": 6,
+    "batch_size": 2,
+    "critic_cycles": 6,
+    "amp": false,
+    "noise": false,
+    "observation_noise_level": 0.05,
+    "checkpoint_interval": 24,
+    "evaluation_interval": 1,
+    "sigma_init": 1.0,
+    "velocity_lr": 5.0,
+    "source_lr": 0.001,
+    "sigma_lr": 0.01,
+    "critic_lr": 0.001,
+    "velocity_min": 2000.0,
+    "velocity_max": 2300.0,
+    "regularization": 0.0,
+    "physical_scheduler_step_size": 150,
+    "critic_scheduler_step_size": 100,
+    "scheduler_gamma": 0.5,
+    "adam_betas": [
+      0.5,
+      0.9
+    ],
+    "gradient_penalty_weight": 10.0,
+    "critic_drift": 0.001,
+    "velocity_clip": 1000.0,
+    "critic_clip": 1000000.0,
+    "train_source": false,
+    "train_sigma": false,
+    "observation_mode": "raw"
+  },
+  "grid": {
+    "shape": [
+      40,
+      70
+    ],
+    "spacing_m": 30.0,
+    "origin_zx_m": [
+      0.0,
+      0.0
+    ]
+  },
+  "sampling": {
+    "nt": 128,
+    "dt_s": 0.003
+  },
+  "units": {
+    "velocity": "m/s",
+    "position": "m",
+    "time": "s",
+    "amplitude": "arbitrary units"
+  },
+  "layout": {
+    "velocity": "[z,x]",
+    "traces": "[shot,receiver,time]",
+    "coordinates": "[shot,point,zx]"
+  },
+  "initial": {
+    "epoch": 0,
+    "batch": 0,
+    "global_step": 0,
+    "solver_forward": 1,
+    "solver_adjoint": 0,
+    "raw_residual_mse": 46.4650764465332,
+    "model_rmse": 100.0
+  },
+  "final": {
+    "epoch": 24,
+    "batch": 0,
+    "global_step": 24,
+    "solver_forward": 49,
+    "solver_adjoint": 24,
+    "raw_residual_mse": 0.3195361793041229,
+    "model_rmse": 91.19293975830078
+  },
+  "interpretation": "The 2000 m/s lower bound equals the initial model and is an explicit prior; the example is a tiny homogeneous synthetic test."
+}

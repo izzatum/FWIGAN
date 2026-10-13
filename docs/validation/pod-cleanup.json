@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "checked_at_unix_utc": 1791814216.7731457,
+  "account_list_http_status": 200,
+  "account_pod_count": 0,
+  "remaining_pod_ids": [],
+  "owned_package_test_pods_absent": true,
+  "created_package_test_pods": [
+    {
+      "pod_id": "0tjka9u5jhcm7q",
+      "source_commit": "7885070a9b85147154113b8d9ca7d89fd09b416b",
+      "cleanup_verified": true,
+      "estimated_compute_cost_usd": 0.10236588579416275,
+      "evidence_report_name": "package-gpu-test-report-scheduler.json"
+    },
+    {
+      "pod_id": "q5efdsaoxg7p49",
+      "source_commit": "d31d28c6572197ad07df3b76f3a7d7f7cad9679a",
+      "cleanup_verified": true,
+      "estimated_compute_cost_usd": 0.0077016814404063764,
+      "evidence_report_name": "package-gpu-test-report-final.json"
+    },
+    {
+      "pod_id": "cpbd7wbhkpgwr8",
+      "source_commit": "2b6465f545a50949a17197bf5ce25ae80b8004f7",
+      "cleanup_verified": true,
+      "estimated_compute_cost_usd": 0.09103049023482535,
+      "evidence_report_name": "package-gpu-pr1-20261012T1208.json"
+    },
+    {
+      "pod_id": "qn8l1uc30ooqxu",
+      "source_commit": "217213790cfdb899e05dab0b5b14697d96f46159",
+      "cleanup_verified": true,
+      "estimated_compute_cost_usd": 0.006043509474065569,
+      "evidence_report_name": "package-gpu-pr1-benchmark-20261012T1224.json"
+    },
+    {
+      "pod_id": "a3fhhjrst0jzi1",
+      "source_commit": "217213790cfdb899e05dab0b5b14697d96f46159",
+      "cleanup_verified": true,
+      "estimated_compute_cost_usd": 0.10265868927174145,
+      "evidence_report_name": "package-gpu-pr1-published-20261012T1239.json"
+    },
+    {
+      "pod_id": "4y4c04onds6c88",
+      "source_commit": "286e03697731075bcff35f59c79fadf08355d598",
+      "cleanup_verified": true,
+      "estimated_compute_cost_usd": 0.08865661447842915,
+      "evidence_report_name": "package-gpu-pr1-joint-20261012T1305.json"
+    },
+    {
+      "pod_id": "l3jgtjiqkjidwn",
+      "source_commit": "7339f63ba603e030556c1e794a81dae8da86d382",
+      "cleanup_verified": true,
+      "estimated_compute_cost_usd": 0.05359099344015121,
+      "evidence_report_name": "package-gpu-pr1-resolution-20261012T1334.json"
+    },
+    {
+      "pod_id": "5pxnp1ewikg3xr",
+      "source_commit": "3b0b5d2ce2525ffee479d63df03c1c37b2ee3cf0",
+      "cleanup_verified": true,
+      "estimated_compute_cost_usd": 0.08518801921870973,
+      "evidence_report_name": "package-gpu-pr1-diagnostic-stock-20261012T1403.json"
+    }
+  ],
+  "created_pod_count": 8,
+  "total_estimated_compute_cost_usd": 0.5372358833524916,
+  "estimate_method": "created Pod lifetime \u00d7 reported compute rate; excludes earlier frozen-notebook tests; not a billing invoice",
+  "historical_failed_diagnostic_create_attempt": {
+    "source_commit": "f54f25140dab30363e487514aa2c7ee75681ad55",
+    "status": "failed_before_pod_created",
+    "http_status": 500,
+    "pod_created": false,
+    "fresh_empty_account_lists": 3,
+    "estimated_compute_cost_usd": null
+  }
+}

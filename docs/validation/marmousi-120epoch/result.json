@@ -1,0 +1,309 @@
+{
+  "schema": 1,
+  "status": "completed",
+  "epoch_horizon": 120,
+  "device": "cuda",
+  "deadline_utc": 1791892403.688525,
+  "baseline_commit": "c7ec47ed89ba1380ad7a02bbc4526b93675e76f3",
+  "cases": {
+    "FWIGAN-new": {
+      "status": "completed",
+      "seconds": 629.9518901880365,
+      "notebook": "/tmp/fwigan-whole-workflow/workflow/FWIGAN-new-executed.ipynb"
+    },
+    "FWIGAN-old": {
+      "status": "completed",
+      "seconds": 597.8363054880174,
+      "notebook": "/tmp/fwigan-whole-workflow/workflow/FWIGAN-old-executed.ipynb"
+    },
+    "FWIGAN_Noisy-new": {
+      "status": "completed",
+      "seconds": 672.3753054270055,
+      "notebook": "/tmp/fwigan-whole-workflow/workflow/FWIGAN_Noisy-new-executed.ipynb"
+    },
+    "FWIGAN_Noisy-old": {
+      "status": "completed",
+      "seconds": 591.1121139320312,
+      "notebook": "/tmp/fwigan-whole-workflow/workflow/FWIGAN_Noisy-old-executed.ipynb"
+    },
+    "FWI-new": {
+      "status": "completed",
+      "seconds": 96.49307865602896,
+      "notebook": "/tmp/fwigan-whole-workflow/workflow/FWI-new-executed.ipynb"
+    }
+  },
+  "initial_comparisons": {
+    "FWIGAN_preflight": {
+      "status": "matched",
+      "fields": {
+        "observed": true,
+        "critic": true,
+        "physical": true,
+        "rng": true
+      },
+      "new": {
+        "rng": {
+          "python": "a52169fac48aa2d80acadd41f776ce38656ab70adc3b32c80c1fb1f0ee56b71f",
+          "numpy": "ae7ac7c9989b32816189b5cbf7d845311b7eb9100f4a532993523529da19548d",
+          "torch": "9c0a60852adb24c580c079098632720a5e2e8d48e14148ca016ee55245647afe",
+          "cuda": [
+            "155ca6b25d79d64c1571e5212d88dbbd2c155e64dd8dc60961cf58bf08663b0c"
+          ],
+          "cudnn_deterministic": true,
+          "cudnn_benchmark": false
+        },
+        "physical": {
+          "velocity": "66631b48da59bb3d0da17b7787c197416d3826c26bb72d07807929118806e9ac",
+          "source": "c56539721f8f4b369386b86ea80d44c6345a3ca83070af26f03e51524115edaa",
+          "sigma": "88f0d11ae93ac2f493bacc37a68050d8103e810580cae567e49d496c928d4428"
+        },
+        "critic": "3ae5207e3d25e62c712f4bba621ec743866f95ef6dd42ccf3ca560b7e3cbd9e8",
+        "observed": "9df6059f13695c43977bc6e8ea4ea143aace9319e9823ccde77919579deb1ff9",
+        "noise_std": 0.0
+      },
+      "old": {
+        "rng": {
+          "python": "a52169fac48aa2d80acadd41f776ce38656ab70adc3b32c80c1fb1f0ee56b71f",
+          "numpy": "ae7ac7c9989b32816189b5cbf7d845311b7eb9100f4a532993523529da19548d",
+          "torch": "9c0a60852adb24c580c079098632720a5e2e8d48e14148ca016ee55245647afe",
+          "cuda": [
+            "155ca6b25d79d64c1571e5212d88dbbd2c155e64dd8dc60961cf58bf08663b0c"
+          ],
+          "cudnn_deterministic": true,
+          "cudnn_benchmark": false
+        },
+        "observed": "9df6059f13695c43977bc6e8ea4ea143aace9319e9823ccde77919579deb1ff9",
+        "critic": "3ae5207e3d25e62c712f4bba621ec743866f95ef6dd42ccf3ca560b7e3cbd9e8",
+        "noise_std": 0.0,
+        "physical": {
+          "velocity": "66631b48da59bb3d0da17b7787c197416d3826c26bb72d07807929118806e9ac",
+          "source": "c56539721f8f4b369386b86ea80d44c6345a3ca83070af26f03e51524115edaa",
+          "sigma": "88f0d11ae93ac2f493bacc37a68050d8103e810580cae567e49d496c928d4428"
+        },
+        "frozen_generator_state_keys": []
+      }
+    },
+    "FWIGAN": {
+      "status": "matched",
+      "fields": {
+        "observed": true,
+        "critic": true,
+        "physical": true,
+        "rng": true
+      },
+      "new": {
+        "rng": {
+          "python": "a52169fac48aa2d80acadd41f776ce38656ab70adc3b32c80c1fb1f0ee56b71f",
+          "numpy": "ae7ac7c9989b32816189b5cbf7d845311b7eb9100f4a532993523529da19548d",
+          "torch": "9c0a60852adb24c580c079098632720a5e2e8d48e14148ca016ee55245647afe",
+          "cuda": [
+            "155ca6b25d79d64c1571e5212d88dbbd2c155e64dd8dc60961cf58bf08663b0c"
+          ],
+          "cudnn_deterministic": true,
+          "cudnn_benchmark": false
+        },
+        "physical": {
+          "velocity": "66631b48da59bb3d0da17b7787c197416d3826c26bb72d07807929118806e9ac",
+          "source": "c56539721f8f4b369386b86ea80d44c6345a3ca83070af26f03e51524115edaa",
+          "sigma": "88f0d11ae93ac2f493bacc37a68050d8103e810580cae567e49d496c928d4428"
+        },
+        "critic": "3ae5207e3d25e62c712f4bba621ec743866f95ef6dd42ccf3ca560b7e3cbd9e8",
+        "observed": "9df6059f13695c43977bc6e8ea4ea143aace9319e9823ccde77919579deb1ff9",
+        "noise_std": 0.0
+      },
+      "old": {
+        "rng": {
+          "python": "a52169fac48aa2d80acadd41f776ce38656ab70adc3b32c80c1fb1f0ee56b71f",
+          "numpy": "ae7ac7c9989b32816189b5cbf7d845311b7eb9100f4a532993523529da19548d",
+          "torch": "9c0a60852adb24c580c079098632720a5e2e8d48e14148ca016ee55245647afe",
+          "cuda": [
+            "155ca6b25d79d64c1571e5212d88dbbd2c155e64dd8dc60961cf58bf08663b0c"
+          ],
+          "cudnn_deterministic": true,
+          "cudnn_benchmark": false
+        },
+        "observed": "9df6059f13695c43977bc6e8ea4ea143aace9319e9823ccde77919579deb1ff9",
+        "critic": "3ae5207e3d25e62c712f4bba621ec743866f95ef6dd42ccf3ca560b7e3cbd9e8",
+        "noise_std": 0.0,
+        "physical": {
+          "velocity": "66631b48da59bb3d0da17b7787c197416d3826c26bb72d07807929118806e9ac",
+          "source": "c56539721f8f4b369386b86ea80d44c6345a3ca83070af26f03e51524115edaa",
+          "sigma": "88f0d11ae93ac2f493bacc37a68050d8103e810580cae567e49d496c928d4428"
+        },
+        "frozen_generator_state_keys": []
+      }
+    },
+    "FWIGAN_Noisy_preflight": {
+      "status": "matched",
+      "fields": {
+        "observed": true,
+        "critic": true,
+        "physical": true,
+        "rng": true
+      },
+      "new": {
+        "rng": {
+          "python": "a52169fac48aa2d80acadd41f776ce38656ab70adc3b32c80c1fb1f0ee56b71f",
+          "numpy": "ae7ac7c9989b32816189b5cbf7d845311b7eb9100f4a532993523529da19548d",
+          "torch": "9c0a60852adb24c580c079098632720a5e2e8d48e14148ca016ee55245647afe",
+          "cuda": [
+            "155ca6b25d79d64c1571e5212d88dbbd2c155e64dd8dc60961cf58bf08663b0c"
+          ],
+          "cudnn_deterministic": true,
+          "cudnn_benchmark": false
+        },
+        "physical": {
+          "velocity": "66631b48da59bb3d0da17b7787c197416d3826c26bb72d07807929118806e9ac",
+          "source": "c56539721f8f4b369386b86ea80d44c6345a3ca83070af26f03e51524115edaa",
+          "sigma": "88f0d11ae93ac2f493bacc37a68050d8103e810580cae567e49d496c928d4428"
+        },
+        "critic": "3ae5207e3d25e62c712f4bba621ec743866f95ef6dd42ccf3ca560b7e3cbd9e8",
+        "observed": "f3904bb329631ee0109b33d21d4fb67483af93b8839a74d8e391539360919c38",
+        "noise_std": 0.04999704286456108
+      },
+      "old": {
+        "rng": {
+          "python": "a52169fac48aa2d80acadd41f776ce38656ab70adc3b32c80c1fb1f0ee56b71f",
+          "numpy": "ae7ac7c9989b32816189b5cbf7d845311b7eb9100f4a532993523529da19548d",
+          "torch": "9c0a60852adb24c580c079098632720a5e2e8d48e14148ca016ee55245647afe",
+          "cuda": [
+            "155ca6b25d79d64c1571e5212d88dbbd2c155e64dd8dc60961cf58bf08663b0c"
+          ],
+          "cudnn_deterministic": true,
+          "cudnn_benchmark": false
+        },
+        "observed": "f3904bb329631ee0109b33d21d4fb67483af93b8839a74d8e391539360919c38",
+        "critic": "3ae5207e3d25e62c712f4bba621ec743866f95ef6dd42ccf3ca560b7e3cbd9e8",
+        "noise_std": 0.04999704286456108,
+        "physical": {
+          "velocity": "66631b48da59bb3d0da17b7787c197416d3826c26bb72d07807929118806e9ac",
+          "source": "c56539721f8f4b369386b86ea80d44c6345a3ca83070af26f03e51524115edaa",
+          "sigma": "88f0d11ae93ac2f493bacc37a68050d8103e810580cae567e49d496c928d4428"
+        },
+        "frozen_generator_state_keys": []
+      }
+    },
+    "FWIGAN_Noisy": {
+      "status": "matched",
+      "fields": {
+        "observed": true,
+        "critic": true,
+        "physical": true,
+        "rng": true
+      },
+      "new": {
+        "rng": {
+          "python": "a52169fac48aa2d80acadd41f776ce38656ab70adc3b32c80c1fb1f0ee56b71f",
+          "numpy": "ae7ac7c9989b32816189b5cbf7d845311b7eb9100f4a532993523529da19548d",
+          "torch": "9c0a60852adb24c580c079098632720a5e2e8d48e14148ca016ee55245647afe",
+          "cuda": [
+            "155ca6b25d79d64c1571e5212d88dbbd2c155e64dd8dc60961cf58bf08663b0c"
+          ],
+          "cudnn_deterministic": true,
+          "cudnn_benchmark": false
+        },
+        "physical": {
+          "velocity": "66631b48da59bb3d0da17b7787c197416d3826c26bb72d07807929118806e9ac",
+          "source": "c56539721f8f4b369386b86ea80d44c6345a3ca83070af26f03e51524115edaa",
+          "sigma": "88f0d11ae93ac2f493bacc37a68050d8103e810580cae567e49d496c928d4428"
+        },
+        "critic": "3ae5207e3d25e62c712f4bba621ec743866f95ef6dd42ccf3ca560b7e3cbd9e8",
+        "observed": "f3904bb329631ee0109b33d21d4fb67483af93b8839a74d8e391539360919c38",
+        "noise_std": 0.04999704286456108
+      },
+      "old": {
+        "rng": {
+          "python": "a52169fac48aa2d80acadd41f776ce38656ab70adc3b32c80c1fb1f0ee56b71f",
+          "numpy": "ae7ac7c9989b32816189b5cbf7d845311b7eb9100f4a532993523529da19548d",
+          "torch": "9c0a60852adb24c580c079098632720a5e2e8d48e14148ca016ee55245647afe",
+          "cuda": [
+            "155ca6b25d79d64c1571e5212d88dbbd2c155e64dd8dc60961cf58bf08663b0c"
+          ],
+          "cudnn_deterministic": true,
+          "cudnn_benchmark": false
+        },
+        "observed": "f3904bb329631ee0109b33d21d4fb67483af93b8839a74d8e391539360919c38",
+        "critic": "3ae5207e3d25e62c712f4bba621ec743866f95ef6dd42ccf3ca560b7e3cbd9e8",
+        "noise_std": 0.04999704286456108,
+        "physical": {
+          "velocity": "66631b48da59bb3d0da17b7787c197416d3826c26bb72d07807929118806e9ac",
+          "source": "c56539721f8f4b369386b86ea80d44c6345a3ca83070af26f03e51524115edaa",
+          "sigma": "88f0d11ae93ac2f493bacc37a68050d8103e810580cae567e49d496c928d4428"
+        },
+        "frozen_generator_state_keys": []
+      }
+    }
+  },
+  "environment": {
+    "torch": "1.13.1+cu117",
+    "cuda_build": "11.7",
+    "deepwave": "0.0.9",
+    "gpu": "NVIDIA A40",
+    "cudnn": 8500,
+    "driver": null
+  },
+  "notebook_sources": {
+    "FWIGAN": {
+      "old_transport_sha256": "86fd26724e84e3089255db1f1b838b038abc2876ddc6d8c7253cd290db12cb3e",
+      "new_raw_sha256": "55b8be50cb136be3398e688d3cd3364443243cf219425b585311f3b5e14f7091",
+      "old_numeric_cells": {
+        "8": "d041282ffdf3d403886419b4fd49b462468f4262605fbfa3b989e06181098cc3",
+        "10": "49b17b7eb24cfec7f1354e71619e5d40bdc8f93adc729ae717df16589676a34b",
+        "12": "b4bfe73ede20cbdd8a36276319497fd16c645d436b35b810e69a349e9d814d66"
+      }
+    },
+    "FWIGAN_Noisy": {
+      "old_transport_sha256": "639a5f8e1e12163a824e2d07f3966a700b5cdcea1c05f262c1b57379b9e48b9f",
+      "new_raw_sha256": "1660a0da02a65e6a57a5b61cbcc5f9895645cbf3a1c7393b2b04c1d0e25c8456",
+      "old_numeric_cells": {
+        "8": "d041282ffdf3d403886419b4fd49b462468f4262605fbfa3b989e06181098cc3",
+        "10": "49b17b7eb24cfec7f1354e71619e5d40bdc8f93adc729ae717df16589676a34b",
+        "12": "b4bfe73ede20cbdd8a36276319497fd16c645d436b35b810e69a349e9d814d66"
+      }
+    }
+  },
+  "preparation": {
+    "path": "/tmp/fwigan-whole-workflow/workflow/shared_observations.pt",
+    "sha256": "20b9d72e97b0ab2e08b02d10534f6665aa9b407bdb011039e9d9c0715ba65db1",
+    "data_fingerprint": "e6a97fcfe6278cba0acddd75d5890800eafe68e45927fbd61ae1e4a6d496dfa8",
+    "shape": [
+      30,
+      60,
+      2000
+    ],
+    "fine_shape": [
+      1000,
+      3100
+    ],
+    "coarse_shape": [
+      100,
+      310
+    ],
+    "seconds": 87.01930181006901,
+    "simulation_mode": "all_shots",
+    "shot_block_probe": null,
+    "raw_sha256": "7d3f351e4c14e2e302257988122b9d3bb131f7f3d948ac2b9a96808e4acd21f2",
+    "raw_strides": [
+      60,
+      1,
+      1800
+    ],
+    "peak_memory": {
+      "allocated": 0,
+      "reserved": 2797600768,
+      "peak_allocated": 2756718080,
+      "peak_reserved": 2797600768
+    },
+    "parent_memory_after_release": {
+      "allocated": 0,
+      "reserved": 0
+    }
+  },
+  "current_case": "FWI-new",
+  "selected_checkpoint": {
+    "status": "omitted",
+    "reason": "compressed checkpoint exceeds conservative 400 MiB bundle allowance",
+    "compressed_bytes": 674542764,
+    "source_bytes": 741029932
+  }
+}

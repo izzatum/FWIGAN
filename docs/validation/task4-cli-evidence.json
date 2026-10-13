@@ -1,0 +1,189 @@
+[
+  {
+    "argv": [
+      "simulate",
+      "--config",
+      "configs/tiny-fwi.yaml",
+      "--output",
+      "runs/tiny-observations.pt"
+    ],
+    "output": {
+      "observations": "/workspace/FWIGAN/runs/tiny-observations.pt",
+      "data_fingerprint": "e7a58a415d7252d970b7505ea8655ad65eb31c4bf7655c5f8fc0e7b32d5b6790"
+    }
+  },
+  {
+    "argv": [
+      "invert",
+      "--config",
+      "configs/tiny-fwi.yaml",
+      "--output-root",
+      "runs",
+      "--max-batches",
+      "2"
+    ],
+    "output": {
+      "run_dir": "/workspace/FWIGAN/runs/fwi-6170b215e48f4818aa352a8d6c28cafa",
+      "position": {
+        "epoch": 2,
+        "batch": 0,
+        "global_step": 2
+      }
+    }
+  },
+  {
+    "argv": [
+      "resume",
+      "/workspace/FWIGAN/runs/fwi-6170b215e48f4818aa352a8d6c28cafa/checkpoint.pt",
+      "--device",
+      "cpu"
+    ],
+    "output": {
+      "run_dir": "/workspace/FWIGAN/runs/fwi-6170b215e48f4818aa352a8d6c28cafa",
+      "position": {
+        "epoch": 24,
+        "batch": 0,
+        "global_step": 24
+      }
+    }
+  },
+  {
+    "argv": [
+      "evaluate",
+      "/workspace/FWIGAN/runs/fwi-6170b215e48f4818aa352a8d6c28cafa"
+    ],
+    "output": {
+      "run_dir": "/workspace/FWIGAN/runs/fwi-6170b215e48f4818aa352a8d6c28cafa",
+      "position": {
+        "epoch": 24,
+        "batch": 0,
+        "global_step": 24
+      },
+      "metrics": {
+        "epoch": 24,
+        "batch": 0,
+        "global_step": 24,
+        "solver_forward": 49,
+        "solver_adjoint": 24,
+        "raw_residual_mse": 0.3195361793041229,
+        "model_rmse": 91.19293975830078
+      }
+    }
+  },
+  {
+    "argv": [
+      "invert",
+      "--config",
+      "configs/tiny-fwigan.yaml",
+      "--output-root",
+      "runs",
+      "--max-batches",
+      "2"
+    ],
+    "output": {
+      "run_dir": "/workspace/FWIGAN/runs/fwigan-6ba442f4a3014c9fa0d09518d0fe2419",
+      "position": {
+        "epoch": 1,
+        "batch": 0,
+        "global_step": 2
+      }
+    }
+  },
+  {
+    "argv": [
+      "resume",
+      "/workspace/FWIGAN/runs/fwigan-6ba442f4a3014c9fa0d09518d0fe2419/checkpoint.pt",
+      "--device",
+      "cpu"
+    ],
+    "output": {
+      "run_dir": "/workspace/FWIGAN/runs/fwigan-6ba442f4a3014c9fa0d09518d0fe2419",
+      "position": {
+        "epoch": 2,
+        "batch": 0,
+        "global_step": 4
+      }
+    }
+  },
+  {
+    "argv": [
+      "evaluate",
+      "/workspace/FWIGAN/runs/fwigan-6ba442f4a3014c9fa0d09518d0fe2419"
+    ],
+    "output": {
+      "run_dir": "/workspace/FWIGAN/runs/fwigan-6ba442f4a3014c9fa0d09518d0fe2419",
+      "position": {
+        "epoch": 2,
+        "batch": 0,
+        "global_step": 4
+      },
+      "metrics": {
+        "epoch": 2,
+        "batch": 0,
+        "global_step": 4,
+        "solver_forward": 7,
+        "solver_adjoint": 4,
+        "raw_residual_mse": 46.6933479309082,
+        "model_rmse": 99.69187927246094
+      }
+    }
+  },
+  {
+    "argv": [
+      "invert",
+      "--config",
+      "configs/tiny-fwigan-noisy.yaml",
+      "--output-root",
+      "runs",
+      "--max-batches",
+      "2"
+    ],
+    "output": {
+      "run_dir": "/workspace/FWIGAN/runs/fwigan-eef72962348e44ff9caa595d9c8b5f8f",
+      "position": {
+        "epoch": 1,
+        "batch": 0,
+        "global_step": 2
+      }
+    }
+  },
+  {
+    "argv": [
+      "resume",
+      "/workspace/FWIGAN/runs/fwigan-eef72962348e44ff9caa595d9c8b5f8f/checkpoint.pt",
+      "--device",
+      "cpu"
+    ],
+    "output": {
+      "run_dir": "/workspace/FWIGAN/runs/fwigan-eef72962348e44ff9caa595d9c8b5f8f",
+      "position": {
+        "epoch": 2,
+        "batch": 0,
+        "global_step": 4
+      }
+    }
+  },
+  {
+    "argv": [
+      "evaluate",
+      "/workspace/FWIGAN/runs/fwigan-eef72962348e44ff9caa595d9c8b5f8f"
+    ],
+    "output": {
+      "run_dir": "/workspace/FWIGAN/runs/fwigan-eef72962348e44ff9caa595d9c8b5f8f",
+      "position": {
+        "epoch": 2,
+        "batch": 0,
+        "global_step": 4
+      },
+      "metrics": {
+        "epoch": 2,
+        "batch": 0,
+        "global_step": 4,
+        "solver_forward": 7,
+        "solver_adjoint": 4,
+        "raw_residual_mse": 46.01949691772461,
+        "model_rmse": 99.7907943725586
+      }
+    }
+  }
+]

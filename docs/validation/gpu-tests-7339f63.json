@@ -1,0 +1,58 @@
+{
+  "source_commit": "7339f63ba603e030556c1e794a81dae8da86d382",
+  "source_tree_dirty": false,
+  "report_sha256": "305ca5c18d5f8d60ccca9e71e64912105a9fef5e84aa77cfbd4bcf03f35c5efc",
+  "transport": {
+    "mode": "per_file_verified_published_source",
+    "commit": "7339f63ba603e030556c1e794a81dae8da86d382",
+    "source_manifest_sha256": "da9417866640d9a53c754fb65b8aa4e45986242c1c0d6da340a9ee2f963a99f1",
+    "source_files": 47,
+    "local_archive_provenance_sha256": "aebc31ec9406a96a8474ba19e090242fe2cba2f479c0bb4e4cbf8d3074957696",
+    "remote_archive_downloaded": false
+  },
+  "environment": {
+    "python": "3.10.12",
+    "device": "NVIDIA GeForce RTX 4090",
+    "cuda": "11.7",
+    "cudnn": 8500,
+    "versions": {
+      "torch": "1.13.1+cu117",
+      "deepwave": "0.0.9",
+      "numpy": "1.23.5",
+      "scipy": "1.10.1",
+      "matplotlib": "3.7.5",
+      "tqdm": "4.67.1",
+      "PyYAML": "6.0.2",
+      "pytest": "8.4.2",
+      "setuptools": "69.5.1",
+      "ninja": "1.13.0",
+      "wheel": "0.45.1"
+    }
+  },
+  "test_summary": {
+    "exit_code": 0,
+    "elapsed_seconds": 22.554260909557343,
+    "failures_detail": [],
+    "tests": 215,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 215,
+    "expected_failures": 0,
+    "ordinary_skips": 0,
+    "cuda_tests": 4,
+    "cuda_skipped": 0
+  },
+  "benchmark_status": "numerical_failed",
+  "benchmark_artifact": "docs/validation/gpu-benchmark-failure.json",
+  "pytest_log": "docs/validation/gpu-tests-7339f63.log",
+  "pod_cleanup": {
+    "pod_id": "l3jgtjiqkjidwn",
+    "cleanup_verified": true,
+    "cleanup_method": "pod_get404_and_absent_from_fresh_account_list",
+    "remaining_pod_ids": [],
+    "pod_lifetime_seconds": 216.77255773544312,
+    "estimated_compute_cost": 0.05359099344015121
+  },
+  "cost_is_invoice": false
+}
