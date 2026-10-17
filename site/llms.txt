@@ -1,0 +1,21 @@
+# FWIGAN
+
+> FWIGAN is a Python research toolkit for 2D acoustic full-waveform inversion (FWI) and adversarial FWIGAN using PyTorch and DeepWave. Original author: Muhammad Izzatullah. MIT license.
+
+## Source documentation
+
+- [Source repository](https://github.com/izzatum/FWIGAN): Code, configuration presets, and notebooks.
+- [README](https://github.com/izzatum/FWIGAN/blob/main/README.md): Exact Python 3.10 CPU installation, quick start, and attribution.
+- [Workflow](https://github.com/izzatum/FWIGAN/blob/main/docs/workflow.md): Physical contracts, objectives, checkpoints, and warm starts.
+- [Performance](https://github.com/izzatum/FWIGAN/blob/main/docs/performance.md): CUDA setup, measured-work boundaries, and numerical limits.
+- [Validation record](https://github.com/izzatum/FWIGAN/blob/main/docs/validation/validation.md): Executed checks and known limitations.
+- [120-epoch Marmousi comparison](https://github.com/izzatum/FWIGAN/blob/main/docs/validation/marmousi-120epoch.md): Single NVIDIA A40 trajectories at 120 of the original study's 401 epochs. This does not establish numerical equivalence, general GPU speedup, convergence, or method superiority. The large full resumable checkpoint is not in the public evidence bundle.
+- [Software citation](https://github.com/izzatum/FWIGAN/blob/main/CITATION.cff): Citation metadata; cite the version or commit used.
+- [CodeMeta](https://github.com/izzatum/FWIGAN/blob/main/codemeta.json): Machine-readable software metadata.
+
+## Scientific sources credited by the repository
+
+- [Physics-informed adversarial geophysical imaging](https://arxiv.org/abs/2109.11452)
+- [CryoGAN](https://ieeexplore.ieee.org/document/9483649)
+
+These are curated source pointers. The linked evidence and its stated scope govern scientific claims.
