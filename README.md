@@ -1,6 +1,6 @@
-# FWIGAN
+# FWIGAN: Full Waveform Inversion in PyTorch
 
-A research toolkit for 2D acoustic full-waveform inversion with conventional FWI and adversarial FWIGAN. Both methods share DeepWave physics, configuration, evaluation and checkpoint/resume workflows.
+FWIGAN is an open-source Python/PyTorch research toolkit for 2D acoustic full waveform inversion (FWI), seismic imaging and adversarial learning. Conventional FWI and adversarial FWIGAN share DeepWave physics, configuration, evaluation and checkpoint/resume workflows.
 
 ## Installation
 
@@ -45,6 +45,7 @@ Full-grid Marmousi FWIGAN simulations completed **120 epochs on an NVIDIA A40**.
 
 ## Documentation
 
+- [Frequently asked questions about FWIGAN and seismic inversion](docs/faq.md)
 - [Configuration, data contracts and checkpoint workflows](docs/workflow.md)
 - [Performance measurements and GPU setup](docs/performance.md)
 - [Tests and validation record](docs/validation/validation.md)
@@ -53,4 +54,4 @@ Run `python -m pytest -q` to execute the tests.
 
 ## Attribution and license
 
-Originally developed by Muhammad Izzatullah, inspired by [physics-informed adversarial geophysical imaging](https://arxiv.org/abs/2109.11452) and [CryoGAN](https://ieeexplore.ieee.org/document/9483649). Released under the [MIT license](LICENSE).
+Originally developed by Muhammad Izzatullah, inspired by [physics-informed adversarial geophysical imaging](https://arxiv.org/abs/2109.11452) and [CryoGAN](https://ieeexplore.ieee.org/document/9483649). Released under the [MIT license](LICENSE). Cite the software using [CITATION.cff](CITATION.cff).

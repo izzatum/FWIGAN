@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>${page_title}</title>
+  <meta name="description" content="${page_description}">
+  <meta name="author" content="${author_names}">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="${canonical_url}">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FWIGAN">
+  <meta property="og:title" content="${page_title}">
+  <meta property="og:description" content="${page_description}">
+  <meta property="og:url" content="${canonical_url}">
+  <meta property="og:image" content="${image_url}">
+  <meta property="og:image:width" content="${image_width}">
+  <meta property="og:image:height" content="${image_height}">
+  <meta property="og:image:alt" content="Marmousi reference, initial model, and original and package clean and noisy FWIGAN velocity models at epoch 120">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${page_title}">
+  <meta name="twitter:description" content="${page_description}">
+  <meta name="twitter:image" content="${image_url}">
+  <meta name="twitter:image:alt" content="Marmousi velocity models from the measured 120-epoch FWIGAN comparison">
+  <link rel="stylesheet" href="assets/styles.css">
+  <script type="application/ld+json">${structured_data}</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <a class="wordmark" href="./" aria-label="FWIGAN home">FWIGAN</a>
+    <nav aria-label="Main navigation">
+      <a href="#installation">Install</a>
+      <a href="#results">Results</a>
+      <a href="#citation">Cite</a>
+      <a href="https://github.com/izzatum/FWIGAN">GitHub</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero" aria-labelledby="page-heading">
+      <p class="eyebrow">Open research software · MIT license</p>
+      <h1 id="page-heading">FWIGAN: full-waveform inversion with PyTorch</h1>
+      <p class="lead">${software_description}</p>
+      <p class="byline">Originally developed by ${author_names}.</p>
+      <ul class="facts" aria-label="Software requirements">
+        <li>Python 3.10</li>
+        <li>PyTorch 1.13.1</li>
+        <li>DeepWave 0.0.9</li>
+        <li>CPU and optional CUDA</li>
+      </ul>
+      <div class="actions">
+        <a class="button" href="https://github.com/izzatum/FWIGAN">Explore the repository</a>
+        <a href="#installation">Start with a small CPU run <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+
+    <section aria-labelledby="about-heading">
+      <h2 id="about-heading">What is FWIGAN?</h2>
+      <p>FWIGAN is a Python research toolkit for 2D acoustic full-waveform inversion. It provides conventional FWI and adversarial FWIGAN with shared configuration, DeepWave wave physics, evaluation, and checkpoint/resume workflows.</p>
+      <h3>How do FWI and FWIGAN differ?</h3>
+      <p>Conventional FWI fits raw observed waveforms with a least-squares objective and a known fixed source. FWIGAN uses an adversarial critic with the original per-trace normalization and can fit the source waveform; its noisy variant also fits a noise parameter. The methods have different objectives, so a lower training loss does not by itself establish a better velocity model.</p>
+      <h3>How does FWIGAN use PyTorch?</h3>
+      <p>PyTorch supplies the trainable tensors, critic, automatic differentiation, and optimizers. The pinned DeepWave 0.0.9 backend computes acoustic wave propagation. This repository uses a legacy stack: Python 3.10 and PyTorch 1.13.1, with Torch installed before compiling DeepWave.</p>
+      <p class="source">Source: <a href="https://github.com/izzatum/FWIGAN/blob/main/docs/workflow.md">workflow, physical contracts, and architecture</a>.</p>
+    </section>
+
+    <section id="installation" aria-labelledby="installation-heading">
+      <h2 id="installation-heading">How do I install FWIGAN?</h2>
+      <p>From a checkout of <a href="https://github.com/izzatum/FWIGAN">the repository</a>, use Python 3.10 and a C++ compiler. These are the README’s pinned CPU installation commands, in order:</p>
+      <pre tabindex="0" role="region" aria-label="Pinned CPU installation commands"><code>${cpu_install}</code></pre>
+      <h3>How do I run a small example?</h3>
+      <p>Run the tiny CPU preset from the repository root. The command prints a new run directory.</p>
+      <pre tabindex="0" role="region" aria-label="Small CPU example"><code>fwigan invert --config configs/tiny-fwigan.yaml --output-root runs --max-batches 2</code></pre>
+      <p>Use <code>configs/tiny-fwigan-noisy.yaml</code> for noisy FWIGAN or <code>configs/tiny-fwi.yaml</code> for conventional FWI. Full Marmousi presets are available in <code>configs/marmousi-*.yaml</code>.</p>
+      <p class="source">Source: <a href="https://github.com/izzatum/FWIGAN/blob/main/README.md#installation">README installation and quick start</a>.</p>
+      <h3>Does FWIGAN require a GPU?</h3>
+      <p>No. The tiny examples run on CPU. CUDA is optional and requires a compatible PyTorch/DeepWave build; the documented GPU stack uses Torch 1.13.1+cu117 and a CUDA 11.7 toolchain. The CLI does not allocate a GPU. Validate compatibility on the actual device using the <a href="https://github.com/izzatum/FWIGAN/blob/main/docs/performance.md#cuda-measurement">CUDA setup and integration instructions</a>.</p>
+    </section>
+
+    <section id="results" aria-labelledby="results-heading">
+      <h2 id="results-heading">What do the Marmousi results show?</h2>
+      <p>Original-notebook and package FWIGAN runs with clean and noisy data completed 120 epochs on one NVIDIA A40. Every case began at the same velocity RMSE of <strong>${initial_rmse} m/s</strong>. The table reports the measured model error against coarse Marmousi truth.</p>
+      <figure>
+        <img src="assets/marmousi-120epoch-velocity-models.png" width="${image_width}" height="${image_height}" alt="Marmousi reference and shared initial velocity models, followed by original and package FWIGAN reconstructions for clean and noisy data at epoch 120; all use one velocity scale in metres per second." decoding="async">
+        <figcaption>Actual FWIGAN simulation output: Marmousi reference, shared initial model, and four epoch-120 reconstructions. All panels share one velocity scale in m/s. <a href="https://github.com/izzatum/FWIGAN/blob/main/docs/validation/marmousi-120epoch/figure-provenance.json">Figure provenance</a>.</figcaption>
+      </figure>
+      <div class="table-scroll" tabindex="0" role="region" aria-label="Epoch-120 velocity error comparison">
+        <table>
+          <caption>Velocity RMSE in m/s, rounded to three decimal places. Lower values indicate smaller model error in this run.</caption>
+          <thead><tr><th scope="col">Implementation</th><th scope="col">Target data</th><th scope="col">Initial</th><th scope="col">Epoch 120</th><th scope="col">Source metrics</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Original notebook</th><td>Clean</td><td>${initial_rmse}</td><td>${original_clean_rmse}</td><td><a href="https://github.com/izzatum/FWIGAN/blob/main/docs/validation/marmousi-120epoch/FWIGAN-old-metrics.json">Original clean JSON</a></td></tr>
+            <tr><th scope="row">Package</th><td>Clean</td><td>${initial_rmse}</td><td>${package_clean_rmse}</td><td><a href="https://github.com/izzatum/FWIGAN/blob/main/docs/validation/marmousi-120epoch/FWIGAN-new-metrics.json">Package clean JSON</a></td></tr>
+            <tr><th scope="row">Original notebook</th><td>Noisy</td><td>${initial_rmse}</td><td>${original_noisy_rmse}</td><td><a href="https://github.com/izzatum/FWIGAN/blob/main/docs/validation/marmousi-120epoch/FWIGAN_Noisy-old-metrics.json">Original noisy JSON</a></td></tr>
+            <tr><th scope="row">Package</th><td>Noisy</td><td>${initial_rmse}</td><td>${package_noisy_rmse}</td><td><a href="https://github.com/izzatum/FWIGAN/blob/main/docs/validation/marmousi-120epoch/FWIGAN_Noisy-new-metrics.json">Package noisy JSON</a></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="note">These are single-run trajectories covering <strong>120 of the original study’s 401 epochs</strong>. Matched starts produced materially different final fields. This evidence does not establish numerical equivalence, full convergence, method superiority, or a general GPU speedup. Package training-only times were lower in the measured pairs, while whole-notebook wall times were higher.</p>
+      <p>Read the <a href="https://github.com/izzatum/FWIGAN/blob/main/docs/validation/marmousi-120epoch.md">full 120-epoch comparison</a> for the executed notebooks, exact metrics, timing boundaries, and limitations. The <a href="https://github.com/izzatum/FWIGAN/blob/main/docs/validation/marmousi-20epoch.md">separate 20-epoch comparison</a> and <a href="https://github.com/izzatum/FWIGAN/blob/main/docs/validation/validation.md">validation record</a> provide additional context.</p>
+    </section>
+
+    <section id="resume" aria-labelledby="resume-heading">
+      <h2 id="resume-heading">Can I resume a FWIGAN run?</h2>
+      <p>Yes. Resume a package run from its saved checkpoint and evaluate its run directory. Replace <code>&lt;run-id&gt;</code> with the directory printed by the inversion command:</p>
+      <pre tabindex="0" role="region" aria-label="Resume and evaluation commands"><code>fwigan resume runs/&lt;run-id&gt;/checkpoint.pt --device cpu
+fwigan evaluate runs/&lt;run-id&gt;</code></pre>
+      <p>Keep <code>run.json</code>, <code>config.json</code>, and <code>observations.pt</code> with the checkpoint. Resume restores the same run’s physical state, critic, optimizers, schedules, progress, and random states. Only load trusted checkpoint files.</p>
+      <p>The public 120-epoch evidence bundle omits the large full resumable checkpoint, so it cannot resume that exact A40 run. See the <a href="https://github.com/izzatum/FWIGAN/blob/main/docs/workflow.md#artifacts-interruption-and-warm-start">checkpoint and warm-start documentation</a> and the <a href="https://github.com/izzatum/FWIGAN/blob/main/docs/validation/marmousi-120epoch.md#measured-work-time-and-limits">run’s artifact limits</a>.</p>
+    </section>
+
+    <section id="citation" aria-labelledby="citation-heading">
+      <h2 id="citation-heading">How should I cite FWIGAN?</h2>
+      <p>Use the repository’s <a href="https://github.com/izzatum/FWIGAN/blob/main/CITATION.cff">CITATION.cff</a> and cite the software version or commit you used. The original author is <strong>${author_names}</strong>. This toolkit is released under the <a href="https://github.com/izzatum/FWIGAN/blob/main/LICENSE">MIT license</a>.</p>
+      <p class="software-record">Software metadata: ${software_record}. The machine-readable record is available in <a href="https://github.com/izzatum/FWIGAN/blob/main/codemeta.json">codemeta.json</a>.</p>
+      <h3>Scientific sources and related work</h3>
+      <p>The repository credits the following sources as inspiration. Cite the relevant scientific work alongside the software when it informs your research:</p>
+      <ul class="sources">
+        <li><a href="https://arxiv.org/abs/2109.11452">Physics-informed adversarial geophysical imaging</a> — the scientific source linked by the repository (arXiv:2109.11452).</li>
+        <li><a href="https://ieeexplore.ieee.org/document/9483649">CryoGAN</a> — related adversarial reconstruction work linked by the repository (IEEE document 9483649).</li>
+      </ul>
+    </section>
+
+    <section id="documentation" aria-labelledby="documentation-heading">
+      <h2 id="documentation-heading">Where is the full documentation?</h2>
+      <ul class="doc-links">
+        <li><a href="https://github.com/izzatum/FWIGAN/blob/main/README.md">README</a><span>Install, quick start, notebooks, and attribution.</span></li>
+        <li><a href="https://github.com/izzatum/FWIGAN/blob/main/docs/workflow.md">Workflow and architecture</a><span>Configuration, physical contracts, artifacts, and checkpoints.</span></li>
+        <li><a href="https://github.com/izzatum/FWIGAN/blob/main/docs/performance.md">Performance evidence</a><span>CPU measurements, CUDA setup, and numerical limits.</span></li>
+        <li><a href="https://github.com/izzatum/FWIGAN/blob/main/docs/validation/validation.md">Tests and validation</a><span>Executed checks and known scientific limits.</span></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>FWIGAN · Originally developed by ${author_names} · <a href="https://github.com/izzatum/FWIGAN/blob/main/LICENSE">MIT license</a></p>
+    <p><a href="https://github.com/izzatum/FWIGAN">Source repository</a> · <a href="llms.txt">Curated source pointers</a></p>
+  </footer>
+</body>
+</html>

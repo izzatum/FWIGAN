@@ -5,9 +5,26 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "fwigan"
 version = "0.1.0"
-description = "Reproducible full waveform inversion research toolkit"
+description = "2D acoustic full-waveform inversion (FWI) and adversarial FWIGAN research toolkit"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [{name = "Muhammad Izzatullah"}]
+keywords = ["full-waveform inversion", "FWI", "adversarial learning", "geophysical imaging", "DeepWave"]
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering :: Physics",
+]
 requires-python = ">=3.10,<3.11"
 dependencies = ["torch==1.13.1", "deepwave==0.0.9", "numpy==1.23.5", "scipy==1.10.1", "PyYAML==6.0.2"]
+
+[project.urls]
+Homepage = "https://github.com/izzatum/FWIGAN/blob/main/docs/workflow.md"
+Documentation = "https://github.com/izzatum/FWIGAN/blob/main/docs/workflow.md"
+Repository = "https://github.com/izzatum/FWIGAN"
+Issues = "https://github.com/izzatum/FWIGAN/issues"
 
 [project.optional-dependencies]
 test = ["pytest>=7"]

@@ -1,0 +1,29 @@
+{
+  "@context": "https://w3id.org/codemeta/3.0",
+  "@type": "SoftwareSourceCode",
+  "@id": "https://github.com/izzatum/FWIGAN",
+  "name": "FWIGAN",
+  "description": "A research toolkit for 2D acoustic full-waveform inversion (FWI) and adversarial FWIGAN using DeepWave and PyTorch, with shared configuration, evaluation, and checkpoint/resume workflows.",
+  "codeRepository": "https://github.com/izzatum/FWIGAN",
+  "url": "https://github.com/izzatum/FWIGAN",
+  "issueTracker": "https://github.com/izzatum/FWIGAN/issues",
+  "softwareHelp": "https://github.com/izzatum/FWIGAN/blob/main/docs/workflow.md",
+  "version": "0.1.0",
+  "license": "https://spdx.org/licenses/MIT",
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Muhammad",
+      "familyName": "Izzatullah"
+    }
+  ],
+  "programmingLanguage": "Python",
+  "runtimePlatform": "Python 3.10",
+  "keywords": [
+    "full-waveform inversion",
+    "FWI",
+    "adversarial learning",
+    "geophysical imaging",
+    "DeepWave"
+  ]
+}

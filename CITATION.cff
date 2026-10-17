@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use FWIGAN, please cite this software using the metadata in this file."
+type: software
+title: "FWIGAN: Full-Waveform Inversion with Deep Adversarial Learning"
+abstract: >-
+  A research toolkit for 2D acoustic full-waveform inversion (FWI) and
+  adversarial FWIGAN using DeepWave and PyTorch, with shared configuration,
+  evaluation, and checkpoint/resume workflows.
+authors:
+  - given-names: Muhammad
+    family-names: Izzatullah
+repository-code: "https://github.com/izzatum/FWIGAN"
+url: "https://github.com/izzatum/FWIGAN"
+version: "0.1.0"
+license: MIT
+keywords:
+  - full-waveform inversion
+  - FWI
+  - adversarial learning
+  - geophysical imaging
+  - DeepWave
