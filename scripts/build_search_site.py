@@ -27,6 +27,7 @@ ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "site"
 REPOSITORY = "https://github.com/izzatum/FWIGAN"
 DEFAULT_BASE_URL = "https://izzatum.github.io/FWIGAN/"
+AUTHOR_LINKS = {"url": "https://izzatullah.com/", "sameAs": ["https://orcid.org/0000-0001-6349-3103"]}
 MARKER = ".fwigan-site-builder"
 MARKER_CONTENT = "FWIGAN static documentation builder v1\n"
 IMAGE_NAME = "marmousi-120epoch-velocity-models.png"
@@ -140,7 +141,7 @@ def software_metadata() -> dict:
         "license": "https://spdx.org/licenses/MIT",
         "programmingLanguage": "Python",
         "runtimePlatform": "Python 3.10",
-        "author": [{"@type": "Person", "name": "Muhammad Izzatullah"}],
+        "author": [{"@type": "Person", "name": "Muhammad Izzatullah", **AUTHOR_LINKS}],
     }
     # Keep structured data limited to factual software fields shown on the page.
     # Do not inherit dates, ratings, affiliations, or identifiers from elsewhere.
@@ -164,7 +165,7 @@ def software_metadata() -> dict:
             )
             if not isinstance(name, str) or not name.strip():
                 raise ValueError("CodeMeta author needs a name")
-            normalized.append({"@type": "Person", "name": name})
+            normalized.append({"@type": "Person", "name": name, **AUTHOR_LINKS})
         software["author"] = normalized
     return software
 
